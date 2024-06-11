@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DB_URL")
+}
+
+model User {
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  email            String            @unique
+  isEmailVerified  Boolean           @default(false)
+  username         String            @unique
+  fullName         String?
+  loginMethod      LoginMethod       @default(Email)
+  ip4              String?
+  ip6              String?
+  password         String?
+  name             String?
+  avatar           String?
+  refreshToken     String?
+  verificationCode VerificationCode?
+  isBanned         Boolean           @default(false)
+  role             Role              @default(USER)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+  coupons          Coupon[]
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum LoginMethod {
+  Email
+  GOOGLE
+  FACEBOOK
+}
+
+model VerificationCode {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  code      String
+  createdAt DateTime @default(now())
+  userId    String   @unique @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Store {
+  id                String     @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?
+  nativeName        String
+  slug              String     @unique
+  sourceImg         String?
+  img               String?
+  link              String
+  affLink           String?
+  sourceDescription String?
+  description       String?
+  bestOffer         String?
+  access            Json[]
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @default(now()) @updatedAt
+  isFake            Boolean    @default(false)
+  views             Int        @default(0)
+  viewsThreshold    Int        @default(0)
+  viewsRecord       Json[]     @default([])
+  votes             Int?       @default(0)
+  rating            Int?       @default(0)
+  level             LEVEL      @default(Mid)
+  address           Address[]
+  crunchBaseUrl     String?
+  coupons           Coupon[]
+  category          Category[] @relation(fields: [categoryIDs], references: [id])
+  categoryIDs       String[]   @db.ObjectId
+  batch             Int?
+
+  @@index([access])
+}
+
+enum LEVEL {
+  AllPopular
+  CategoryPopular
+  Mid
+  Low
+}
+
+model Coupon {
+  id                String       @id @default(auto()) @map("_id") @db.ObjectId
+  sourceTitle       String?
+  title             String
+  sourceDescription String?
+  description       String
+  shop              String
+  offer             String
+  code              String?
+  type              CouponType
+  access            Json[]
+  isVerified        Boolean
+  isExpired         Boolean
+  expiryDate        String
+  isSpinned         Boolean
+  votes             Int          @default(0)
+  rating            Int          @default(0)
+  views             Int          @default(0)
+  viewsThreshold    Int          @default(0)
+  viewsRecord       Json[]       @default([])
+  voteHistory       Json[]       @default([])
+  scrapeSite        String?
+  terms             Json?
+  store             Store        @relation(fields: [storeID], references: [id])
+  storeID           String       @db.ObjectId
+  status            CouponStatus @default(DRAFT)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @default(now()) @updatedAt
+  user              User?        @relation(fields: [userID], references: [id])
+  userID            String?      @db.ObjectId
+  batch             Int?
+
+  @@index([access])
+  @@index(shop)
+}
+
+enum CouponStatus {
+  PUBLISHED
+  DRAFT
+  TRASH
+  PENDING
+  SPAM
+}
+
+enum CouponType {
+  CODE
+  DEAL
+}
+
+model Category {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  slug     String   @unique
+  stores   Store[]  @relation(fields: [storeIDs], references: [id])
+  storeIDs String[] @db.ObjectId
+}
+
+model Address {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  store     Store   @relation(fields: [storeID], references: [id])
+  storeID   String  @db.ObjectId
+  country   String?
+  address   String?
+  phone     String?
+  email     String?
+  website   String?
+  facebook  String?
+  instagram String?
+  twitter   String?
+  youtube   String?
+  linkedin  String?
+  pinterest String?
+  tiktok    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
