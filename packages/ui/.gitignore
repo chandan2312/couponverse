@@ -1,3 +1,2 @@
 node_modules
-/packages/ui/.env
-packages/ui/.env
+.env
