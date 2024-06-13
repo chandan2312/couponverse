@@ -8,24 +8,23 @@ datasource db {
 }
 
 model User {
-  id               String            @id @default(auto()) @map("_id") @db.ObjectId
-  email            String            @unique
-  isEmailVerified  Boolean           @default(false)
-  username         String            @unique
-  fullName         String?
-  loginMethod      LoginMethod       @default(Email)
-  ip4              String?
-  ip6              String?
-  password         String?
-  name             String?
-  avatar           String?
-  refreshToken     String?
-  verificationCode VerificationCode?
-  isBanned         Boolean           @default(false)
-  role             Role              @default(USER)
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @default(now()) @updatedAt
-  coupons          Coupon[]
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  email           String      @unique
+  isEmailVerified Boolean     @default(false)
+  username        String      @unique
+  fullName        String?
+  loginMethod     LoginMethod @default(Email)
+  ip4             String?
+  ip6             String?
+  password        String?
+  name            String?
+  avatar          String?
+  refreshToken    String?
+  isBanned        Boolean     @default(false)
+  role            Role        @default(USER)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @default(now()) @updatedAt
+  coupons         Coupon[]
 }
 
 enum Role {
@@ -37,14 +36,6 @@ enum LoginMethod {
   Email
   GOOGLE
   FACEBOOK
-}
-
-model VerificationCode {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  code      String
-  createdAt DateTime @default(now())
-  userId    String   @unique @db.ObjectId
-  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Store {
@@ -77,6 +68,7 @@ model Store {
   batch             Int?
 
   @@index([access])
+  @@index(nativeName)
 }
 
 enum LEVEL {
@@ -96,7 +88,6 @@ model Coupon {
   offer             String
   code              String?
   type              CouponType
-  access            Json[]
   isVerified        Boolean
   isExpired         Boolean
   expiryDate        String
@@ -118,7 +109,6 @@ model Coupon {
   userID            String?      @db.ObjectId
   batch             Int?
 
-  @@index([access])
   @@index(shop)
 }
 
