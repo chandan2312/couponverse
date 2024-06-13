@@ -1,8 +1,9 @@
 {
-  "name": "turborepo-shadcn-ui",
+  "name": "turborepo",
   "version": "1.1.0",
   "private": true,
   "license": "MIT",
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
