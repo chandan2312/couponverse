@@ -37,6 +37,21 @@ const filterCoupons = (coupons: any) => {
         }
     });
 
+        // Sort the codes and deal
+    coupons.sort((a: any, b: any) => {
+        if (a.type === "CODE" && b.type !== "CODE") {
+            return -1;
+        } else if (a.type !== "CODE" && b.type === "CODE") {
+            return 1;
+        } else if (a.type === "DEAL" && b.type !== "DEAL") {
+            return -1;
+        } else if (a.type !== "DEAL" && b.type === "DEAL") {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+
     return coupons;
 }
 

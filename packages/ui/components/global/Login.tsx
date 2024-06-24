@@ -13,8 +13,9 @@ import {
   DrawerTrigger,
 } from "../ui/drawer";
 import { words } from "../../constants/words";
+import { Lang } from "../../types";
 
-const Login = ({ lang }: { lang: string }) => {
+const Login = ({ lang }: { lang: Lang }) => {
   return (
     <>
       <Drawer>

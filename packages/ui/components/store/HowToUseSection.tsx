@@ -4,9 +4,10 @@ import { words } from "../../constants/words";
 import CouponCard from "../coupon/CouponCard";
 import DummyPopup from "../coupon/DummyPopup";
 import Image from "next/image";
+import { Lang } from "../../types";
 
 const HowToUseSection = ({ store }: { store: any }) => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
   const deal =
     store.coupons.filter((coupon: any) => coupon.type == "CODE").length > 0
       ? store.coupons.filter((coupon: any) => coupon.type == "CODE")[0]

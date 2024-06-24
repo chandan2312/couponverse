@@ -2,9 +2,10 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import { words } from "../../constants/words";
+import { Lang } from "../../types";
 
 const Footer = () => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
   return (
     <>
       <footer className="mx-auto max-w-7xl space-y-8 px-4 pt-4 font-medium bg-card text-card-foreground rounded-t-lg">

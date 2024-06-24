@@ -1,6 +1,6 @@
 import React from "react";
 
-const Heading = ({ tag, text }) => {
+const Heading = ({ tag, text }: { tag: string; text: any }) => {
   if (tag === "h1") {
     return (
       <h1 className="w-full font-semibold mb-2 py-1 text-3xl text-primary/80 px-2">

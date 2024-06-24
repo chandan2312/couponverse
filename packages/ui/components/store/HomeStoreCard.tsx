@@ -12,7 +12,7 @@ const HomeStoreCard = ({
   store: any;
   includeOffer?: boolean;
 }) => {
-  const lang = process.env.LG as string;
+  const lang: Lang = (process.env.LG as Lang) || "en";
   const cpath = correctPath(lang);
 
   return (

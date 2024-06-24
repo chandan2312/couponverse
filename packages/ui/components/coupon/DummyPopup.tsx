@@ -4,9 +4,11 @@ import { Button } from "../ui/button";
 import { Clipboard } from "lucide-react";
 import { words } from "../../constants/words";
 import { cn } from "../../lib/utils";
+import { Lang } from "../../types";
 
 const DummyPopup = ({ deal, image }: { deal: any; image: string }) => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
+
   const date = new Date();
   const readableDate = date.toLocaleString("en-US", {
     year: "numeric",

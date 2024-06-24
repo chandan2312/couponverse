@@ -1,3 +1,4 @@
+import { Lang } from "../types";
 import { words } from "../constants/words";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -9,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 
-export function correctPath(lang: string) {
+export function correctPath(lang: Lang) {
   switch (lang) {
     case "en": return "coupon-codes";
     case "es": return "codigos-de-cupon";
@@ -51,7 +52,7 @@ export function correctPath(lang: string) {
   }
 }
 
-export function getExpiryDate(expiryDate: string, lang:string) {
+export function getExpiryDate(expiryDate: string, lang:Lang) {
   const date = new Date(expiryDate);
   const day = date.getDate();
   //month in words
@@ -62,7 +63,7 @@ const monthRaw = date.toLocaleString('default', { month: 'short' });
   return `${day} ${month} ${year}`;
 }
 
-export function generateOffer(coupons:any, storeName:string, lang:string){
+export function generateOffer(coupons:any, storeName:string, lang:Lang){
 
   //find the offer among all the coupons
 

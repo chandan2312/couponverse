@@ -10,9 +10,10 @@ import TopBrandsDropDown from "./TopBrandsDropDown";
 import { getTrendingStores } from "../../actions/store";
 import ProfileWrapper from "./ProfileWrapper";
 import { getProtocol } from "../../lib/utils";
+import { Lang } from "../../types";
 
 const Navbar = async () => {
-  const lang = (process.env.LG as string) || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
   const country = (process.env.COUNTRYCODE as string) || "en";
   const protocol = getProtocol();
 

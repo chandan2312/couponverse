@@ -299,3 +299,73 @@ export const liveCountries = [
     cont: "Europe",
   },
 ];
+
+export const countryWiseWords = {
+  in: ["rupees", "inr", "₹", ".in", "co.in", "com.in"],
+  us: ["dollars", "usd", "$", ".us", "co.us", "com.us"],
+  uk: ["pounds", "gbp", "£", ".uk", ".co.uk", ".com.uk"],
+  au: ["dollars", "aud", "$", ".au", "co.au", "com.au"],
+  nz: ["dollars", "nzd", "$", ".nz", "co.nz", "com.nz"],
+  za: ["rand", "zar", ".za", "co.za", "com.za"],
+  ng: ["naira", "ngn", "₦", ".ng", "co.ng", "com.ng"],
+  sg: ["dollars", "sgd", "$", ".sg", "co.sg", "com.sg"],
+  ca: ["dollars", "$", ".ca", "co.ca", "com.ca"],
+
+  // Europe
+  es: ["euros", "eur", "€", ".es", "co.es", "com.es"],
+  mx: ["pesos", "mxn", "$", ".mx", "co.mx", "com.mx"],
+  co: ["pesos", "$", ".co"],
+  ar: ["pesos", "ars", "$", ".ar", "co.ar", "com.ar"],
+  pe: ["soles", "S/.", ".pe", "co.pe", "com.pe"],
+  ve: ["bolivares", "ves", "Bs.", ".ve"],
+  cl: ["pesos", "clp", "$", ".cl"],
+  gt: ["quetzales", "gtq", "Q", ".gt"],
+  ec: ["dollars", "usd", "$", ".ec"],
+  cu: ["pesos", "$", ".cu"],
+  do: ["pesos", "$", ".do", "co.do"],
+  sv: ["dollars", "usd", "$", ".sv"],
+  py: ["guarani", "pyg", "₲", ".py"],
+  ru: ["ruble", "rub", "₽", ".ru"],
+
+  // Europe
+  fr: ["euros", "eur", "€", ".fr", "co.fr", "com.fr"],
+  de: ["euros", "eur", "€", ".de", "co.de", "com.de"],
+  ch: ["francs", "chf", "CHF", ".ch", "co.ch", "com.ch"],
+  at: ["euros", "eur", "€", ".at", "co.at", "com.at"],
+  hu: ["forints", "Ft", ".hu"],
+  gr: ["euros", "eur", "€", ".gr"],
+  sl: ["euros", "eur", "€", ".sl"],
+  sk: ["euros", "eur", "€", ".sk"],
+  hr: ["kuna", "hrk", "kn", ".hr", "co.hr", "com.hr"],
+  fi: ["euros", "eur", "€", ".fi", "co.fi", "com.fi"],
+  by: ["ruble", "byr", "Br", ".by"],
+  bg: ["leva", "bgn", "лв", ".bg"],
+  ro: ["lei", "ron", "lei", ".ro"],
+  ua: ["hryvnia", "uah", "₴", ".ua"],
+  tr: ["lira", "try", "₺", ".tr", ".com.tr"],
+  se: ["krona", "sek", "kr", ".se"],
+  pl: ["zloty", "pln", "zł", ".pl"],
+  no: ["kroner", "nok", "kr", ".no"],
+  nl: ["euros", "eur", "€", ".nl"],
+  dk: ["kroner", "dkk", "kr", ".dk"],
+  it: ["euros", "eur", "€", ".it"],
+  cz: ["koruna", "czk", "Kč", ".cz"],
+  nl: ["euros", "eur", "€", ".nl"],
+  ie: ["euros", "eur", "€", ".ie"],
+
+  // Asia
+  jp: ["yen", "jpy", "¥", ".jp", "co.jp", "com.jp"],
+  cn: ["yuan", "cny", "¥", ".cn", "co.cn", "com.cn"],
+  kr: ["won", "krw", "₩", ".kr", "co.kr", "com.kr"],
+  my: ["ringgit", "myr", "RM", ".my", "co.my", "com.my"],
+  th: ["baht", "thb", "฿", ".th", "co.th", "com.th"],
+  vn: ["dong", "vnd", "₫", ".vn", "co.vn", "com.vn"],
+  ph: ["pesos", "php", "₱", ".ph", "co.ph", "com.ph"],
+  id: ["rupiah", "idr", "Rp", ".id", "co.id", "com.id"],
+  pk: ["rupees", "pkr", "₨", ".pk", "co.pk", "com.pk"],
+  ir: ["rial", "irr", "﷼", ".ir", "co.ir", "com.ir"],
+};
+
+export const flattenCountryWiseWords = [
+  ...new Set(Object.values(countryWiseWords).flat()),
+];

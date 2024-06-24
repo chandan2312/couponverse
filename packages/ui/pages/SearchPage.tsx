@@ -3,9 +3,10 @@ import { getSearch } from "../actions/other";
 import Image from "next/image";
 import Link from "next/link";
 import { correctPath } from "../lib/utils";
+import { Lang } from "../types";
 
 const SearchPage = async ({ params }: { params: any }) => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
   const term = params.term;
 
   const cpath = correctPath(lang);

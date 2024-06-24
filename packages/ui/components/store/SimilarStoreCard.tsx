@@ -2,9 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { words } from "../../constants/words";
 import { correctPath, generateOffer } from "../../lib/utils";
+import { Lang } from "../../types";
 
 const SimilarStoreCard = ({ store }: { store: any }) => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
   const cpath = correctPath(lang);
   let theOffer = "";
   if (store.coupons) {

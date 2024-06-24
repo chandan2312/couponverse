@@ -2,9 +2,10 @@ import { contentGenerator } from "./contentGenerator"
 import {getStorePage} from "../actions/store"
 import { correctPath, generateOffer, getProtocol } from "./utils";
 import { words } from "../constants/words";
+import { Lang } from "../types";
 
 const country = process.env.COUNTRYCODE as string
-const lang = process.env.LG as string || "en"
+const lang: Lang = process.env.LG as Lang || "en";
 const cpath = correctPath(lang)
 const protocol = getProtocol()
 

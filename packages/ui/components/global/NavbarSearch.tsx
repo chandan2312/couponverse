@@ -5,8 +5,9 @@ import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { cn, getProtocol } from "../../lib/utils";
 import { Search, X } from "lucide-react";
+import { Lang } from "../../types";
 
-const NavbarSearch = ({ lang }: { lang: string }) => {
+const NavbarSearch = ({ lang }: { lang: Lang }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBar, setSearchBar] = useState(false);
   const protocol = getProtocol();

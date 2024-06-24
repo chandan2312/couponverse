@@ -9,8 +9,9 @@ import {
 } from "../ui/sheet";
 import { Menu } from "lucide-react";
 import SideNav from "../global/Sidenav";
+import { Lang } from "../../types";
 
-const MobileMenu = ({ lang, country }: { lang: string; country: string }) => {
+const MobileMenu = ({ lang, country }: { lang: Lang; country: string }) => {
   return (
     <Sheet>
       <SheetTrigger>

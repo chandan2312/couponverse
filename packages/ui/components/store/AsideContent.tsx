@@ -8,6 +8,7 @@ import { Link2 } from "lucide-react";
 import { words } from "../../constants/words";
 import Rating from "react-rating";
 import HorizontalStoreCard from "./HorizontalStoreCard";
+import { Lang } from "../../types";
 
 const AsideContent = ({
   store,
@@ -18,7 +19,7 @@ const AsideContent = ({
   couponCount: number;
   dealCount: number;
 }) => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
   return (
     <>
       {/* ---SimilarStores mobile */}

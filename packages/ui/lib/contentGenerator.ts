@@ -1,3 +1,4 @@
+import { Lang } from '../types';
 import { liveCountries } from '../constants';
 import { words } from '../constants/words';
 import dotenv from 'dotenv';
@@ -6,7 +7,7 @@ import dotenv from 'dotenv';
 
 
 
-export const contentGenerator = (type:string, name:string, lang: string, offer?:string, offersList?:string, couponCount?:number, dealCount?:number, count?:number ) => {
+export const contentGenerator = (type:string, name:string, lang: Lang, offer?:string, offersList?:string, couponCount?:number, dealCount?:number, count?:number ) => {
 
    const date = new Date();
    const monthRaw = date.toLocaleString('default', { month: 'long' }); // March

@@ -19,6 +19,7 @@ import { Clipboard, History } from "lucide-react";
 import CouponWorking from "../coupon/CouponWorking";
 import { addCouponView, increaseCouponViews } from "../../actions/coupon";
 import { cn } from "../../lib/utils";
+import { Lang } from "../../types";
 
 const CouponPopup = ({
   deal,
@@ -29,7 +30,7 @@ const CouponPopup = ({
   fullWidth = false,
 }: {
   deal: any;
-  lang: string;
+  lang: Lang;
   cdnUrl: string;
   store: any;
   isHistoryPopup?: boolean;
@@ -157,7 +158,10 @@ const CouponPopup = ({
             <div className="flex items-center gap-4 ">
               {deal.type == "CODE" && (
                 <div className="relative">
-                  <Button variant="outline" className="flex items-center gap-2">
+                  <Button
+                    variant="accentOutline"
+                    className="flex items-center gap-2"
+                  >
                     <span>{currCode}</span>
                     <span
                       onClick={async () => {
@@ -175,7 +179,7 @@ const CouponPopup = ({
                 </div>
               )}
 
-              <Button variant="outline">
+              <Button variant="accentOutline">
                 <Link
                   href={
                     deal?.store?.affLink

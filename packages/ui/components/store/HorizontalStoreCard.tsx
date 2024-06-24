@@ -3,9 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { words } from "../../constants/words";
+import { Lang } from "../../types";
 
 const HorizontalStoreCard = ({ store }: { store: any }) => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
 
   return (
     <>

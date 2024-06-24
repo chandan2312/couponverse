@@ -126,7 +126,7 @@ const RegisterForm = ({
         <div className="flex items-center justify-between">
           <Button
             disabled={!form.formState.isValid || form.formState.isSubmitting}
-            variant="outline"
+            variant="primaryOutline"
             type="submit"
           >
             {form.formState.isSubmitting ? <CircularLoader /> : "Register"}

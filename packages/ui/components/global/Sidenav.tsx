@@ -10,7 +10,7 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { words } from "../../constants/words";
 
-const SideNav = ({ lang, country }: { lang: string; country: string }) => {
+const SideNav = ({ lang, country }: { lang: Lang; country: string }) => {
   return (
     <div className="w-full  h-screen flex-1 text-primary   flex">
       <div className="flex flex-col space-y-6 w-full">
@@ -47,13 +47,7 @@ const SideNav = ({ lang, country }: { lang: string; country: string }) => {
 
 export default SideNav;
 
-export const MenuItem = ({
-  item,
-  lang,
-}: {
-  item: SideNavItem;
-  lang: string;
-}) => {
+export const MenuItem = ({ item, lang }: { item: SideNavItem; lang: Lang }) => {
   const pathname = usePathname();
   const [subMenuOpen, setSubMenuOpen] = useState(false);
   const toggleSubMenu = () => {

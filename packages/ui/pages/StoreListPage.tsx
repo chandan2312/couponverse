@@ -6,10 +6,11 @@ import { correctPath } from "../lib/utils";
 import Link from "next/link";
 import { words } from "../constants/words";
 import { notFound, redirect } from "next/navigation";
+import { Lang } from "../types";
 
 const StoreListPage = async () => {
   const country = process.env.COUNTRYCODE;
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
 
   const storeListRes = await getStoreList(country, 100000, 0);
   const storeList = storeListRes.data;

@@ -7,6 +7,7 @@ import { CalendarX2, Eye, Share2, Store, Users } from "lucide-react";
 import { cn, correctPath, getExpiryDate } from "../../lib/utils";
 import { words } from "../../constants/words";
 import CouponPopup from "./CouponPopup";
+import { Lang } from "../../types";
 
 type DealCardProps = {
   deal?: any;
@@ -14,7 +15,8 @@ type DealCardProps = {
 };
 
 const SimilarCouponCard = ({ deal, hideWeekViews = false }: DealCardProps) => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
+
   const cpath = correctPath(lang);
   const weeklyViews = deal.viewsRecord
     ? deal.viewsRecord.filter((item: any) => {

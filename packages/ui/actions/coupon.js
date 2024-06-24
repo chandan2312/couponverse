@@ -2,39 +2,49 @@
 import dotenv from "dotenv";
 import prisma from "../lib/db";
 import translate from "google-translate-api-x";
-import { englishCountries } from "../constants/index.js";
+import {
+  countryWiseWords,
+  englishCountries,
+  flattenCountryWiseWords,
+} from "../constants/index.js";
 dotenv.config({ path: "@ui/.env" });
+import { unstable_cache } from "next/cache";
 
 // {shop,code, offer,type}
 
-export const getCouponList = async (page, perPage) => {
-  const skip = (page - 1) * perPage;
-  const take = perPage;
-  try {
-    const [data, total] = await Promise.all([
-      prisma.coupon.findMany({
-        skip,
-        take,
-      }),
-      prisma.coupon.count(),
-    ]);
+export const getCouponList = unstable_cache(
+  async (page, perPage) => {
+    const skip = (page - 1) * perPage;
+    const take = perPage;
+    try {
+      const [data, total] = await Promise.all([
+        prisma.coupon.findMany({
+          skip,
+          take,
+        }),
+        prisma.coupon.count(),
+      ]);
 
-    return {
-      status: 200,
-      message: "Coupons List",
-      data: data,
-      total: total,
-    };
-  } catch (error) {
-    console.log(error.message);
+      return {
+        status: 200,
+        message: "Coupons List",
+        data: data,
+        total: total,
+      };
+    } catch (error) {
+      console.log(error.message);
 
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
-  }
-};
+      return {
+        status: 500,
+        message: error.message,
+        data: 0,
+      };
+    }
+  },
+  {
+    revalidate: 60 * 60 * 24 * 7,
+  },
+);
 
 export const getCoupon = async (dealId) => {
   //single coupon
@@ -478,138 +488,164 @@ export const likeCoupon = async (dealId) => {
   }
 };
 
-export const getTrendingCoupons = async (lang) => {
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  try {
-    let result = await prisma.coupon.aggregateRaw({
-      pipeline: [
-        // {
-        // 	$unwind: "$viewsRecord",
-        // },
-        {
-          $match: {
-            type: "CODE",
-          },
-        },
-        // // Match records where viewsRecord.time is within the last 7 days
-        // {
-        // 	$match: {
-        // 		"viewsRecord.time": { $gte: sevenDaysAgo },
-        // 	},
-        // },
-        // // Group by store id and count the number of views
-        // {
-        // 	$group: {
-        // 		_id: "$_id",
-        // 		name: { $first: "$name" }, // Keep store name
-        // 		viewCount: { $sum: 1 },
-        // 	},
-        // },
-        // // Sort by viewCount in descending order
-        // {
-        // 	$sort: { viewCount: -1 },
-        // },
-        {
-          $match: {
-            type: "CODE",
-          },
-        },
-        {
-          $sort: { views: -1 },
-        },
-        // Limit to the top 10 stores
-        {
-          $limit: 12,
-        },
-        {
-          $lookup: {
-            from: "Store",
-            localField: "storeID",
-            foreignField: "_id",
-            as: "store",
-          },
-        },
-        // Unwind the store array (because $lookup produces an array)
-        {
-          $unwind: "$store",
-        },
-        // Select only the fields you want
-
-        {
-          $project: {
-            _id: 1,
-            sourceTitle: 1,
-            title: 1,
-            sourceDescription: 1,
-            description: 1,
-            shop: 1,
-            offer: 1,
-            code: 1,
-            type: 1,
-            isVerified: 1,
-            isExpired: 1,
-            expiryDate: 1,
-            votes: 1,
-            rating: 1,
-            views: 1,
-            viewsRecord: 1,
-            voteHistory: 1,
-            terms: 1,
-            store: {
-              _id: 1,
-              nativeName: 1,
-              name: 1,
-              slug: 1,
-              img: 1,
-              sourceImg: 1,
-              views: 1,
-              createdAt: 1,
-              updatedAt: 1,
+export const getTrendingCoupons = unstable_cache(
+  async (country) => {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const countryWords = countryWiseWords[country];
+    const filteredWords = flattenCountryWiseWords?.filter(
+      (word) => !countryWords?.includes(word),
+    );
+    try {
+      let result = await prisma.coupon.aggregateRaw({
+        pipeline: [
+          // {
+          // 	$unwind: "$viewsRecord",
+          // },
+          {
+            $match: {
+              type: "CODE",
             },
           },
-        },
-      ],
-    });
+          // // Match records where viewsRecord.time is within the last 7 days
+          // {
+          // 	$match: {
+          // 		"viewsRecord.time": { $gte: sevenDaysAgo },
+          // 	},
+          // },
+          // // Group by store id and count the number of views
+          // {
+          // 	$group: {
+          // 		_id: "$_id",
+          // 		name: { $first: "$name" }, // Keep store name
+          // 		viewCount: { $sum: 1 },
+          // 	},
+          // },
+          // // Sort by viewCount in descending order
+          // {
+          // 	$sort: { viewCount: -1 },
+          // },
+          {
+            $match: {
+              type: "CODE",
+            },
+          },
+          {
+            $sort: { views: -1 },
+          },
+          // Limit to the top 10 stores
+          {
+            $limit: 12,
+          },
+          {
+            $lookup: {
+              from: "Store",
+              localField: "storeID",
+              foreignField: "_id",
+              as: "store",
+            },
+          },
+          // Unwind the store array (because $lookup produces an array)
+          {
+            $unwind: "$store",
+          },
+          // Select only the fields you want
 
-    if (englishCountries.includes(lang)) {
+          {
+            $project: {
+              _id: 1,
+              sourceTitle: 1,
+              title: 1,
+              sourceDescription: 1,
+              description: 1,
+              shop: 1,
+              offer: 1,
+              code: 1,
+              type: 1,
+              isVerified: 1,
+              isExpired: 1,
+              expiryDate: 1,
+              votes: 1,
+              rating: 1,
+              views: 1,
+              viewsRecord: 1,
+              voteHistory: 1,
+              terms: 1,
+              store: {
+                _id: 1,
+                nativeName: 1,
+                name: 1,
+                slug: 1,
+                img: 1,
+                sourceImg: 1,
+                views: 1,
+                createdAt: 1,
+                updatedAt: 1,
+              },
+            },
+          },
+        ],
+      });
+
+      const newCoupons = result.filter((coupon) => {
+        return !filteredWords.some(
+          (word) =>
+            coupon.title.toLowerCase().includes(word.toLowerCase()) ||
+            coupon.offer.toLowerCase().includes(word.toLowerCase()),
+        );
+      });
+
+      console.log("newCoupons.length");
+      console.log(newCoupons);
+
+      if (englishCountries.includes(country)) {
+        return {
+          status: 200,
+          message: "Trending coupons",
+          data: newCoupons,
+        };
+      }
+
+      const couponsData = result
+        ?.map((item) => {
+          return [item.title, item.description, item.offer];
+        })
+        ?.flat()
+        ?.map((item) => (item === undefined ? "" : item));
+
+      const ac = new AbortController();
+
+      const translatedCouponData = await translate(couponsData, {
+        to: lang,
+        agent: new HttpProxyAgent(
+          `https://zone-48D601A0-country-us:CB7785DAF3F94ED59097CEFF8646120F@proxy.bytio.com:8443`,
+        ),
+        signal: ac.signal,
+      });
+
+      const newResult = result.map((item, index) => {
+        item.title = translatedCouponData[index * 3].text;
+        item.description = translatedCouponData[index * 3 + 1].text;
+        item.offer = translatedCouponData[index * 3 + 2].text;
+        return item;
+      });
+
       return {
         status: 200,
         message: "Trending coupons",
-        data: result,
+        data: newResult,
+      };
+    } catch (error) {
+      console.log(error);
+
+      return {
+        status: 500,
+        message: error.message,
+        data: 0,
       };
     }
-
-    const couponsData = result
-      ?.map((item) => {
-        return [item.title, item.description, item.offer];
-      })
-      ?.flat()
-      ?.map((item) => (item === undefined ? "" : item));
-
-    const translatedCouponData = await translate(couponsData, {
-      to: lang,
-    });
-
-    const newResult = result.map((item, index) => {
-      item.title = translatedCouponData[index * 3].text;
-      item.description = translatedCouponData[index * 3 + 1].text;
-      item.offer = translatedCouponData[index * 3 + 2].text;
-      return item;
-    });
-
-    return {
-      status: 200,
-      message: "Trending coupons",
-      data: newResult,
-    };
-  } catch (error) {
-    console.log(error);
-
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
-  }
-};
+  },
+  {
+    revalidate: 60 * 60 * 24 * 3, // 3 days
+  },
+);

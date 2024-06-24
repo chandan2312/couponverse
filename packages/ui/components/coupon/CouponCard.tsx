@@ -9,6 +9,7 @@ import { cn, getExpiryDate } from "../../lib/utils";
 import { words } from "../../constants/words";
 import CouponPopup from "../../components/coupon/CouponPopup";
 import { Suspense } from "react";
+import { Lang } from "../../types";
 
 type DealCardProps = {
   store: any;
@@ -18,7 +19,7 @@ type DealCardProps = {
 };
 
 const CouponCard = ({ deal, store, key, searchParams }: DealCardProps) => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
   if (!deal) return null;
 
   const isExpired = deal.isExpired;
@@ -37,7 +38,7 @@ const CouponCard = ({ deal, store, key, searchParams }: DealCardProps) => {
       }).length
     : 0;
 
-  let expiryDate = words.LimitedTime[lang];
+  let expiryDate: any = words.LimitedTime[lang];
 
   if (deal.expiryDate) {
     expiryDate = getExpiryDate(deal.expiryDate, lang);
@@ -54,20 +55,6 @@ const CouponCard = ({ deal, store, key, searchParams }: DealCardProps) => {
           isExpired ? "text-muted-foreground" : "text-card-foreground",
         )}
       >
-        {/* left side */}
-
-        {/* <div className="h-full flex flex-col justify-between rounded-l-md ">
-					<div className="bg-green-500/20 border border-b-0 border-t-0 border-dotted border-foreground/40  h-full rounded-tl-md m-auto flex items-center justify-center p-1">
-						<SquareArrowUp />
-					</div>
-					<div className="bg-red-500/20  border border-b-0 border-dotted border-foreground/40  h-full rounded-bl-md m-auto flex items-center justify-center p-1">
-						{" "}
-						<SquareArrowDown />
-					</div>
-				</div> */}
-
-        {/* <Separator orientation={"vertical"} /> */}
-
         {/* right side */}
 
         <div className="flex-grow flex flex-col justify-between  p-2">

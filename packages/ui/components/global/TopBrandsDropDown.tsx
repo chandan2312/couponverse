@@ -15,7 +15,7 @@ import { words } from "../../constants/words";
 import { Separator } from "../ui/separator";
 
 const TopBrandsDropDown = ({ stores }: { stores: any }) => {
-  const lang = (process.env.LG as string) || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
   const country = process.env.COUNTRYCODE as string;
 
   const cpath = correctPath(lang);

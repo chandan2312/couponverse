@@ -4,12 +4,9 @@ import { getLatestStores, getTrendingStores } from "../actions/store";
 import Searchbar from "../components/global/Searchbar";
 import { Separator } from "../components/ui/separator";
 import { words } from "../constants/words";
-import dotenv from "dotenv";
-import { getLang } from "../lib/utils";
 import HomeStoreCard from "../components/store/HomeStoreCard";
-import { Lang } from "../types";
-import { contentGenerator } from "../lib/contentGenerator";
 import CouponCardSide from "../components/coupon/CouponCardSide";
+import { Lang } from "../types";
 
 // export async function generateMetadata({ params }: { params: any }) {
 //   const country = "pl"; //TODO:temp
@@ -43,8 +40,8 @@ import CouponCardSide from "../components/coupon/CouponCardSide";
 // }
 
 const Homepage = async () => {
-  const country = "pl"; //TODO:temp
-  const lang = "pl"; //TODO:temp
+  const country = process.env.COUNTRYCODE as string;
+  const lang: Lang = (process.env.LG as Lang) || "en";
 
   const [trendingStoresRes, latestStoresRes, trendingCouponsRes] =
     await Promise.all([

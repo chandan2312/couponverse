@@ -7,9 +7,10 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { contentGenerator } from "../../lib/contentGenerator";
+import { Lang } from "../../types";
 
 const StoreFAQs = ({ name }: { name: string }) => {
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
   const faqsData = [
     {
       q: contentGenerator("faq1Question", name, lang),

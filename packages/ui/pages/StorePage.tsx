@@ -22,6 +22,7 @@ import { Link2 } from "lucide-react";
 import Heading from "../components/custom/Heading";
 import AsideContent from "../components/store/AsideContent";
 import HorizontalStoreCard from "../components/store/HorizontalStoreCard";
+import { Lang } from "../types";
 
 export const revalidate = 86400; //24 hr
 
@@ -39,7 +40,7 @@ const StorePage = async ({
   }
 
   const country = process.env.COUNTRYCODE || "us";
-  const lang = process.env.LG || "en";
+  const lang: Lang = (process.env.LG as Lang) || "en";
 
   const validPath = correctPath(lang);
   if (storePath !== validPath) {

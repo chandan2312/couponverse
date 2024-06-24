@@ -7,8 +7,9 @@ import StoreWrapper from "../../lib/StoreWrapper";
 import { useSelector } from "react-redux";
 import { addCouponVote } from "../../actions/coupon";
 import { toast } from "sonner";
+import { Lang } from "../../types";
 
-const CouponWorking = ({ lang, deal }: { lang: string; deal: any }) => {
+const CouponWorking = ({ lang, deal }: { lang: Lang; deal: any }) => {
   return (
     <StoreWrapper>
       <CouponWorkingInside lang={lang || "en"} deal={deal} />
@@ -20,7 +21,7 @@ export const CouponWorkingInside = ({
   lang,
   deal,
 }: {
-  lang: string;
+  lang: Lang;
   deal: any;
 }) => {
   const [votedDeals, setVotedDeals] = useState([]);
@@ -86,7 +87,7 @@ export const CouponWorkingInside = ({
       <div className="flex gap-1">
         <Button
           onClick={() => handleCouponVote("yes", deal.id)}
-          variant="outline"
+          variant="primaryOutline"
           size="sm"
           className={`font-semibold ${
             currVoteStatus == "yes" && "bg-accent/60 text-accent-foreground"
@@ -96,7 +97,7 @@ export const CouponWorkingInside = ({
         </Button>
         <Button
           onClick={() => handleCouponVote("no", deal.id)}
-          variant="outline"
+          variant="primaryOutline"
           size="sm"
           className={`font-semibold ${
             currVoteStatus == "no" && "bg-accent2/60 text-accent2-foreground"

@@ -21,6 +21,7 @@ import { cn, correctPath, getExpiryDate, getProtocol } from "../../lib/utils";
 import { words } from "../../constants/words";
 import CouponPopup from "../coupon/CouponPopup";
 import CouponWorking from "../coupon/CouponWorking";
+import { Lang } from "../../types";
 
 type DealCardProps = {
   deal?: any;
@@ -28,7 +29,8 @@ type DealCardProps = {
 };
 
 const CouponCardSide = ({ deal }: DealCardProps) => {
-  const lang = process.env.LG as string;
+  const lang: Lang = (process.env.LG as Lang) || "en";
+
   const cpath = correctPath(lang);
   const protocol = getProtocol();
   const weeklyViews = deal.viewsRecord
