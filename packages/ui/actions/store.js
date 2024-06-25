@@ -9,19 +9,20 @@ import {
 } from "../constants";
 import { checkEnglishCountryArray } from "../lib/utils";
 import { unstable_cache } from "next/cache";
+import filterCoupons from "../lib/filterCoupons";
 
 export const getStoreCount = unstable_cache(
   async (country) => {
     return await prisma.store.count({
       where: {
         access: {
-          hasSome: ["global", country && country],
+          hasSome: ["global", country],
         },
       },
     });
   },
   {
-    revalidate: 60 * 60 * 4,
+    revalidate: 60 * 60 * 24,
   },
 );
 
@@ -113,19 +114,7 @@ export const getStorePage = unstable_cache(
         },
       });
 
-      // console.log(store);
-
-      let offersSeen = new Set();
-      store.coupons = store.coupons.filter((coupon) => {
-        const off = coupon.offer
-          ?.replace("upto ", "")
-          ?.replace("Upto ", "")
-          ?.replace("Up to ", "")
-          ?.replace("up to ", "");
-        let duplicate = offersSeen.has(off);
-        offersSeen.add(off);
-        return !duplicate;
-      });
+      store.coupons = filterCoupons(store.coupons);
 
       if (!store || store.coupons.length === 0) {
         return {
