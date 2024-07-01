@@ -40,7 +40,6 @@ enum LoginMethod {
 
 model Store {
   id                String     @id @default(auto()) @map("_id") @db.ObjectId
-  name              String?
   nativeName        String
   slug              String     @unique
   sourceImg         String?
@@ -50,10 +49,9 @@ model Store {
   sourceDescription String?
   description       String?
   bestOffer         String?
-  access            Json[]
+  access            String
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @default(now()) @updatedAt
-  isFake            Boolean    @default(false)
   views             Int        @default(0)
   viewsThreshold    Int        @default(0)
   viewsRecord       Json[]     @default([])
@@ -61,13 +59,12 @@ model Store {
   rating            Int?       @default(0)
   level             LEVEL      @default(Mid)
   address           Address[]
-  crunchBaseUrl     String?
   coupons           Coupon[]
   category          Category[] @relation(fields: [categoryIDs], references: [id])
   categoryIDs       String[]   @db.ObjectId
   batch             Int?
 
-  @@index([access])
+  @@index(access)
   @@index(nativeName)
 }
 
@@ -79,19 +76,23 @@ enum LEVEL {
 }
 
 model Coupon {
-  id                String       @id @default(auto()) @map("_id") @db.ObjectId
-  sourceTitle       String?
-  title             String
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  sourceTitle  String?
+  title        String
+  englishTitle String?
+
   sourceDescription String?
   description       String
   shop              String
   offer             String
+  englishOffer      String
   code              String?
   type              CouponType
   isVerified        Boolean
   isExpired         Boolean
   expiryDate        String
-  isSpinned         Boolean
+  sourceId          String?
+  access            String
   votes             Int          @default(0)
   rating            Int          @default(0)
   views             Int          @default(0)
@@ -107,9 +108,10 @@ model Coupon {
   updatedAt         DateTime     @default(now()) @updatedAt
   user              User?        @relation(fields: [userID], references: [id])
   userID            String?      @db.ObjectId
-  batch             Int?
 
-  @@index(shop)
+  batch Int?
+
+  @@index(access)
 }
 
 enum CouponStatus {

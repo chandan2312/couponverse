@@ -556,10 +556,12 @@ export const getTrendingCoupons = unstable_cache(
               _id: 1,
               sourceTitle: 1,
               title: 1,
+              englishTitle: 1,
               sourceDescription: 1,
               description: 1,
               shop: 1,
               offer: 1,
+              englishOffer: 1,
               code: 1,
               type: 1,
               isVerified: 1,
@@ -574,10 +576,8 @@ export const getTrendingCoupons = unstable_cache(
               store: {
                 _id: 1,
                 nativeName: 1,
-                name: 1,
                 slug: 1,
                 img: 1,
-                sourceImg: 1,
                 views: 1,
                 createdAt: 1,
                 updatedAt: 1,
@@ -590,50 +590,15 @@ export const getTrendingCoupons = unstable_cache(
       const newCoupons = result.filter((coupon) => {
         return !filteredWords.some(
           (word) =>
-            coupon.title.toLowerCase().includes(word.toLowerCase()) ||
-            coupon.offer.toLowerCase().includes(word.toLowerCase()),
+            coupon.englishTitle.toLowerCase().includes(word.toLowerCase()) ||
+            coupon.englishOffer.toLowerCase().includes(word.toLowerCase()),
         );
-      });
-
-      console.log("newCoupons.length");
-      console.log(newCoupons);
-
-      if (englishCountries.includes(country)) {
-        return {
-          status: 200,
-          message: "Trending coupons",
-          data: newCoupons,
-        };
-      }
-
-      const couponsData = result
-        ?.map((item) => {
-          return [item.title, item.description, item.offer];
-        })
-        ?.flat()
-        ?.map((item) => (item === undefined ? "" : item));
-
-      const ac = new AbortController();
-
-      const translatedCouponData = await translate(couponsData, {
-        to: lang,
-        agent: new HttpProxyAgent(
-          `https://zone-48D601A0-country-us:CB7785DAF3F94ED59097CEFF8646120F@proxy.bytio.com:8443`,
-        ),
-        signal: ac.signal,
-      });
-
-      const newResult = result.map((item, index) => {
-        item.title = translatedCouponData[index * 3].text;
-        item.description = translatedCouponData[index * 3 + 1].text;
-        item.offer = translatedCouponData[index * 3 + 2].text;
-        return item;
       });
 
       return {
         status: 200,
         message: "Trending coupons",
-        data: newResult,
+        data: newCoupons,
       };
     } catch (error) {
       console.log(error);

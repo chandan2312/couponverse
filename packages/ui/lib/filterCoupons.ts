@@ -3,15 +3,19 @@ const filterCoupons = (coupons: any) => {
 
     // Filter 
     const filteredCoupons = coupons.filter((item: any) => {
-        const offerNormalized = item.offer
+        const offerNormalized = item.englishOffer
             ?.replace(/upto |Upto |Up to |up to /g, "");
 
         let duplicate = offersSeen.has(offerNormalized);
         offersSeen.add(offerNormalized);
 
-        const includedPattern = /[0-9]|off|OFF|Off|free|Free|Upto|upto|[$€£¥₹₩₽₣₦₴₫₭₲₳฿₵₡₢₰]|%/;
-        const isIncluded = item.type === "CODE" || includedPattern.test(item.offer) || includedPattern.test(item.title);
+        const includedPattern = /[0-9]|off|OFF|Off|free|Free|Upto|upto|discount|Discount|[$€£¥₹₩₽₣₦₴₫₭₲₳฿₵₡₢₰]|%/;
+        const isIncluded = item.type === "CODE" || includedPattern.test(item.englishOffer) || includedPattern.test(item.englishTitle);
 
+         if (coupons.length < 5) {
+            return true;
+        }
+        
         if (!duplicate && isIncluded) {
             if (item.isExpired) {
                 item.isExpired = true;

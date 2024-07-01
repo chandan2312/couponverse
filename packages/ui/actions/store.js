@@ -45,7 +45,7 @@ export const getStoreList = unstable_cache(
             },
           },
         },
-        take: 500,
+        take: take,
         skip: skip,
       });
 
@@ -89,9 +89,12 @@ export const getStorePage = unstable_cache(
             select: {
               id: true,
               title: true,
+              englishTitle: true,
               code: true,
               offer: true,
+              englishOffer: true,
               type: true,
+              access: true,
               expiryDate: true,
               isExpired: true,
               isVerified: true,
@@ -112,6 +115,14 @@ export const getStorePage = unstable_cache(
             },
           },
         },
+      });
+
+      store.coupons = store.coupons.filter((coupon) => {
+        return !filteredWords.some(
+          (word) =>
+            coupon.englishTitle.toLowerCase().includes(word.toLowerCase()) ||
+            coupon.englishOffer.toLowerCase().includes(word.toLowerCase()),
+        );
       });
 
       store.coupons = filterCoupons(store.coupons);
@@ -146,11 +157,10 @@ export const getStorePage = unstable_cache(
         pipeline: [
           {
             $match: {
-              access: {
-                $in: ["global", country],
-              },
+              access: country,
             },
           },
+
           {
             $sample: { size: 18 },
           },
@@ -247,8 +257,10 @@ export const getStorePage = unstable_cache(
         .map(({ bestCoupon }) => ({
           _id: bestCoupon._id,
           title: bestCoupon.title,
+          englishTitle: bestCoupon.englishTitle,
           description: bestCoupon.description,
           offer: bestCoupon.offer,
+          englishOffer: bestCoupon.englishOffer,
           type: bestCoupon.type,
           code: bestCoupon.code,
           expiryDate: bestCoupon.expiryDate,
@@ -260,7 +272,6 @@ export const getStorePage = unstable_cache(
 
           store: {
             _id: bestCoupon.store._id,
-            name: bestCoupon.store.name,
             nativeName: bestCoupon.store.nativeName,
             img: bestCoupon.store.img,
             slug: bestCoupon.store.slug,
@@ -271,12 +282,12 @@ export const getStorePage = unstable_cache(
         .filter((coupon) => {
           return !filteredWords.some(
             (word) =>
-              coupon.title.toLowerCase().includes(word.toLowerCase()) ||
-              coupon.offer.toLowerCase().includes(word.toLowerCase()),
+              coupon.englishTitle.toLowerCase().includes(word.toLowerCase()) ||
+              coupon.englishOffer.toLowerCase().includes(word.toLowerCase()),
           );
         })
         .filter((coupon) => {
-          const off = coupon.offer
+          const off = coupon.englishOffer
             .toLowerCase()
             ?.replace("upto ", "")
             ?.replace("Upto ", "")
@@ -323,9 +334,7 @@ export const getStorePage = unstable_cache(
           // Filter stores with at least 10 recent views
           {
             $match: {
-              access: {
-                $in: ["global", country],
-              },
+              access: country,
             },
           },
           {
@@ -358,7 +367,6 @@ export const getStorePage = unstable_cache(
           {
             $project: {
               _id: 1,
-              name: 1,
               nativeName: 1,
               link: 1,
               affLink: 1,
@@ -368,82 +376,12 @@ export const getStorePage = unstable_cache(
               couponCount: 1,
               coupons: {
                 _id: 1,
-                sourceTitle: 1,
-                title: 1,
-                offer: 1,
-                type: 1,
-                expiryDate: 1,
-                isExpired: 1,
-                isVerified: 1,
-                views: 1,
+                englishTitle: 1,
+                englishOffer: 1,
               },
             },
           },
         ],
-      });
-
-      if (!country) {
-        return {
-          status: 200,
-          message: "Store Found",
-          data: store,
-        };
-      }
-
-      // ----------------------------- TRANSLATION ----------------------------//
-
-      // 1) Translate Store description & offer
-
-      const storeData = [store.name, store.description, store.bestOffer];
-
-      const couponsData = store.coupons
-        ?.map((item) => {
-          return [item.title, item.description, item.offer];
-        })
-        ?.flat()
-        ?.map((item) => (item === undefined ? "" : item));
-
-      const similarCouponsData = store.similarCoupons
-        ?.map((item) => {
-          return [item.title, item.description, item.offer];
-        })
-        ?.flat()
-        ?.map((item) => (item === undefined ? "" : item));
-      //TODO: translate with proxy
-      const [
-        translatedStoreData,
-        translatedCouponsData,
-        translatedSimilarCouponsData,
-      ] = await Promise.all([
-        translate(storeData, {
-          to: lang,
-        }),
-        translate(couponsData, {
-          to: lang,
-        }),
-        translate(similarCouponsData, {
-          to: lang,
-        }),
-      ]);
-
-      // console.log(translatedStoreData);
-
-      store.name = translatedStoreData[0].text;
-      store.description = translatedStoreData[1].text;
-      store.bestOffer = translatedStoreData[1].text;
-
-      store.coupons = store.coupons.map((coupon, index) => {
-        coupon.title = translatedCouponsData[index * 3].text;
-        coupon.description = translatedCouponsData[index * 3 + 1].text;
-        coupon.offer = translatedCouponsData[index * 3 + 2].text;
-        return coupon;
-      });
-
-      store.similarCoupons = store.similarCoupons.map((coupon, index) => {
-        coupon.title = translatedSimilarCouponsData[index * 3].text;
-        coupon.description = translatedSimilarCouponsData[index * 3 + 1].text;
-        coupon.offer = translatedSimilarCouponsData[index * 3 + 2].text;
-        return coupon;
       });
 
       return {
@@ -686,9 +624,7 @@ export const getTrendingStores = unstable_cache(
           // },
           {
             $match: {
-              access: {
-                $in: ["global", country],
-              },
+              access: country,
             },
           },
           {
@@ -718,14 +654,16 @@ export const getTrendingStores = unstable_cache(
           {
             $project: {
               _id: 1,
-              name: 1,
               nativeName: 1,
               slug: 1,
               img: 1,
-              sourceImg: 1,
               views: 1,
               couponCount: 1,
-              coupons: 1,
+              coupons: {
+                _id: 1,
+                englishTitle: 1,
+                englishOffer: 1,
+              },
             },
           },
         ],
@@ -744,8 +682,6 @@ export const getTrendingStores = unstable_cache(
         message: "Trending Stores",
         data: result,
       };
-
-      // ----------------------------- TRANSLATION ----------------------------//
     } catch (error) {
       console.log(error);
 
@@ -766,9 +702,7 @@ export const getLatestStores = unstable_cache(
     try {
       const result = await prisma.Store.findMany({
         where: {
-          access: {
-            hasSome: ["global", country],
-          },
+          access: country,
         },
         take: 10,
         orderBy: {

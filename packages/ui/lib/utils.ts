@@ -16,7 +16,7 @@ export function correctPath(lang: Lang) {
     case "es": return "codigos-de-cupon";
     case "fr": return "code-promo";
     case "de": return "gutscheincodes";
-    case "ru": return "kody";
+    case "ru": return "kupon-kody";
     case "da": return "kupon-kode";
     case "it": return "codici-sconto";
     case "cs": return "kuponove-kody";
@@ -63,44 +63,32 @@ const monthRaw = date.toLocaleString('default', { month: 'short' });
   return `${day} ${month} ${year}`;
 }
 
-export function generateOffer(coupons:any, storeName:string, lang:Lang){
-
-  //find the offer among all the coupons
-
-  //coupon structure
-  //{
-    // title: "Get 10% off on all products",
-    //offer: "10% off",
-  
-
-  //check all coupons and find the best offer in which % off exist or if there is no coupon with offer with % off words, then search in titles, if there is any title with % off words, then trucate the offer from the title and return that offer
-
-
-  // Helper function to extract percentage from a string
-    function extractPercentage(str:string) {
-        const percentages = str.replace(/^.*?(\d{1,2}%)/, '$1').replace(/%.*/, '');
-  
-
-    const percentageNumber = parseInt(percentages, 10);
-    if (isNaN(percentageNumber)) {
-        return null; 
-    }
-        return percentages ? parseInt(percentages) : null;
+export function generateOffer(coupons: any, storeName: string, lang: Lang) {
+    // fn
+    function extractPercentage(str: string) {
+        const percentages = str?.match(/\d{1,2}%/) || 0;
+        if (percentages) {
+            const percentageNumber = parseInt(percentages[0], 10);
+            if (!isNaN(percentageNumber) && percentageNumber < 100 && percentageNumber > 2) {
+                return percentageNumber;
+            }
+        }
+        return null;
     }
 
-    let bestOffer:any = null;
+    let bestOffer: number | null = null;
 
-    // First, look for the best offer in the 'offer' field
+    // 1
     for (const coupon of coupons) {
         const offerPercentage = extractPercentage(coupon.offer);
-          if (offerPercentage !== null) {
-              if (bestOffer === null || offerPercentage > bestOffer) {
-                  bestOffer = offerPercentage;
-              }
-          }
+        if (offerPercentage !== null) {
+            if (bestOffer === null || offerPercentage > bestOffer) {
+                bestOffer = offerPercentage;
+            }
+        }
     }
 
-    // If no offer found in 'offer' field, look in 'title' field
+    // 2
     if (bestOffer === null) {
         for (const coupon of coupons) {
             const titlePercentage = extractPercentage(coupon.title);
@@ -112,29 +100,27 @@ export function generateOffer(coupons:any, storeName:string, lang:Lang){
         }
     }
 
-    // If a best offer was found, return it as a string
+    // 3
     if (bestOffer !== null) {
         return `${bestOffer}% ${words.Off[lang]}`;
-    }else{
-      const storeNameLength = storeName.length;
-      const modulo = storeNameLength % 4;
+    } else {
+        const storeNameLength = storeName.length;
+        const modulo = storeNameLength % 4;
 
-      if(modulo === 0){
-        return `25% ${words.Off[lang]}`;
-      }else if (modulo === 1){
-        return `40% ${words.Off[lang]}`;
-      }else if (modulo === 2){
-        return `50% ${words.Off[lang]}`;
-      }else if (modulo === 3){
-        return `60% ${words.Off[lang]}`;
-      }
+        switch (modulo) {
+            case 0:
+                return `25% ${words.Off[lang]}`;
+            case 1:
+                return `40% ${words.Off[lang]}`;
+            case 2:
+                return `50% ${words.Off[lang]}`;
+            case 3:
+                return `60% ${words.Off[lang]}`;
+        }
     }
 
     // If no offer was found, return an empty string
     return "";
-
-
-
 }
 
 

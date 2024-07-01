@@ -242,14 +242,17 @@ const StorePage = async ({
         </div>
         {/* ---------- Right Section ------------ */}
         <div className="col-span-12 lg:col-span-9 w-full lg:sticky lg:z-10 p-2">
-          {/* //TODO: change heading */}
           {/* --- ListCoupons */}
-          <Heading tag="h2" text={`Popular ${store.name} Coupon Codes 2024`} />
+          <Heading
+            tag="h2"
+            text={`Popular ${store.nativeName} Coupon Codes 2024`} //TODO:translation
+          />
 
           <div className="card-section">
             <table className="w-full ">
               <thead>
-                <th className="text-left">Offer Title</th>
+                <th className="text-left">Offer Title</th> //TODO:translation
+                words
                 <th className="text-left">Code</th>
                 <th className="text-left">Used</th>
               </thead>
@@ -276,7 +279,7 @@ const StorePage = async ({
 
           <Heading
             tag="h2"
-            text={contentGenerator("aboutHeading", store.name, lang)}
+            text={contentGenerator("aboutHeading", store.nativeName, lang)}
           />
 
           <div className="card-section">
