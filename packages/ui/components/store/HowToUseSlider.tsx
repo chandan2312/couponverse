@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import React from "react";
 import Autoplay from "embla-carousel-autoplay";
@@ -29,62 +29,48 @@ const HowToUseSlider = ({
   lang: Lang;
   applyImageUrl: string;
 }) => {
-  const plugin: any = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true }),
-  );
+  // const plugin: any = useRef(
+  //   Autoplay({ delay: 2000, stopOnInteraction: false }),
+  // );
 
   return (
     <>
       <Carousel
-        plugins={[plugin.current]}
+        // plugins={[plugin.current]}
         className="w-full max-w-xs"
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
+        // onMouseEnter={plugin.current.stop}
+        // onMouseLeave={plugin.current.reset}
       >
         <CarouselContent className="w-full">
           {/* slide - 1 */}
           <CarouselItem>
-            <div className="p-1">
-              <Card>
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <div className=" rounded-md bg-foreground/10  mx-auto">
-                    <div className="bg-card rounded-lg">
-                      <CouponCard deal={deal} store={store} showImage={false} />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <Card>
+              <CardContent className="flex aspect-square items-center justify-center p-6 rounded-md bg-foreground/10  mx-auto ">
+                <CouponCard deal={deal} store={store} showImage={false} />
+              </CardContent>
+            </Card>
           </CarouselItem>
           {/* slide - 2 */}
           <CarouselItem>
-            <div className="p-1">
-              <Card>
-                <CardContent className="flex aspect-square items-center justify-center ">
-                  <div className=" bg-foreground/10 rounded-md  h-full">
-                    <DummyPopup deal={deal} image={image} />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <Card>
+              <CardContent className="flex aspect-square items-center justify-center bg-foreground/10 rounded-md  h-full">
+                <DummyPopup deal={deal} image={image} />
+              </CardContent>
+            </Card>
           </CarouselItem>
           {/* slide - 3 */}
           <CarouselItem>
-            <div className="p-1">
-              <Card>
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <div className="rounded-lg bg-foreground/10  flex items-center justify-center">
-                    <Image
-                      src={applyImageUrl}
-                      width={320}
-                      height={320}
-                      alt={words.ApplyCoupon[lang]}
-                      className="rounded-md m-auto max-md:w-full mx-auto w-auto"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <Card>
+              <CardContent className="flex aspect-square items-center justify-center p-6 rounded-lg bg-foreground/10  ">
+                <Image
+                  src={applyImageUrl}
+                  width={320}
+                  height={320}
+                  alt={words.ApplyCoupon[lang]}
+                  className="rounded-md m-auto max-md:w-full mx-auto w-auto"
+                />
+              </CardContent>
+            </Card>
           </CarouselItem>
           {/* end */}
         </CarouselContent>

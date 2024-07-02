@@ -22,7 +22,7 @@ export const getSitemapArray = unstable_cache(
     console.log("page", page, "skip", skip, "take", take);
 
     const cachedFetchStores = async (skip, take) => {
-      return await prisma.Store.findMany({
+      const rawStores = await prisma.Store.findMany({
         skip,
         take,
         where: {
@@ -30,8 +30,16 @@ export const getSitemapArray = unstable_cache(
         },
         select: {
           slug: true,
+          coupons: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
+
+      const filteredStores = rawStores.map((store) => store.coupons.length > 0);
+      return filteredStores;
     };
 
     const storeRes = await cachedFetchStores(skip, take);

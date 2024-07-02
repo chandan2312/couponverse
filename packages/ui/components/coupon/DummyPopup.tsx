@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
@@ -16,8 +18,6 @@ const DummyPopup = ({ deal, image }: { deal: any; image: string }) => {
     day: "numeric",
   });
 
-  console.log("deal.img");
-  console.log(deal.img);
   return (
     <>
       <div className="rounded-lg bg-card flex flex-col gap-2 items-center p-3 overflow-y-scroll h-full max-md:h-[70vh] min-h-[70vh]">
@@ -54,12 +54,9 @@ const DummyPopup = ({ deal, image }: { deal: any; image: string }) => {
               </div>
 
               <div className="flex items-center gap-4 ">
-                <Button variant="accent">
-                  {
-                    //@ts-ignore
-                    words.GoToStore[lang]
-                  }
-                </Button>
+                <div className="p-1 border rounded-lg bg-muted/10">
+                  {words.GoToStore[lang]}
+                </div>
               </div>
             </div>
           </div>
@@ -69,26 +66,24 @@ const DummyPopup = ({ deal, image }: { deal: any; image: string }) => {
 
         {/* -------------------------- Working or not -------------------------------- */}
         <div className="w-full   px-1.5  flex items-center justify-between gap-2 py-1 ">
-          <>
-            <div>{`${words.IsItWorking[lang]}?`}</div>
+          <div>{`${words.IsItWorking[lang]}?`}</div>
 
-            <div className="flex gap-1">
-              <Button
-                variant="accentOutline"
-                size="xs"
-                className={`font-semibold bg-accent/60 text-accent-foreground`}
-              >
-                {words.Yes[lang]}
-              </Button>
-              <Button
-                variant="dangerOutline"
-                size="xs"
-                className={`font-semibold `}
-              >
-                {words.No[lang]}
-              </Button>
-            </div>
-          </>
+          <div className="flex gap-1">
+            <Button
+              variant="accentOutline"
+              size="xs"
+              className={`font-semibold bg-accent/60 text-accent-foreground`}
+            >
+              {words.Yes[lang]}
+            </Button>
+            <Button
+              variant="dangerOutline"
+              size="xs"
+              className={`font-semibold `}
+            >
+              {words.No[lang]}
+            </Button>
+          </div>
         </div>
 
         <hr className="w-full border-t my-1 border-primary/10" />

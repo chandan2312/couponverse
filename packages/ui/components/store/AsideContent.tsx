@@ -84,26 +84,6 @@ const AsideContent = ({
           </li>
         </ul>
       </SectionWrapper>
-
-      {/* ---SimilarStores- desktop */}
-      {/* {store.similarStores.length ? (
-        <SectionWrapper
-          title={contentGenerator(
-            "similarStoresHeading",
-            store.nativeName,
-            lang,
-          )}
-          className="order-1 lg:order-4 max-lg:hidden"
-        >
-          <div className="">
-            {store.similarStores.map((store: any, index: any) => (
-              <HorizontalStoreCard store={store} key={index} />
-            ))}
-          </div>
-        </SectionWrapper>
-      ) : (
-        <></>
-      )} */}
     </>
   );
 };

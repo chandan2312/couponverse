@@ -29,14 +29,14 @@ const HowToUseSection = ({ store }: { store: any }) => {
               <span className="font-semibold underline pr-2">
                 {words.Step[lang]} 1 -{" "}
               </span>{" "}
-              {contentGenerator("howToApplyStep1", store.name, lang)}
+              {contentGenerator("howToApplyStep1", store.nativeName, lang)}
             </li>
             <Separator />
             <li>
               <span className="font-semibold underline pr-2">
                 {words.Step[lang]} 2 -{" "}
               </span>{" "}
-              {contentGenerator("howToApplyStep2", store.name, lang)}
+              {contentGenerator("howToApplyStep2", store.nativeName, lang)}
             </li>
             <Separator />
 
@@ -44,7 +44,7 @@ const HowToUseSection = ({ store }: { store: any }) => {
               <span className="font-semibold underline pr-2">
                 {words.Step[lang]} 3 -{" "}
               </span>{" "}
-              {contentGenerator("howToApplyStep3", store.name, lang)}
+              {contentGenerator("howToApplyStep3", store.nativeName, lang)}
             </li>
           </ul>
         </div>

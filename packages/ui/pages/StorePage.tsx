@@ -21,6 +21,7 @@ import HorizontalStoreCard from "../components/store/HorizontalStoreCard";
 import { Lang } from "../types";
 import CouponPopup from "../components/coupon/CouponPopup";
 import { codeTrim } from "../lib/codeTrim";
+import CouponListWidget from "../components/coupon/CouponListWidget";
 
 const StorePage = async ({
   slug,
@@ -167,8 +168,8 @@ const StorePage = async ({
 
             {/* --------------- expired --------------- */}
 
-            {store.coupons.filter((item: any) => item.isExpired === true)
-              .length ? (
+            {store?.coupons?.filter((item: any) => item.isExpired === true)
+              .length && (
               <div className="lg:col-span-9">
                 <Heading
                   tag="h2"
@@ -192,13 +193,11 @@ const StorePage = async ({
                     ))}
                 </div>
               </div>
-            ) : (
-              <></>
             )}
 
             {/* --------------- similarCoupons --------------- */}
 
-            {store.similarCoupons.length ? (
+            {store?.similarCoupons?.length && (
               <div>
                 <Separator />
                 <Heading tag="h2" text={words.SimilarCoupons[lang]} />
@@ -213,8 +212,6 @@ const StorePage = async ({
                   ))}
                 </div>
               </div>
-            ) : (
-              <></>
             )}
             <Separator />
           </div>
@@ -263,46 +260,12 @@ const StorePage = async ({
 
             {/* --- coupons list */}
 
-            {couponCount ? (
-              <div className="card-section">
-                <table className="w-full ">
-                  <thead>
-                    <th className="text-left">{words.TopOffers[lang]}</th>{" "}
-                    <th className="text-left">{words.CouponCode[lang]}</th>
-                  </thead>
-
-                  <tbody className="text-sm">
-                    {/* //TODO: filter coupon or sort */}
-                    {store.coupons
-                      .filter((item: any) => item.isExpired != true)
-                      .filter((item: any) => item.type == "CODE")
-                      .map((coupon: any, index: number) => (
-                        <>
-                          <tr
-                            key={index}
-                            className="m-2 my-4 border-b border-b-muted/30"
-                          >
-                            <td className="my-2">{coupon.title}</td>
-                            <td className="my-2 flex gap-2 items-center">
-                              <span> {codeTrim(coupon.code)}</span>
-
-                              <CouponPopup
-                                deal={coupon}
-                                store={store}
-                                lang={lang}
-                                cdnUrl={process.env.CDN_URL}
-                                isListPopup={true}
-                              />
-                            </td>
-                          </tr>
-                        </>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <></>
-            )}
+            {couponCount &&
+              store.coupons
+                .filter((item: any) => item.isExpired != true)
+                .filter((item: any) => item.type == "CODE").length && (
+                <CouponListWidget store={store} />
+              )}
 
             {/* --- About */}
 
@@ -325,7 +288,6 @@ const StorePage = async ({
                   />
                 </div>
 
-                <div></div>
                 {store.description && (
                   <p>
                     {store.description
@@ -386,8 +348,8 @@ const StorePage = async ({
 
             <div className="card-section w-full">
               {popularCoupons.map((coupon: any, index: any) => (
-                <>
-                  <div key={index} className="w-full flex items-center gap-3 ">
+                <div key={index} className="w-full">
+                  <div className="w-full flex items-center gap-3 ">
                     <figure className="w-28 h-28 p-1 m-auto flex items-center justify-center flex-shrink-0">
                       <Image
                         src={`${process.env.CDN_URL}${coupon.store.img}`}
@@ -409,7 +371,7 @@ const StorePage = async ({
                   </div>
 
                   <Separator />
-                </>
+                </div>
               ))}
             </div>
           </div>
