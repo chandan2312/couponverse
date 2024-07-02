@@ -38,7 +38,9 @@ export const getSitemapArray = unstable_cache(
         },
       });
 
-      const filteredStores = rawStores.map((store) => store.coupons.length > 0);
+      const filteredStores = rawStores.filter(
+        (store) => store.coupons.length > 0,
+      );
       return filteredStores;
     };
 
@@ -72,6 +74,7 @@ export const getSitemapIndexArray = unstable_cache(
     let storeCount;
     try {
       storeCount = await getStoreCount(country);
+      console.log("storeCount", storeCount);
     } catch (error) {
       console.log(error.message);
       return [];

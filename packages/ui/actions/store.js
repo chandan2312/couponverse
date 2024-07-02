@@ -13,7 +13,7 @@ import filterCoupons from "../lib/filterCoupons";
 
 export const getStoreCount = unstable_cache(
   async (country) => {
-    const rawStores = await prisma.store.findMany({
+    const rawStores = await prisma.Store.findMany({
       where: {
         access: country,
       },
@@ -27,7 +27,15 @@ export const getStoreCount = unstable_cache(
       },
     });
 
-    return rawStores.filter((store) => store.coupons.length > 0).length;
+    const count = rawStores.filter((store) => store.coupons.length > 0).length;
+
+    // const count = await prisma.Store.count({
+    //   where: {
+    //     access: country,
+    //   },
+    // });
+
+    return count;
   },
   {
     revalidate: 60 * 60 * 24,
