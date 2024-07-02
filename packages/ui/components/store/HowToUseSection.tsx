@@ -55,7 +55,7 @@ const HowToUseSection = ({ store }: { store: any }) => {
             store={store}
             image={image}
             lang={lang}
-            applyImageUrl={`${process.env.CDN_URL}assets/step-3-apply-coupon.jpeg`}
+            applyImageUrl={`${process.env.CDN_URL}assets/step-3-apply-coupon.png`}
           />
         </div>
       </div>
