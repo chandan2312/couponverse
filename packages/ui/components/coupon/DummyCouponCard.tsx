@@ -42,7 +42,11 @@ const DummyCouponCard = ({
       }).length
     : 0;
 
-  const expiryDateString = words.LimitedTime[lang];
+  const expiryDateDefault = words.LimitedTime[lang];
+  let expiryDate: string = "";
+  if (deal.expiryDate) {
+    expiryDate = getExpiryDate(deal.expiryDate, lang);
+  }
 
   //dynamic import Dealpopup
 
@@ -69,7 +73,7 @@ const DummyCouponCard = ({
             <CalendarX2 size={16} color={!isExpired ? "#b92d2d" : "#5d5d5d"} />
 
             <span className="font-semibold text-[#b92d2d]">
-              {getExpiryDate(deal.expiryDate, lang) || expiryDateString}
+              {expiryDate ? expiryDate : expiryDateDefault}
             </span>
           </div>
         </div>
