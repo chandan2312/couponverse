@@ -54,23 +54,26 @@ export const storePageMetaData = async(slug:string) => {
 			?.map((coupon: any) => coupon.offer)
 			.join(", ") || "";
 
+      const couponCount = store.coupons.filter((item:any) => item.type == "CODE" )
+      const dealCount = store.coupons.filter((item:any) => item.type == "DEAL" )
+
 
 	const meta =  {
-		title: contentGenerator("seoTitle", store.nativeName, lang, theOffer),
+		title: contentGenerator("seoTitle", store.nativeName, lang, theOffer, "", store.coupons.length),
 		description: contentGenerator(
 			"seoDescription",
 			store.nativeName,
 			lang,
 			theOffer,
 			offersList,
-			0,
-			0,
+			couponCount,
+			dealCount,
 			store?.coupons?.length || 0
 		),
 		canonical: `${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${slug}`,
 		url: `${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${slug}`,
 
-		locale: lang,
+		locale: process.env.HTML_LANG,
 		type: "article",
 		openGraph: {
 			type: "article",
@@ -85,7 +88,7 @@ export const storePageMetaData = async(slug:string) => {
       url: `${process.env.CDN_URL}${store.img.replace(/\\/g, "/")}`,
       width: 320,
       height: 320,
-      alt: contentGenerator("seoTitle", store.name, lang, theOffer),
+      alt: contentGenerator("seoTitle", store.name, lang, theOffer, store.coupons.length),
     }
   }),
 			site_name: process.env.APP,
@@ -107,7 +110,7 @@ export const storeListMetaData = () => {
 		canonical: `${process.env.PROTOCOL}${country}.${process.env.DOMAIN}/stores`,
 		url: `${process.env.PROTOCOL}${country}.${process.env.DOMAIN}/stores`,
 
-		locale: lang,
+		locale: process.env.HTML_LANG,
 		type: "article",
 		openGraph: {
 			type: "article",

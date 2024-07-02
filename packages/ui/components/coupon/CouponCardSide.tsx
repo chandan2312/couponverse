@@ -1,26 +1,9 @@
-// import CouponOver from "./CouponOver";
-
 import Link from "next/link";
-// import CouponButton from "./CouponButton";
-// import AffLink from "./AffLink";
 import Image from "next/image";
-import {
-  CalendarX,
-  CalendarX2,
-  CheckCheck,
-  ChevronDown,
-  Eye,
-  Heart,
-  History,
-  Share2,
-  ShieldCheck,
-  Store,
-  Users,
-} from "lucide-react";
+import { CalendarX2, Eye, Share2, Store, Users } from "lucide-react";
 import { cn, correctPath, getExpiryDate, getProtocol } from "../../lib/utils";
 import { words } from "../../constants/words";
 import CouponPopup from "../coupon/CouponPopup";
-import CouponWorking from "../coupon/CouponWorking";
 import { Lang } from "../../types";
 
 type DealCardProps = {

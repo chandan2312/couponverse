@@ -3,7 +3,7 @@ import "@repo/ui/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import MainLayout from "@repo/ui/layouts/MainLayout";
-import SessionWrapper from "@repo/ui/lib/SessionWrapper";
+// import SessionWrapper from "@repo/ui/lib/SessionWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SessionWrapper>
-      <html lang="en">
-        <MainLayout>{children}</MainLayout>
-      </html>
-    </SessionWrapper>
+    // <SessionWrapper>
+    <html lang="en">
+      <MainLayout>{children}</MainLayout>
+    </html>
+    // </SessionWrapper>
   );
 }

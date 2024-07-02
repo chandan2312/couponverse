@@ -33,9 +33,7 @@ export const getSearch = async (search, lang) => {
     where: {
       OR: [{ name: { contains: search } }, { slug: { contains: search } }],
 
-      // access: {
-      // 	hasSome: ["global", lang],
-      // },
+      // access: country,
     },
     select: {
       id: true,

@@ -11,14 +11,21 @@ import CouponPopup from "../../components/coupon/CouponPopup";
 import { Suspense } from "react";
 import { Lang } from "../../types";
 
-type DealCardProps = {
+type CouponCardProps = {
   store: any;
   deal: any;
   searchParams?: any;
   key?: any;
+  showImage?: boolean;
 };
 
-const CouponCard = ({ deal, store, key, searchParams }: DealCardProps) => {
+const CouponCard = ({
+  deal,
+  store,
+  key,
+  searchParams,
+  showImage = true,
+}: CouponCardProps) => {
   const lang: Lang = (process.env.LG as Lang) || "en";
   if (!deal) return null;
 
@@ -79,18 +86,20 @@ const CouponCard = ({ deal, store, key, searchParams }: DealCardProps) => {
           {/* ------------------ Mid Area ------------------ */}
 
           <div className="flex items-center gap-2">
-            <figure className="max-md:hidden bg-muted/10 rounded-md p-1 w-16 h-16 flex items-center justify-center">
-              <Image
-                src={
-                  store.img
-                    ? `${process.env.CDN_URL}${store.img}`
-                    : store.sourceImg
-                }
-                alt={store.nativeName || store.name}
-                width={60}
-                height={60}
-              />
-            </figure>
+            {showImage && (
+              <figure className="max-md:hidden bg-muted/10 rounded-md p-1 w-16 h-16 flex items-center justify-center">
+                <Image
+                  src={
+                    store.img
+                      ? `${process.env.CDN_URL}${store.img}`
+                      : store.sourceImg
+                  }
+                  alt={store.nativeName || store.name}
+                  width={60}
+                  height={60}
+                />
+              </figure>
+            )}
             <div className="flex flex-col justify-center flex-grow ">
               <h3
                 className={cn(

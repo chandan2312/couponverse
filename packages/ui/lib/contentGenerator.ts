@@ -7,21 +7,26 @@ import dotenv from 'dotenv';
 
 
 
-export const contentGenerator = (type:string, name:string, lang: Lang, offer?:string, offersList?:string, couponCount?:number, dealCount?:number, count?:number ) => {
+export const contentGenerator = (type:string, name:string, lang: Lang, offer?:string, offersList?:string,  couponCount?:number,dealCount?:any, count?:any ) => {
 
    const date = new Date();
-   const monthRaw = date.toLocaleString('default', { month: 'long' }); // March
+   const monthRaw = date.toLocaleString('default', { month: 'long' });
    //@ts-ignore
    const month = words[monthRaw][lang];   
    const year = new Date().getFullYear();
    // todo: make it meaningful
  if (type == "seoTitle"){
-      switch(lang){
-         case "en": return `${offer} ${name} Promo Codes, Coupons & Discounts | ${couponCount}+ Offers ${month} ${year} - ${process.env.APP}`;
+   if (couponCount){
+ switch(lang){
+         case "en": return `${offer} ${name} Promo Codes, Coupons & Discounts | ${couponCount} + Offers ${month} ${year} - ${process.env.APP}`;
          case "ru": return `${offer} ${name} Промокоды, купоны и скидки | ${couponCount}+ предложений на ${month} ${year} - ${process.env.APP}`;
-         case "ar": return `${offer} ${name} أكواد القسائم، العروض والخصومات | ${couponCount}+ عروض ${month} ${year} - ${process.env.APP}`;
-         case "es": return `${offer} ${name} Códigos promocionales, cupones y descuentos | ${couponCount}+ Ofertas ${month} ${year} - ${process.env.APP}`;
+         case "ar": return `${offer} ${name} أكواد القسائم، العروض والخصومات | ${couponCount} + عروض ${month} ${year} - ${process.env.APP}`;
+         case "es": return `${offer} ${name} Códigos promocionales, cupones y descuentos | ${couponCount} + Ofertas ${month} ${year} - ${process.env.APP}`;
       }
+   }else{
+      return `null`
+   }
+     
  }else if
    // todo: make it meaningful
 
@@ -79,6 +84,18 @@ export const contentGenerator = (type:string, name:string, lang: Lang, offer?:st
       }
    }else if
 
+      //---------------- Popular Deals Heading ----------------//
+(type == "popularCouponsHeading"){
+      switch(lang){
+         case "en": return `Popular ${name} Coupon Codes 2024`;
+         case "ru": return `Популярные промокоды ${name} 2024`;
+         case "ar": return `أكواد القسائم الشهيرة ${name} 2024`;
+         case "es": return `Códigos de cupón populares de ${name} 2024`;
+        
+      }
+   }else if
+
+
      //---------------- Store Page Heading ----------------//
 //TODO: make it natural
 (type == "storePageHeading"){
@@ -101,12 +118,10 @@ export const contentGenerator = (type:string, name:string, lang: Lang, offer?:st
 
  (type == "aboutContent"){
       switch(lang){
-         case "en": return `${name} has currently ${(couponCount || 1) + (dealCount || 1)}ers on our website. There are ${couponCount || 1} coupons and ${dealCount || 1} deals are available. ${name} coupon codes are verified for ${month} ${year}`;
-        case "ru": return `На нашем сайте в настоящее время есть ${(couponCount || 1) + (dealCount || 1)} предложений от ${name}. Доступны ${couponCount || 1} купонов и ${dealCount || 1} предложений. Промокоды ${name} проверены на ${month} ${year}`;
-        case "ar": return `يوجد حاليًا ${(couponCount || 1) + (dealCount || 1)} عروض على موقعنا من ${name}. هناك ${couponCount || 1} قسيمة و ${dealCount || 1} عروض متاحة. تم التحقق من أكواد القسائم ${name} لشهر ${month} ${year}`;
-         case "es": return `Actualmente hay ${(couponCount || 1) + (dealCount || 1)} ofertas en nuestro sitio web de ${name}. Hay ${couponCount || 1} cupones y ${dealCount || 1} ofertas disponibles. Los códigos de cupón de ${name} están verificados para ${month} ${year}`;
-
-         
+         case "en": return `${name} is offering ${couponCount || 1} coupons and ${dealCount || 1} deals today, and shoppers can save up to ${offer} on their orders. ${name} coupon codes are verified for ${month} ${year}`;
+         case "ru": return `${name} предлагает ${couponCount || 1} купонов и ${dealCount || 1} сделок сегодня, и покупатели могут сэкономить до ${offer} на своих заказах. Купоны ${name} проверены на ${month} ${year}`;
+         case "ar": return `تقدم ${name} ${couponCount || 1} قسيمة و ${dealCount || 1} صفقة اليوم، ويمكن للمتسوقين توفير ما يصل إلى ${offer} على طلباتهم. تم التحقق من أكواد القسائم ${name} لشهر ${month} ${year}`;
+         case "es": return `${name} ofrece ${couponCount || 1} cupones y ${dealCount || 1} ofertas hoy, y los compradores pueden ahorrar hasta ${offer} en sus pedidos. Los códigos de cupón ${name} están verificados para ${month} ${year}`;
       }
 
    }else if

@@ -45,48 +45,27 @@ const Footer = () => {
               DMCA
             </Link>
           </nav>
-          {/* <nav className="flex flex-col items-start space-y-2.5 md:space-y-1.5 text-sm">
-            <h3 className="mb-2 font-bold uppercase tracking-wide ">
-              {words.GlobalNetwork[lang]}
-            </h3>
 
-            <div>
-              {liveCountries.map((country, index) => {
-                return (
-                  <Link
-                    key={index}
-                    href={`https://${country.countryCode}.${process.env.DOMAIN}`}
-                    className="transition hover:text-blue-500 flex items-center gap-2"
-                  >
-                    <Image
-                      src={`https://flagsapi.com/${country.countryCode.toUpperCase()}/flat/64.png`}
-                      alt={`${process.env.APP} ${country.countryCode.toUpperCase()}`}
-                      width={24}
-                      height={24}
-                    />
-                    <span>{country.name}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </nav> */}
-          {/* <nav className="flex flex-col items-start space-y-2.5 md:space-y-1.5">
-						<h3 className="mb-2 font-bold uppercase tracking-wide ">
-							{words.ImportantLinks[lang]}
-						</h3>
-						<Link href="/" className="transition hover:text-blue-500">
-							{words.AllStores[lang]}
-						</Link>
-						<Link href="#" className="transition hover:text-blue-500">
-							{words.TopStores[lang]}
-						</Link>
-						<Link href="#" className="transition hover:text-blue-500">
-							{words.BestOffers[lang]}
-						</Link>
-						<Link href="#" className="transition hover:text-blue-500">
-							{words.SubmitACoupon[lang]}
-						</Link>
-					</nav> */}
+          <nav className="flex flex-col items-start space-y-2.5 md:space-y-1.5 ">
+            <Link href="/" className="transition hover:text-blue-500">
+              {words.Home[lang]}
+            </Link>
+            <Link href="/stores" className="transition hover:text-blue-500">
+              {words.AllStores[lang]}
+            </Link>
+            <Link
+              href="/view/popular-stores"
+              className="transition hover:text-blue-500"
+            >
+              {words.PopularStores[lang]}
+            </Link>
+            <Link
+              href="/view/trending-coupons"
+              className="transition hover:text-blue-500"
+            >
+              {words.TrendingCouponOffers[lang]}
+            </Link>
+          </nav>
         </div>
         <div className="text-sm flex flex-col space-y-4 border-t border-slate-200 py-8 sm:items-center sm:justify-between md:flex-row md:space-y-0">
           <p>© 2024 {process.env.APP}, Inc.</p>

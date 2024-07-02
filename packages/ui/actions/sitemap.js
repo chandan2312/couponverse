@@ -26,9 +26,7 @@ export const getSitemapArray = unstable_cache(
         skip,
         take,
         where: {
-          access: {
-            hasSome: ["global", country],
-          },
+          access: country,
         },
         select: {
           slug: true,

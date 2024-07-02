@@ -15,9 +15,7 @@ export const getStoreCount = unstable_cache(
   async (country) => {
     return await prisma.store.count({
       where: {
-        access: {
-          hasSome: ["global", country],
-        },
+        access: country,
       },
     });
   },
@@ -31,13 +29,10 @@ export const getStoreList = unstable_cache(
     try {
       const dataRaw = await prisma.store.findMany({
         where: {
-          access: {
-            hasSome: ["global", country],
-          },
+          access: country,
         },
         select: {
           slug: true,
-          name: true,
           nativeName: true,
           coupons: {
             select: {
@@ -126,6 +121,7 @@ export const getStorePage = unstable_cache(
       });
 
       store.coupons = filterCoupons(store.coupons);
+      store.couponCount = store.coupons.length;
 
       if (!store || store.coupons.length === 0) {
         return {
@@ -337,11 +333,11 @@ export const getStorePage = unstable_cache(
               access: country,
             },
           },
-          {
-            $match: {
-              views: { $gte: 1 },
-            },
-          },
+          // {
+          //   $match: {
+          //     views: { $gte: 1 },
+          //   },
+          // },
           {
             $sample: { size: 12 },
           },
@@ -605,33 +601,11 @@ export const getTrendingStores = unstable_cache(
     try {
       const result = await prisma.store.aggregateRaw({
         pipeline: [
-          // {
-          // 	$unwind: "$viewsRecord",
-          // },
-
-          // {
-          // 	$match: {
-          // 		"viewsRecord.time": { $gte: sevenDaysAgo },
-          // 	},
-          // },
-
-          // {
-          // 	$group: {
-          // 		_id: "$_id",
-          // 		name: { $first: "$name" }, // Keep store name
-          // 		viewCount: { $sum: 1 },
-          // 	},
-          // },
           {
             $match: {
               access: country,
+              popularity: { $gt: 0 },
             },
-          },
-          {
-            $sort: { views: -1 },
-          },
-          {
-            $limit: 12,
           },
           {
             $lookup: {
@@ -657,6 +631,8 @@ export const getTrendingStores = unstable_cache(
               nativeName: 1,
               slug: 1,
               img: 1,
+              link: 1,
+              affLink: 1,
               views: 1,
               couponCount: 1,
               coupons: {
@@ -666,17 +642,20 @@ export const getTrendingStores = unstable_cache(
               },
             },
           },
+          {
+            $facet: {
+              sampled: [{ $sample: { size: 12 } }],
+            },
+          },
+          {
+            $unwind: "$sampled",
+          },
+          {
+            $replaceRoot: { newRoot: "$sampled" },
+          },
         ],
       });
 
-      // const result = await prisma.store.findMany({
-      //   where: {
-      //     access: {
-      //       hasSome: ["global", country],
-      //     },
-      //   },
-      //   take: 12,
-      // });
       return {
         status: 200,
         message: "Trending Stores",
@@ -700,20 +679,28 @@ export const getTrendingStores = unstable_cache(
 export const getLatestStores = unstable_cache(
   async (country) => {
     try {
-      const result = await prisma.Store.findMany({
+      const result = await prisma.store.findMany({
         where: {
           access: country,
         },
         take: 10,
+        select: {
+          coupons: true,
+          nativeName: true,
+          img: true,
+          slug: true,
+        },
         orderBy: {
           createdAt: "desc",
         },
       });
 
+      const validStores = result.filter((store) => store.coupons.length > 0);
+
       return {
         status: 200,
         message: "Latest Stores",
-        data: result,
+        data: validStores,
       };
     } catch (error) {
       console.log(error);

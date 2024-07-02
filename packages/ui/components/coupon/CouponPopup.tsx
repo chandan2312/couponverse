@@ -15,7 +15,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { faker } from "@faker-js/faker";
 import { codeTrim } from "../../lib/codeTrim";
-import { Clipboard, History } from "lucide-react";
+import { Clipboard, Eye, History } from "lucide-react";
 import CouponWorking from "../coupon/CouponWorking";
 import { addCouponView, increaseCouponViews } from "../../actions/coupon";
 import { cn } from "../../lib/utils";
@@ -27,13 +27,15 @@ const CouponPopup = ({
   lang,
   cdnUrl,
   isHistoryPopup = false,
+  isListPopup = false,
   fullWidth = false,
 }: {
   deal: any;
   lang: Lang;
-  cdnUrl: string;
+  cdnUrl: any;
   store: any;
   isHistoryPopup?: boolean;
+  isListPopup?: boolean;
   fullWidth?: boolean;
 }) => {
   const trimmedCode = codeTrim(deal.code);
@@ -69,6 +71,7 @@ const CouponPopup = ({
       <Suspense fallback={<div>Loading...</div>}>
         <DialogTrigger>
           {!isHistoryPopup &&
+            !isListPopup &&
             (deal.type == "CODE" ? (
               <div className="relative w-full min-w-[104px] md:min-w-32">
                 <div
@@ -113,8 +116,14 @@ const CouponPopup = ({
             ))}
 
           {isHistoryPopup && (
-            <span>
+            <span className="flex gap-2 items-center">
               <History size={16} />
+            </span>
+          )}
+
+          {isListPopup && (
+            <span className="flex gap-2 items-center">
+              <Eye size={16} />
             </span>
           )}
         </DialogTrigger>
@@ -131,9 +140,8 @@ const CouponPopup = ({
                   <Image
                     src={
                       deal?.store?.img
-                        ? `https://cdn.dealcodie.com/${deal?.store?.img}`
-                        : store?.img &&
-                          `https://cdn.dealcodie.com/${store?.img}`
+                        ? `${cdnUrl}${deal?.store?.img}`
+                        : store?.img && `${cdnUrl}${store?.img}`
                     }
                     alt={deal.title}
                     height={90}

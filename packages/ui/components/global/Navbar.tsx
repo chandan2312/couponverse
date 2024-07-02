@@ -27,15 +27,8 @@ const Navbar = async () => {
             <MobileMenu lang={lang || "en"} country={country} />
           </div>
           <Link href={`${process.env.PROTOCOL}${process.env.DOMAIN}`}>
-            <h1 className="flex items-center gap-1">
-              {/* TODO:add dynamic logo url */}
-              <Image
-                src={`${process.env.CDN_URL}/assets/${process.env.APP?.toLowerCase()}-logo.webp`}
-                alt={`${process.env.APP}`}
-                width={120}
-                height={64}
-                className="max-md:w-20"
-              />
+            <h1 className="flex items-center gap-2">
+              <span className="font-bold text-lg">{process.env.APP}</span>
 
               {country && country != "en" && (
                 <Image

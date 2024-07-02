@@ -9,6 +9,7 @@ import {
 } from "../constants/index.js";
 dotenv.config({ path: "@ui/.env" });
 import { unstable_cache } from "next/cache";
+import { type } from "os";
 
 // {shop,code, offer,type}
 
@@ -609,6 +610,87 @@ export const getTrendingCoupons = unstable_cache(
         data: 0,
       };
     }
+  },
+  {
+    revalidate: 60 * 60 * 24 * 3, // 3 days
+  },
+);
+
+export const getPopularCoupons = unstable_cache(
+  // find popular stores where popularity field is 1, and then find all coupons of those stores, and then select one best coupon from each store
+
+  async (country) => {
+    const topStores = await prisma.Store.findMany({
+      where: {
+        popularity: 1,
+        access: country,
+      },
+      select: {
+        id: true,
+        slug: true,
+      },
+    });
+
+    // only pick random 8 stores
+    const randomStores = topStores.sort(() => 0.5 - Math.random()).slice(0, 8);
+
+    const storeIds = randomStores.map((store) => store.id);
+
+    const coupons = await prisma.Coupon.findMany({
+      where: {
+        storeID: {
+          in: storeIds,
+        },
+        type: "CODE",
+        isExpired: false,
+      },
+      select: {
+        sourceTitle: true,
+        title: true,
+        englishTitle: true,
+        sourceDescription: true,
+        description: true,
+        shop: true,
+        offer: true,
+        englishOffer: true,
+        code: true,
+        type: true,
+        isVerified: true,
+        isExpired: true,
+        expiryDate: true,
+        votes: true,
+        rating: true,
+        views: true,
+        viewsRecord: true,
+        voteHistory: true,
+        terms: true,
+        store: {
+          select: {
+            slug: true,
+            nativeName: true,
+            img: true,
+          },
+        },
+      },
+    });
+
+    //TODO: find best coupon from each store
+    const bestCoupons = coupons.reduce((acc, coupon) => {
+      if (!acc[coupon.store.slug]) {
+        acc[coupon.store.slug] = coupon;
+      } else {
+        if (coupon.views > acc[coupon.store.slug].views) {
+          acc[coupon.store.slug] = coupon;
+        }
+      }
+      return acc;
+    }, {});
+
+    return {
+      status: 200,
+      message: "Popular coupons",
+      data: Object.values(bestCoupons),
+    };
   },
   {
     revalidate: 60 * 60 * 24 * 3, // 3 days

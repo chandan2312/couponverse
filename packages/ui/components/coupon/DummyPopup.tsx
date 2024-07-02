@@ -95,14 +95,13 @@ const DummyPopup = ({ deal, image }: { deal: any; image: string }) => {
 
         {/* -------------------------- Coupon History -------------------------------- */}
 
-        <div className="w-full bg-card   rounded-md">
+        {/* <div className="w-full bg-card   rounded-md">
           <h2 className=" font-semibold py-2 text-lg text-primary/80 ">
             <span className=" bg-primary/3 py-2 border-b-4 border-primary/80">
               {words.CouponUsageHistory[lang]}
             </span>
           </h2>
           <div className="w-auto  lg:h-2 space-y-2 ">
-            {/* vote 1 */}
             <div
               className={cn(
                 "text-left border border-muted p-2 rounded-md shadow-md text-sm",
@@ -123,7 +122,6 @@ const DummyPopup = ({ deal, image }: { deal: any; image: string }) => {
                 </>
               </div>
             </div>
-            {/* vote 2 */}
             <div
               className={cn(
                 "text-left border border-muted p-2 rounded-md shadow-md text-sm",
@@ -144,7 +142,6 @@ const DummyPopup = ({ deal, image }: { deal: any; image: string }) => {
                 </>
               </div>
             </div>
-            {/* vote 3 */}
             <div
               className={cn(
                 "text-left border border-muted p-2 rounded-md shadow-md text-sm",
@@ -167,7 +164,7 @@ const DummyPopup = ({ deal, image }: { deal: any; image: string }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

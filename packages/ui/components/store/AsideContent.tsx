@@ -64,20 +64,7 @@ const AsideContent = ({
         ⭐⭐⭐⭐⭐
       </SectionWrapper>
       {/* ---ABOUT */}
-      <SectionWrapper
-        title={contentGenerator("aboutHeading", store.nativeName, lang)}
-        className="order-4 lg:order-3"
-      >
-        <p>
-          {store.description
-            .replace(/\*\*\*/g, "")
-            .replace(/\*\*/g, "")
-            .replace(/\*/g, "")
-            .replace(/\#\#\#/g, "")
-            .replace(/\#\#/g, "")
-            .replace(/\#/g, "")}
-        </p>
-      </SectionWrapper>
+
       {/* --- TOC */}
       {/*add table of content */}
       <SectionWrapper
@@ -99,16 +86,24 @@ const AsideContent = ({
       </SectionWrapper>
 
       {/* ---SimilarStores- desktop */}
-      <SectionWrapper
-        title={contentGenerator("similarStoresHeading", store.nativeName, lang)}
-        className="order-1 lg:order-4 max-lg:hidden"
-      >
-        <div className="">
-          {store.similarStores.map((store: any, index: any) => (
-            <HorizontalStoreCard store={store} key={index} />
-          ))}
-        </div>
-      </SectionWrapper>
+      {/* {store.similarStores.length ? (
+        <SectionWrapper
+          title={contentGenerator(
+            "similarStoresHeading",
+            store.nativeName,
+            lang,
+          )}
+          className="order-1 lg:order-4 max-lg:hidden"
+        >
+          <div className="">
+            {store.similarStores.map((store: any, index: any) => (
+              <HorizontalStoreCard store={store} key={index} />
+            ))}
+          </div>
+        </SectionWrapper>
+      ) : (
+        <></>
+      )} */}
     </>
   );
 };

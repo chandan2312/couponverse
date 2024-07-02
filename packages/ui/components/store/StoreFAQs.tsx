@@ -9,8 +9,7 @@ import {
 import { contentGenerator } from "../../lib/contentGenerator";
 import { Lang } from "../../types";
 
-const StoreFAQs = ({ name }: { name: string }) => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+const StoreFAQs = ({ name, lang }: { name: string; lang: Lang }) => {
   const faqsData = [
     {
       q: contentGenerator("faq1Question", name, lang),

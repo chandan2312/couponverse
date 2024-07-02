@@ -1,5 +1,5 @@
 "use server";
-import { getTrendingCoupons } from "../actions/coupon";
+import { getTrendingCoupons, getPopularCoupons } from "../actions/coupon";
 import { getLatestStores, getTrendingStores } from "../actions/store";
 import Searchbar from "../components/global/Searchbar";
 import { Separator } from "../components/ui/separator";
@@ -7,37 +7,36 @@ import { words } from "../constants/words";
 import HomeStoreCard from "../components/store/HomeStoreCard";
 import CouponCardSide from "../components/coupon/CouponCardSide";
 import { Lang } from "../types";
+import { contentGenerator } from "../lib/contentGenerator";
 
-// export async function generateMetadata({ params }: { params: any }) {
-//   const country = "pl"; //TODO:temp
+export async function generateMetadata({ params }: { params: any }) {
+  const lang: Lang = process.env.LG as Lang;
 
-//   let lang: Lang = getLang(country);
+  return {
+    title: `${process.env.APP}  - ${contentGenerator(
+      "subdomainTitle",
+      "",
+      lang,
+    )}`,
+    description: contentGenerator("subdomainDescription", "", lang),
+    canonical: `https://${process.env.DOMAIN}`,
+    url: `https://${process.env.DOMAIN}`,
 
-//   return {
-//     title: `${process.env.APP} ${country.toUpperCase()} - ${contentGenerator(
-//       "subdomainTitle",
-//       "",
-//       lang,
-//     )}`,
-//     description: contentGenerator("subdomainDescription", "", lang),
-//     canonical: `https://${country}.${process.env.DOMAIN}`,
-//     url: `https://${country}.${process.env.DOMAIN}`,
+    locale: process.env.HTML_LANG,
+    type: "article",
+    openGraph: {
+      type: "article",
+      article: {
+        publishedTime: Date.now(),
+        modifiedTime: Date.now(),
+        authors: ["dealcodie"],
+      },
+      url: `https://${process.env.DOMAIN}`,
 
-//     locale: lang,
-//     type: "article",
-//     openGraph: {
-//       type: "article",
-//       article: {
-//         publishedTime: Date.now(),
-//         modifiedTime: Date.now(),
-//         authors: ["dealcodie"],
-//       },
-//       url: `https://${country}.${process.env.DOMAIN}`,
-
-//       site_name: process.env.APP,
-//     },
-//   };
-// }
+      site_name: process.env.APP,
+    },
+  };
+}
 
 const Homepage = async () => {
   const country = process.env.COUNTRYCODE as string;
@@ -47,7 +46,7 @@ const Homepage = async () => {
     await Promise.all([
       getTrendingStores(country),
       getLatestStores(country),
-      getTrendingCoupons(country),
+      getPopularCoupons(country),
     ]);
 
   const trendingStores = trendingStoresRes.data;

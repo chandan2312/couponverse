@@ -72,7 +72,7 @@ const StoreListPage = async () => {
         if (
           storeList.filter(
             (store: any) =>
-              store.name[0].toLowerCase() == alphabet.toLowerCase(),
+              store.nativeName[0].toLowerCase() == alphabet.toLowerCase(),
           ).length > 0
         ) {
           return (
@@ -88,7 +88,9 @@ const StoreListPage = async () => {
               </h2>
               <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
                 {storeList.map((store: any, index: any) => {
-                  if (store.name[0].toLowerCase() == alphabet.toLowerCase()) {
+                  if (
+                    store.nativeName[0].toLowerCase() == alphabet.toLowerCase()
+                  ) {
                     return (
                       <Link
                         key={index}
