@@ -57,7 +57,8 @@ const Homepage = async () => {
     <>
       <div className="card-section mx-auto max-w-7xl">
         {/* section 0 - Search Bar */}
-        {/* <Searchbar lang={lang} /> */} //TODO: search implement
+        {/* //TODO: search implement */}
+        {/* <Searchbar lang={lang} /> */}
         {/* <Separator className="my-5" /> */}
         {/* section 1 - categories and featured stores */}
         <div className="">
