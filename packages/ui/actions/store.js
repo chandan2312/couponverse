@@ -27,7 +27,8 @@ export const getStoreCount = unstable_cache(
       },
     });
 
-    const count = rawStores.filter((store) => store.coupons.length > 0).length;
+    const count =
+      rawStores?.filter((store) => store.coupons.length > 0)?.length || 0;
 
     // const count = await prisma.Store.count({
     //   where: {
@@ -62,7 +63,7 @@ export const getStoreList = unstable_cache(
         skip: skip,
       });
 
-      const data = dataRaw.filter((store) => store.coupons.length > 0);
+      const data = dataRaw?.filter((store) => store.coupons.length > 0);
 
       return {
         status: 200,
@@ -130,7 +131,7 @@ export const getStorePage = unstable_cache(
         },
       });
 
-      store.coupons = store.coupons.filter((coupon) => {
+      store.coupons = store.coupons?.filter((coupon) => {
         return !filteredWords.some(
           (word) =>
             coupon.englishTitle.toLowerCase().includes(word.toLowerCase()) ||
@@ -267,8 +268,8 @@ export const getStorePage = unstable_cache(
       let similarOffersSeen = new Set();
 
       store.similarCoupons = rawSimilarCoupons
-        .filter((item) => item.bestCoupon)
-        .map(({ bestCoupon }) => ({
+        ?.filter((item) => item.bestCoupon)
+        ?.map(({ bestCoupon }) => ({
           _id: bestCoupon._id,
           title: bestCoupon.title,
           englishTitle: bestCoupon.englishTitle,
@@ -293,14 +294,14 @@ export const getStorePage = unstable_cache(
             affLink: bestCoupon.store.affLink,
           },
         }))
-        .filter((coupon) => {
+        ?.filter((coupon) => {
           return !filteredWords.some(
             (word) =>
               coupon.englishTitle.toLowerCase().includes(word.toLowerCase()) ||
               coupon.englishOffer.toLowerCase().includes(word.toLowerCase()),
           );
         })
-        .filter((coupon) => {
+        ?.filter((coupon) => {
           const off = coupon.englishOffer
             .toLowerCase()
             ?.replace("upto ", "")
@@ -311,7 +312,7 @@ export const getStorePage = unstable_cache(
           similarOffersSeen.add(off);
           return !duplicate;
         })
-        .slice(0, 6);
+        ?.slice(0, 6);
 
       // similarstores
 
@@ -581,7 +582,7 @@ export const addStoreView = async (storeId) => {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-      const newRecords = store.viewsRecord.filter(
+      const newRecords = store?.viewsRecord?.filter(
         (record) => new Date(record.time) >= sevenDaysAgo,
       );
       //delete stale records & make threshold 0
@@ -713,7 +714,7 @@ export const getLatestStores = unstable_cache(
         },
       });
 
-      const validStores = result.filter((store) => store.coupons.length > 0);
+      const validStores = result?.filter((store) => store.coupons.length > 0);
 
       return {
         status: 200,

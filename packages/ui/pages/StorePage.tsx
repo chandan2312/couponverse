@@ -50,12 +50,12 @@ const StorePage = async ({
     notFound();
   }
 
-  const couponCount = store.coupons.filter(
+  const couponCount = store.coupons?.filter(
     (item: any) => item.type == "CODE",
-  ).length;
-  const dealCount = store.coupons.filter(
+  )?.length;
+  const dealCount = store.coupons?.filter(
     (item: any) => item.type == "DEAL",
-  ).length;
+  )?.length;
 
   const theOffer = generateOffer(store.coupons, store.nativeName, lang);
 
@@ -117,8 +117,8 @@ const StorePage = async ({
           <div className="order-first lg:order-last lg:col-span-9 w-full   ">
             {/* --------------- active --------------- */}
 
-            {store.coupons.filter((item: any) => item.isExpired === false)
-              .length ? (
+            {store.coupons?.filter((item: any) => item.isExpired === false)
+              ?.length ? (
               <div>
                 <Heading
                   tag="h2"
@@ -151,8 +151,8 @@ const StorePage = async ({
 
                 <div className="active-coupons flex flex-col gap-3 my-3">
                   {store.coupons
-                    .filter((item: any) => item.isExpired === false)
-                    .map((deal: any) => (
+                    ?.filter((item: any) => item.isExpired === false)
+                    ?.map((deal: any) => (
                       <CouponCard
                         store={store}
                         deal={deal}
@@ -169,7 +169,7 @@ const StorePage = async ({
             {/* --------------- expired --------------- */}
 
             {store?.coupons?.filter((item: any) => item.isExpired === true)
-              .length && (
+              ?.length && (
               <div className="lg:col-span-9">
                 <Heading
                   tag="h2"
@@ -182,8 +182,8 @@ const StorePage = async ({
 
                 <div className="expired-coupons flex flex-col gap-3 my-3">
                   {store.coupons
-                    .filter((item: any) => item.isExpired === true)
-                    .map((deal: any) => (
+                    ?.filter((item: any) => item.isExpired === true)
+                    ?.map((deal: any) => (
                       <CouponCard
                         store={store}
                         deal={deal}
@@ -262,8 +262,8 @@ const StorePage = async ({
 
             {couponCount &&
               store.coupons
-                .filter((item: any) => item.isExpired != true)
-                .filter((item: any) => item.type == "CODE").length && (
+                ?.filter((item: any) => item.isExpired != true)
+                ?.filter((item: any) => item.type == "CODE").length && (
                 <CouponListWidget store={store} />
               )}
 

@@ -224,7 +224,7 @@ export const addCoupons = async (deals, slug) => {
       }),
     );
 
-    const length = addedDeals.filter((item) => item != null).length;
+    const length = addedDeals?.filter((item) => item != null)?.length || 0;
     return {
       status: 200,
       message: `New ${length} Coupons Added Successfully ✅`,
@@ -428,9 +428,10 @@ export const addCouponView = async (dealId) => {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-      const newRecords = coupon.viewsRecord.filter(
-        (record) => new Date(record.time) >= sevenDaysAgo,
-      );
+      const newRecords =
+        coupon?.viewsRecord?.filter(
+          (record) => new Date(record.time) >= sevenDaysAgo,
+        ) || null;
       //delete stale records && make threshold 0
 
       await prisma.Coupon.update({
@@ -588,7 +589,7 @@ export const getTrendingCoupons = unstable_cache(
         ],
       });
 
-      const newCoupons = result.filter((coupon) => {
+      const newCoupons = result?.filter((coupon) => {
         return !filteredWords.some(
           (word) =>
             coupon.englishTitle.toLowerCase().includes(word.toLowerCase()) ||

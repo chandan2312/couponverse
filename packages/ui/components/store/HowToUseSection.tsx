@@ -11,8 +11,8 @@ import HowToUseSlider from "./HowToUseSlider";
 const HowToUseSection = ({ store }: { store: any }) => {
   const lang: Lang = (process.env.LG as Lang) || "en";
   const deal =
-    store.coupons.filter((coupon: any) => coupon.type == "CODE").length > 0
-      ? store.coupons.filter((coupon: any) => coupon.type == "CODE")[0]
+    store.coupons?.filter((coupon: any) => coupon.type == "CODE")?.length > 0
+      ? store.coupons?.filter((coupon: any) => coupon.type == "CODE")[0]
       : store.coupons[0];
 
   const image = store.img

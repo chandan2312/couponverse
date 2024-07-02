@@ -2,7 +2,7 @@ const filterCoupons = (coupons: any) => {
     let offersSeen = new Set();
 
     // Filter 
-    const filteredCoupons = coupons.filter((item: any) => {
+    const filteredCoupons = coupons?.filter((item: any) => {
         const offerNormalized = item.englishOffer
             ?.replace(/upto |Upto |Up to |up to /g, "");
 let duplicate;

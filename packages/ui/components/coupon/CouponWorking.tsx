@@ -60,7 +60,7 @@ export const CouponWorkingInside = ({
 
       const addCouponVoteRes = await addCouponVote({ dealId, vote });
 
-      const newVotedDeals = votedDeals.filter(
+      const newVotedDeals = votedDeals?.filter(
         (votedDeal: any) => votedDeal.dealId !== dealId,
       );
       newVotedDeals.push({ dealId, vote, time: new Date() });

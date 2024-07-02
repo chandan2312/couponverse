@@ -38,7 +38,7 @@ export const getSitemapArray = unstable_cache(
         },
       });
 
-      const filteredStores = rawStores.filter(
+      const filteredStores = rawStores?.filter(
         (store) => store.coupons.length > 0,
       );
       return filteredStores;

@@ -54,8 +54,8 @@ export const storePageMetaData = async(slug:string) => {
 			?.map((coupon: any) => coupon.offer)
 			.join(", ") || "";
 
-      const couponCount = store.coupons.filter((item:any) => item.type == "CODE" )
-      const dealCount = store.coupons.filter((item:any) => item.type == "DEAL" )
+      const couponCount = store.coupons?.filter((item:any) => item.type == "CODE" )
+      const dealCount = store.coupons?.filter((item:any) => item.type == "DEAL" )
 
 
 	const meta =  {

@@ -19,11 +19,11 @@ const SimilarCouponCard = ({ deal, hideWeekViews = false }: DealCardProps) => {
 
   const cpath = correctPath(lang);
   const weeklyViews = deal.viewsRecord
-    ? deal.viewsRecord.filter((item: any) => {
+    ? deal.viewsRecord?.filter((item: any) => {
         return (
           new Date(item.time).getTime() > Date.now() - 1000 * 60 * 60 * 24 * 7
         );
-      }).length
+      })?.length
     : 0;
 
   let expiryDate = words.LimitedTime[lang];

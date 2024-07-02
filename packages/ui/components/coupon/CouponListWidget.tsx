@@ -18,9 +18,9 @@ const CouponListWidget = ({ store }: { store: any }) => {
           </thead>
           <tbody className="text-sm">
             {store.coupons
-              .filter((item: any) => item.isExpired != true)
-              .filter((item: any) => item.type == "CODE")
-              .map((coupon: any, index: number) => (
+              ?.filter((item: any) => item.isExpired != true)
+              ?.filter((item: any) => item.type == "CODE")
+              ?.map((coupon: any, index: number) => (
                 <tr key={index} className="m-2 my-4 border-b border-b-muted/30">
                   <td className="my-2">{coupon.title}</td>
                   <td className="my-2 flex gap-2 items-center">

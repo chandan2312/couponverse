@@ -68,9 +68,9 @@ const StoreListPage = async () => {
           );
         })}
       </div>
-      {alphabets.map((alphabet) => {
+      {alphabets.map((alphabet: string) => {
         if (
-          storeList.filter(
+          storeList?.filter(
             (store: any) =>
               store.nativeName[0].toLowerCase() == alphabet.toLowerCase(),
           ).length > 0
