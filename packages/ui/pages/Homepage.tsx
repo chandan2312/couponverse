@@ -57,11 +57,8 @@ const Homepage = async () => {
     <>
       <div className="card-section mx-auto max-w-7xl">
         {/* section 0 - Search Bar */}
-
-        <Searchbar lang={lang} />
-
-        <Separator className="my-5" />
-
+        {/* <Searchbar lang={lang} /> */} //TODO: search implement
+        {/* <Separator className="my-5" /> */}
         {/* section 1 - categories and featured stores */}
         <div className="">
           {/* categories */}
@@ -111,9 +108,7 @@ const Homepage = async () => {
           </div>
         </div>
         <Separator className="my-6" />
-
         {/* section 2 - featured Coupons */}
-
         <div>
           <h2 className="text-lg md:text-xl font-semibold my-2">
             {words.WeekFeaturedCouponOffers[lang]}
@@ -127,9 +122,7 @@ const Homepage = async () => {
           </div>
           <Separator className="my-6" />
         </div>
-
         {/* section 3 - Recently Added Stores */}
-
         <div>
           <h2 className="text-lg md:text-xl font-semibold my-2">
             {words.RecentlyAddedStores[lang]}

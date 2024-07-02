@@ -20,6 +20,7 @@ import CouponWorking from "../coupon/CouponWorking";
 import { addCouponView, increaseCouponViews } from "../../actions/coupon";
 import { cn } from "../../lib/utils";
 import { Lang } from "../../types";
+import LinkButton from "../custom/LinkButton";
 
 const CouponPopup = ({
   deal,
@@ -187,20 +188,14 @@ const CouponPopup = ({
                 </div>
               )}
 
-              <Button variant="accentOutline">
-                <Link
-                  href={
-                    deal?.store?.affLink
-                      ? `${deal?.store?.affLink}`
-                      : `${deal?.store?.link}`
-                  }
-                >
-                  {
-                    //@ts-ignore
-                    words.GoToStore[lang]
-                  }
-                </Link>
-              </Button>
+              <LinkButton
+                link={
+                  deal?.store?.affLink
+                    ? `${deal?.store?.affLink}`
+                    : `${deal?.store?.link}`
+                }
+                text={`${words.GoToStore[lang]}`}
+              />
             </div>
 
             {deal.type == "CODE" && currCode != trimmedCode && (

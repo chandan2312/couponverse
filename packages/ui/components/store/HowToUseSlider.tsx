@@ -1,6 +1,6 @@
-// "use client";
+"use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Card, CardContent } from "../ui/card";
 import {
@@ -15,6 +15,7 @@ import DummyPopup from "../coupon/DummyPopup";
 import Image from "next/image";
 import { words } from "../../constants/words";
 import { Lang } from "../../types";
+import DummyCouponCard from "../coupon/DummyCouponCard";
 
 const HowToUseSlider = ({
   deal,
@@ -29,24 +30,29 @@ const HowToUseSlider = ({
   lang: Lang;
   applyImageUrl: string;
 }) => {
-  // const plugin: any = useRef(
-  //   Autoplay({ delay: 2000, stopOnInteraction: false }),
-  // );
+  const plugin: any = useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: false }),
+  );
 
   return (
     <>
       <Carousel
-        // plugins={[plugin.current]}
+        plugins={[plugin.current]}
         className="w-full max-w-xs"
-        // onMouseEnter={plugin.current.stop}
-        // onMouseLeave={plugin.current.reset}
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
       >
         <CarouselContent className="w-full">
           {/* slide - 1 */}
           <CarouselItem>
             <Card>
               <CardContent className="flex aspect-square items-center justify-center p-6 rounded-md bg-foreground/10  mx-auto ">
-                <CouponCard deal={deal} store={store} showImage={false} />
+                <DummyCouponCard
+                  deal={deal}
+                  store={store}
+                  lang={lang}
+                  showImage={false}
+                />
               </CardContent>
             </Card>
           </CarouselItem>
@@ -54,7 +60,7 @@ const HowToUseSlider = ({
           <CarouselItem>
             <Card>
               <CardContent className="flex aspect-square items-center justify-center bg-foreground/10 rounded-md  h-full">
-                <DummyPopup deal={deal} image={image} />
+                <DummyPopup deal={deal} image={image} lang={lang} />
               </CardContent>
             </Card>
           </CarouselItem>
