@@ -59,7 +59,7 @@ export const storePageMetaData = async(slug:string) => {
 
 
 	const meta =  {
-		title: contentGenerator("seoTitle", store.nativeName, lang, theOffer, "", store.coupons.length),
+		title: contentGenerator("seoTitle", store.nativeName, lang, theOffer, "", store.coupons?.length),
 		description: contentGenerator(
 			"seoDescription",
 			store.nativeName,
@@ -88,7 +88,7 @@ export const storePageMetaData = async(slug:string) => {
       url: `${process.env.CDN_URL}${store.img.replace(/\\/g, "/")}`,
       width: 320,
       height: 320,
-      alt: contentGenerator("seoTitle", store.name, lang, theOffer, store.coupons.length),
+      alt: contentGenerator("seoTitle", store.name, lang, theOffer, store.coupons?.length),
     }
   }),
 			site_name: process.env.APP,

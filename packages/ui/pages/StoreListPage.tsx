@@ -15,7 +15,7 @@ const StoreListPage = async () => {
   const storeListRes = await getStoreList(country, 100000, 0);
   const storeList = storeListRes.data;
 
-  if (!storeList.length) {
+  if (!storeList?.length) {
     notFound();
   }
 
@@ -56,7 +56,7 @@ const StoreListPage = async () => {
         {words.AllStores[lang]}
       </h1>
       <div className="text-sm font-semibold my-4 p-3 grid grid-cols-6 md:grid-cols-12  bg-card">
-        {ABCD.map((alphabet: string, index: any) => {
+        {ABCD?.map((alphabet: string, index: any) => {
           return (
             <Link
               key={index}
@@ -68,12 +68,12 @@ const StoreListPage = async () => {
           );
         })}
       </div>
-      {alphabets.map((alphabet: string) => {
+      {alphabets?.map((alphabet: string) => {
         if (
           storeList?.filter(
             (store: any) =>
               store.nativeName[0].toLowerCase() == alphabet.toLowerCase(),
-          ).length > 0
+          )?.length > 0
         ) {
           return (
             <div
@@ -87,7 +87,7 @@ const StoreListPage = async () => {
                 {alphabet}
               </h2>
               <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
-                {storeList.map((store: any, index: any) => {
+                {storeList?.map((store: any, index: any) => {
                   if (
                     store.nativeName[0].toLowerCase() == alphabet.toLowerCase()
                   ) {

@@ -36,7 +36,7 @@ const SideNav = ({ lang, country }: { lang: Lang; country: string }) => {
         </Link>
 
         <div className="flex flex-col space-y-2  md:px-6 ">
-          {SIDENAV_ITEMS.map((item: any, idx: number) => {
+          {SIDENAV_ITEMS?.map((item: any, idx: number) => {
             return <MenuItem key={idx} item={item} lang={lang} />;
           })}
         </div>

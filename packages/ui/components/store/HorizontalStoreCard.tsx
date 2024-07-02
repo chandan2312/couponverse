@@ -28,7 +28,7 @@ const HorizontalStoreCard = ({ store }: { store: any }) => {
               {store.nativeName} <Link2 size={16} />
             </h3>
             <p className="text-xs">
-              {store.coupons.length} {words.Coupons[lang]}
+              {store.coupons?.length} {words.Coupons[lang]}
             </p>
           </Link>
         </div>

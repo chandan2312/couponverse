@@ -147,7 +147,7 @@ export const deleteCoupon = async (dealId) => {
 
 export const addCoupons = async (deals, slug) => {
   try {
-    const checkDuplicatePromises = await deals.map(async (item) => {
+    const checkDuplicatePromises = await deals?.map(async (item) => {
       const checkCouponRes = await prisma.Coupon.findMany({
         where: {
           code: item.code || "",
@@ -157,7 +157,7 @@ export const addCoupons = async (deals, slug) => {
         },
       });
 
-      return checkCouponRes.length > 0;
+      return checkCouponRes?.length > 0;
     });
 
     const hasDuplicates = await Promise.all(checkDuplicatePromises);
@@ -171,7 +171,7 @@ export const addCoupons = async (deals, slug) => {
     }
 
     const addedDeals = await Promise.all(
-      deals.map(async (item) => {
+      deals?.map(async (item) => {
         const addDealsRes = await prisma.Coupon.create({
           data: {
             sourceTitle: item.sourceTitle || "",
@@ -346,7 +346,7 @@ export const addCouponVote = async (data) => {
     }
     let history = coupon?.voteHistory || [];
 
-    if (history.length > 20) {
+    if (history?.length > 20) {
       history.shift();
     }
 
@@ -635,7 +635,7 @@ export const getPopularCoupons = unstable_cache(
     // only pick random 8 stores
     const randomStores = topStores.sort(() => 0.5 - Math.random()).slice(0, 8);
 
-    const storeIds = randomStores.map((store) => store.id);
+    const storeIds = randomStores?.map((store) => store.id);
 
     const coupons = await prisma.Coupon.findMany({
       where: {

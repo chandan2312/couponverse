@@ -26,7 +26,7 @@ export const sendTelegramNotification = async (message) => {
 export const getSearch = async (search, lang) => {
   if (!search) return { status: 400, message: "No search query", data: 0 };
 
-  if (search.length < 3)
+  if (search?.length < 3)
     return { status: 400, message: "Search query too short", data: 0 };
 
   const searchResult = await prisma.store.findMany({

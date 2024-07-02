@@ -39,16 +39,16 @@ export const getSitemapArray = unstable_cache(
       });
 
       const filteredStores = rawStores?.filter(
-        (store) => store.coupons.length > 0,
+        (store) => store.coupons?.length > 0,
       );
       return filteredStores;
     };
 
     const storeRes = await cachedFetchStores(skip, take);
 
-    if (!storeRes || storeRes.length == 0) return [];
+    if (!storeRes || storeRes?.length == 0) return [];
 
-    const urlsArray = storeRes.map((item) => {
+    const urlsArray = storeRes?.map((item) => {
       return {
         loc: `${process.env.PROTOCOL}${process.env.DOMAIN}/${cPath}/${item.slug}`,
         lastmod: new Date().toISOString(),

@@ -6,7 +6,7 @@ import prisma from "../lib/db";
 export const addCategory = async (categories) => {
   //find and add categories
 
-  if (categories.length === 0) {
+  if (categories?.length === 0) {
     return {
       status: 200,
       message: "No categories provided",
@@ -17,7 +17,7 @@ export const addCategory = async (categories) => {
   let result = [];
 
   try {
-    for (let i = 0; i < categories.length; i++) {
+    for (let i = 0; i < categories?.length; i++) {
       const findCategory = await prisma.Category.findUnique({
         where: {
           slug: categories[i],

@@ -104,7 +104,7 @@ export function generateOffer(coupons: any, storeName: string, lang: Lang) {
     if (bestOffer !== null) {
         return `${bestOffer}% ${words.Off[lang]}`;
     } else {
-        const storeNameLength = storeName.length;
+        const storeNameLength = storeName?.length;
         const modulo = storeNameLength % 4;
 
         switch (modulo) {

@@ -16,8 +16,8 @@ const PopularStores = async () => {
 
       <div className="grid grid-cols-2  lg:grid-cols-3 gap-2">
         {/* map through dummy array of size 9 */}
-        {trendingStores.length &&
-          trendingStores.map((store: any, index: any) => (
+        {trendingStores?.length &&
+          trendingStores?.map((store: any, index: any) => (
             <HomeStoreCard key={index} store={store} includeOffer={true} />
           ))}
       </div>

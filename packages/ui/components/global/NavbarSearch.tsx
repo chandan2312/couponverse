@@ -12,7 +12,7 @@ const NavbarSearch = ({ lang }: { lang: Lang }) => {
   const [searchBar, setSearchBar] = useState(false);
   const protocol = getProtocol();
 
-  if (searchTerm.length < 3) {
+  if (searchTerm?.length < 3) {
   }
 
   const router = useRouter();

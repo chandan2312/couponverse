@@ -65,7 +65,7 @@ const StorePage = async ({
   const popularCouponsRes = await getPopularCoupons(country);
   const popularCoupons = popularCouponsRes.data;
 
-  if (store.coupons.length) {
+  if (store.coupons?.length) {
     return (
       <>
         {/* ------------------------ Breadcrumb ------------------------- */}
@@ -134,7 +134,7 @@ const StorePage = async ({
                     {
                       name: words.All[lang],
                       value: "all",
-                      count: store.coupons.length,
+                      count: store.coupons?.length,
                     },
                     {
                       name: words.Coupons[lang],
@@ -203,7 +203,7 @@ const StorePage = async ({
                 <Heading tag="h2" text={words.SimilarCoupons[lang]} />
 
                 <div className="similar-coupons mx-auto grid grid-cols-2   gap-2 lg:gap-4  p-2">
-                  {store.similarCoupons.map((deal: any, index: any) => (
+                  {store.similarCoupons?.map((deal: any, index: any) => (
                     <SimilarCouponCard
                       key={index}
                       deal={deal}
@@ -233,10 +233,10 @@ const StorePage = async ({
 
         <div className="w-full mx-auto max-w-7xl grid grid-cols-12 gap-4 ">
           {/* ---------- LEft Section - featured stores ------------ */}
-          {popularStores.length ? (
+          {popularStores?.length ? (
             <div className="col-span-12 lg:col-span-3 w-full lg:sticky lg:top-20 ">
               <SectionWrapper title={words.FeaturedStores[lang]}>
-                {popularStores.map((store: any, index: any) => (
+                {popularStores?.map((store: any, index: any) => (
                   <HorizontalStoreCard key={index} store={store} />
                 ))}
               </SectionWrapper>
@@ -263,7 +263,7 @@ const StorePage = async ({
             {couponCount &&
               store.coupons
                 ?.filter((item: any) => item.isExpired != true)
-                ?.filter((item: any) => item.type == "CODE").length && (
+                ?.filter((item: any) => item.type == "CODE")?.length && (
                 <CouponListWidget store={store} />
               )}
 
@@ -347,7 +347,7 @@ const StorePage = async ({
             />
 
             <div className="card-section w-full">
-              {popularCoupons.map((coupon: any, index: any) => (
+              {popularCoupons?.map((coupon: any, index: any) => (
                 <div key={index} className="w-full">
                   <div className="w-full flex items-center gap-3 ">
                     <figure className="w-28 h-28 p-1 m-auto flex items-center justify-center flex-shrink-0">

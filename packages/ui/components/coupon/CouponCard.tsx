@@ -42,7 +42,7 @@ const CouponCard = ({
         return (
           new Date(item.time).getTime() > Date.now() - 1000 * 60 * 60 * 24 * 7
         );
-      }).length
+      })?.length
     : 0;
 
   let expiryDate: any = words.LimitedTime[lang];

@@ -69,7 +69,7 @@ const Homepage = async () => {
 						</h2>
 
 						<div className="grid grid-cols-3 gap-2">
-							{Array.from({ length: 18 }).map((_, index) => (
+							{Array.from({ length: 18 })?.map((_, index) => (
 								<div
 									key={index}
 									className="flex items-center gap-1 bg-muted/5 border border-muted/30 rounded-md p-1  "
@@ -97,8 +97,8 @@ const Homepage = async () => {
 
             <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-10 gap-2">
               {/* map through dummy array of size 9 */}
-              {trendingStores.length &&
-                trendingStores.map((store: any, index: any) => (
+              {trendingStores?.length &&
+                trendingStores?.map((store: any, index: any) => (
                   <HomeStoreCard
                     key={index}
                     store={store}
@@ -116,8 +116,8 @@ const Homepage = async () => {
           </h2>
 
           <div className="grid lg:grid-cols-2 gap-3">
-            {trendingCoupons.length &&
-              trendingCoupons.map((deal: any, index: any) => (
+            {trendingCoupons?.length &&
+              trendingCoupons?.map((deal: any, index: any) => (
                 <CouponCardSide key={index} deal={deal} />
               ))}
           </div>
@@ -131,8 +131,8 @@ const Homepage = async () => {
 
           <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-10 gap-2">
             {/* map through dummy array of size 9 */}
-            {latestStores.length &&
-              latestStores.map((store: any, index: any) => (
+            {latestStores?.length &&
+              latestStores?.map((store: any, index: any) => (
                 <HomeStoreCard key={index} store={store} />
               ))}
           </div>

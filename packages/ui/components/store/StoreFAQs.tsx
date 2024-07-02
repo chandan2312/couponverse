@@ -30,7 +30,7 @@ const StoreFAQs = ({ name, lang }: { name: string; lang: Lang }) => {
   ];
   return (
     <Accordion type="single" collapsible>
-      {faqsData.map((item: any, index: any) => {
+      {faqsData?.map((item: any, index: any) => {
         return (
           <AccordionItem key={index} value="item-1">
             <AccordionTrigger>{item.q}</AccordionTrigger>

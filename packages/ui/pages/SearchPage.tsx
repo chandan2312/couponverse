@@ -19,7 +19,7 @@ const SearchPage = async ({ params }: { params: any }) => {
     );
   }
 
-  if (term.length < 3) {
+  if (term?.length < 3) {
     return (
       <div className="bg-background p-3 rounded-md my-3">
         <h2 className="font-semibold text-2xl">
@@ -33,7 +33,7 @@ const SearchPage = async ({ params }: { params: any }) => {
 
   const searchResult = searchResultRes?.data;
 
-  if (searchResult.length === 0) {
+  if (searchResult?.length === 0) {
     return (
       <div className="bg-background p-3 rounded-md my-3">
         <h2 className="font-semibold text-2xl">No Result Found for {term}</h2>
@@ -48,8 +48,8 @@ const SearchPage = async ({ params }: { params: any }) => {
       </div>
 
       <div className="bg-background p-3 rounded-md my-3">
-        {searchResult.length > 0 &&
-          searchResult.map((result: any, index: any) => {
+        {searchResult?.length > 0 &&
+          searchResult?.map((result: any, index: any) => {
             return (
               <div key={index} className=" rounded-md ">
                 <Link

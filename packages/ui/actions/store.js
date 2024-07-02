@@ -28,7 +28,7 @@ export const getStoreCount = unstable_cache(
     });
 
     const count =
-      rawStores?.filter((store) => store.coupons.length > 0)?.length || 0;
+      rawStores?.filter((store) => store.coupons?.length > 0)?.length || 0;
 
     // const count = await prisma.Store.count({
     //   where: {
@@ -63,7 +63,7 @@ export const getStoreList = unstable_cache(
         skip: skip,
       });
 
-      const data = dataRaw?.filter((store) => store.coupons.length > 0);
+      const data = dataRaw?.filter((store) => store.coupons?.length > 0);
 
       return {
         status: 200,
@@ -140,9 +140,9 @@ export const getStorePage = unstable_cache(
       });
 
       store.coupons = filterCoupons(store.coupons);
-      store.couponCount = store.coupons.length;
+      store.couponCount = store.coupons?.length;
 
-      if (!store || store.coupons.length === 0) {
+      if (!store || store.coupons?.length === 0) {
         return {
           status: 404,
           message: "Store Not Found",
@@ -714,7 +714,7 @@ export const getLatestStores = unstable_cache(
         },
       });
 
-      const validStores = result?.filter((store) => store.coupons.length > 0);
+      const validStores = result?.filter((store) => store.coupons?.length > 0);
 
       return {
         status: 200,

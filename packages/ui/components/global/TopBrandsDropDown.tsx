@@ -30,8 +30,8 @@ const TopBrandsDropDown = ({ stores }: { stores: any }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <div className="m-2 grid grid-cols-4 lg:grid-cols-6">
-            {stores.length ? (
-              stores.map((store: any) => {
+            {stores?.length ? (
+              stores?.map((store: any) => {
                 return (
                   <DropdownMenuItem
                     key={store.id}

@@ -18,7 +18,7 @@
 
 // 		const uploadedData = [];
 
-// 		const upload = await arr.map(async (item) => {
+// 		const upload = await arr?.map(async (item) => {
 // 			try {
 // 				const response = await axios.get(item.url, { responseType: "arraybuffer" });
 // 				const imageData = Buffer.from(response.data, "binary");

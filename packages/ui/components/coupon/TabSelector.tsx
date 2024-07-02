@@ -16,7 +16,7 @@ const TabSelector = ({ tabs, searchParams }: Props) => {
   return (
     <>
       <div className=" max-lg:sticky max-lg:top-0 flex mx-2 gap-3  rounded-md ">
-        {tabs.map((tab, index) => {
+        {tabs?.map((tab, index) => {
           return (
             <Link
               href={`?tab=${tab.value}`}

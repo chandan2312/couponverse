@@ -14,8 +14,8 @@ const TrendingCoupons = async () => {
       </h2>
 
       <div className="grid lg:grid-cols-2 gap-3">
-        {trendingCoupons.length &&
-          trendingCoupons.map((deal: any, index: any) => (
+        {trendingCoupons?.length &&
+          trendingCoupons?.map((deal: any, index: any) => (
             <CouponCardSide key={index} deal={deal} />
           ))}
       </div>

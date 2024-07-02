@@ -11,7 +11,7 @@ export async function GET(req, res) {
   console.log("pageArray");
   console.log(pageArray);
 
-  if (!pageArray || pageArray.length === 0)
+  if (!pageArray || pageArray?.length === 0)
     return NextResponse.error("Not found", { status: 404 });
 
   return getServerSideSitemapIndex(pageArray);

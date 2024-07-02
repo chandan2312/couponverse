@@ -28,7 +28,7 @@ const AsideContent = ({
         className="order-1 lg:order-4 lg:hidden"
       >
         <div className="">
-          {store.similarStores.map((store: any, index: any) => (
+          {store.similarStores?.map((store: any, index: any) => (
             <HorizontalStoreCard store={store} key={index} />
           ))}
         </div>

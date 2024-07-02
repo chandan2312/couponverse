@@ -15,7 +15,7 @@ let duplicate;
         const includedPattern = /[0-9]|off|OFF|Off|free|Free|Upto|upto|discount|Discount|[$€£¥₹₩₽₣₦₴₫₭₲₳฿₵₡₢₰]|%/;
         const isIncluded = item.type === "CODE" || includedPattern.test(item.englishOffer) || includedPattern.test(item.englishTitle);
 
-         if (coupons.length < 5) {
+         if (coupons?.length < 5) {
             return true;
         }
         
@@ -25,12 +25,12 @@ let duplicate;
             } else if (item.expiryDate) {
                 item.isExpired = item.expiryDate < new Date();
             } else {
-                if (item.voteHistory.length > 0) {
+                if (item.voteHistory?.length > 0) {
                     let totalWeight = 0;
                     let weightedSum = 0;
 
                     item.voteHistory.forEach((history: any, index: number) => {
-                        const weight = item.voteHistory.length - index;
+                        const weight = item.voteHistory?.length - index;
                         totalWeight += weight;
 
                         const voteValue = history.vote === "yes" ? 1 : 0;
