@@ -13,7 +13,7 @@ type CouponCardProps = {
   store: any;
   deal: any;
   searchParams?: any;
-  lang?: any;
+  lang: Lang;
   showImage?: boolean;
 };
 
@@ -42,11 +42,7 @@ const DummyCouponCard = ({
       }).length
     : 0;
 
-  let expiryDate = words.LimitedTime[lang];
-
-  if (deal.expiryDate) {
-    expiryDate = getExpiryDate(deal.expiryDate, lang);
-  }
+  const expiryDateString = words.LimitedTime[lang];
 
   //dynamic import Dealpopup
 
@@ -72,7 +68,9 @@ const DummyCouponCard = ({
           <div className="flex gap-2  items-center">
             <CalendarX2 size={16} color={!isExpired ? "#b92d2d" : "#5d5d5d"} />
 
-            <span className="font-semibold text-[#b92d2d]">{expiryDate}</span>
+            <span className="font-semibold text-[#b92d2d]">
+              {getExpiryDate(deal.expiryDate, lang) || expiryDateString}
+            </span>
           </div>
         </div>
         <hr className="my-1.5" />
