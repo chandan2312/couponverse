@@ -42,7 +42,7 @@ const DummyCouponCard = ({
       }).length
     : 0;
 
-  let expiryDate: any = words.LimitedTime[lang];
+  let expiryDate = words.LimitedTime[lang];
 
   if (deal.expiryDate) {
     expiryDate = getExpiryDate(deal.expiryDate, lang);
