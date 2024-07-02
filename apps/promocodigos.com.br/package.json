@@ -1,11 +1,11 @@
 {
-  "name": "promocodigos.com.br",
+  "name": "kuponly.ru",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 5001",
+    "dev": "next dev --port 5000",
     "build": "next build",
-    "start": "next start --port 5001",
+    "start": "next start  --port 5000",
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
