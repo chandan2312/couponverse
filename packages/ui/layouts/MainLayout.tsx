@@ -26,7 +26,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     <body className={`${font.className} w-full bg-slate-100`}>
       <NextTopLoader
         color="#e4285b"
-        initialPosition={0.5}
+        initialPosition={0.8}
         crawlSpeed={200}
         height={4}
         crawl={true}
