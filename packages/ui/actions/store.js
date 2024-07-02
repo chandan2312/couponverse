@@ -93,9 +93,10 @@ export const getStorePage = unstable_cache(
       (word) => !countryWords?.includes(word),
     );
     try {
-      const store = await prisma.store.findUnique({
+      const store = await prisma.store.findFirst({
         where: {
           slug: slug,
+          access: country,
         },
 
         include: {
