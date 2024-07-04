@@ -169,7 +169,7 @@ const StorePage = async ({
             {/* --------------- expired --------------- */}
 
             {store?.coupons?.filter((item: any) => item.isExpired === true)
-              ?.length && (
+              ?.length ? (
               <div className="lg:col-span-9">
                 <Heading
                   tag="h2"
@@ -193,11 +193,13 @@ const StorePage = async ({
                     ))}
                 </div>
               </div>
+            ) : (
+              <></>
             )}
 
             {/* --------------- similarCoupons --------------- */}
 
-            {store?.similarCoupons?.length && (
+            {store?.similarCoupons?.length ? (
               <div>
                 <Separator />
                 <Heading tag="h2" text={words.SimilarCoupons[lang]} />
@@ -212,6 +214,8 @@ const StorePage = async ({
                   ))}
                 </div>
               </div>
+            ) : (
+              <></>
             )}
             <Separator />
           </div>
@@ -247,7 +251,7 @@ const StorePage = async ({
           {/* ---------- Right Section ------------ */}
           <div className="col-span-12 lg:col-span-9 w-full lg:col-start-4 lg:sticky lg:z-10 p-2">
             {/* --- ListCoupons */}
-            {couponCount && (
+            {couponCount ? (
               <Heading
                 tag="h2"
                 text={contentGenerator(
@@ -256,16 +260,20 @@ const StorePage = async ({
                   lang,
                 )}
               />
+            ) : (
+              <></>
             )}
 
             {/* --- coupons list */}
 
             {couponCount &&
-              store.coupons
-                ?.filter((item: any) => item.isExpired != true)
-                ?.filter((item: any) => item.type == "CODE")?.length && (
-                <CouponListWidget store={store} />
-              )}
+            store.coupons
+              ?.filter((item: any) => item.isExpired != true)
+              ?.filter((item: any) => item.type == "CODE")?.length ? (
+              <CouponListWidget store={store} />
+            ) : (
+              <></>
+            )}
 
             {/* --- About */}
 
@@ -288,7 +296,7 @@ const StorePage = async ({
                   />
                 </div>
 
-                {store.description && (
+                {store.description ? (
                   <p>
                     {store.description
                       .replace(/\*\*\*/g, "")
@@ -297,6 +305,8 @@ const StorePage = async ({
                       .replace(/\#\#/g, "")
                       .replace(/\#/g, "")}
                   </p>
+                ) : (
+                  <></>
                 )}
 
                 <p>

@@ -18,21 +18,18 @@ const SideNav = ({ lang, country }: { lang: Lang; country: string }) => {
           href="/"
           className="mx-auto flex gap-1.5 space-x-3 items-center   md:px-6 border-b  h-12 w-full"
         >
-          <Image
-            src="/assets/dealcodie_logo.webp"
-            alt="DealCodie Logo"
-            width={120}
-            height={50}
-            className="font-semibold text-xl  md:flex"
-          />
-          {country && country != "en" && (
-            <Image
-              src={`https://flagsapi.com/${country.toUpperCase()}/flat/64.png`}
-              alt={`${process.env.APP} ${country.toUpperCase()}`}
-              width={32}
-              height={32}
-            />
-          )}
+          <h1 className="flex items-center gap-2">
+            <span className="font-bold text-lg">{process.env.APP}</span>
+
+            {country && country != "en" && (
+              <Image
+                src={`https://flagsapi.com/${country.toUpperCase()}/flat/64.png`}
+                alt={`${process.env.APP} ${country.toUpperCase()}`}
+                width={32}
+                height={32}
+              />
+            )}
+          </h1>
         </Link>
 
         <div className="flex flex-col space-y-2  md:px-6 ">
