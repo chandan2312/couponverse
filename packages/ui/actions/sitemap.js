@@ -85,7 +85,7 @@ export const getSitemapIndexArray = unstable_cache(
     const pageArray = [];
     for (let i = 1; i <= pageCount; i++) {
       pageArray.push(
-        `${process.env.PROTOCOL}${process.env.DOMAIN}/map/store-${i}.xml`,
+        `${process.env.PROTOCOL}${process.env.DOMAIN}/map/v1/store-${i}.xml`,
       );
     }
 

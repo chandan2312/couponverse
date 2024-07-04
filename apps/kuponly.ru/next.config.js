@@ -21,13 +21,13 @@ module.exports = {
   async rewrites() {
     return [
       {
-        source: "/map/stores.xml",
-        destination: "/map/store",
+        source: "/map/:dynamic/stores.xml",
+        destination: "/map/:dynamic/store",
       },
 
       {
-        source: "/map/store-:page.xml",
-        destination: "/map/store/:page",
+        source: "/map/:dynamic/store-:page.xml",
+        destination: "/map/:dynamic/store/:page",
       },
 
       {
