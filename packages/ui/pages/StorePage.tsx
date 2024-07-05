@@ -77,7 +77,7 @@ const StorePage = async ({
             </li>{" "}
             /{" "}
             <li>
-              <Link href="/stores">{words.Stores[lang]}</Link>
+              <Link href="/stores/all">{words.Stores[lang]}</Link>
             </li>{" "}
             / <li className="font-semibold">{store.nativeName}</li>
           </ul>

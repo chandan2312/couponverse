@@ -107,8 +107,8 @@ export const storeListMetaData = () => {
 		description: `${words.AllStores[lang]} List - ${
 			words.ViewAllStores[lang]
 		} | ${process.env.APP}`,
-		canonical: `${process.env.PROTOCOL}${country}.${process.env.DOMAIN}/stores`,
-		url: `${process.env.PROTOCOL}${country}.${process.env.DOMAIN}/stores`,
+		canonical: `${process.env.PROTOCOL}${country}.${process.env.DOMAIN}/stores/all`,
+		url: `${process.env.PROTOCOL}${country}.${process.env.DOMAIN}/stores/all`,
 
 		locale: process.env.HTML_LANG,
 		type: "article",
@@ -119,7 +119,7 @@ export const storeListMetaData = () => {
 				modifiedTime: Date.now(),
 				authors: [process.env.DOMAIN as string],
 			},
-			url: `${process.env.PROTOCOL}${process.env.DOMAIN}/stores`,
+			url: `${process.env.PROTOCOL}${process.env.DOMAIN}/stores/all`,
 			site_name: process.env.APP,
 		},
 	}

@@ -53,7 +53,7 @@ const Navbar = async () => {
           <Separator orientation="vertical" />
 
           <Link
-            href={`${process.env.PROTOCOL}${process.env.DOMAIN}/stores`}
+            href={`${process.env.PROTOCOL}${process.env.DOMAIN}/stores/all`}
             className="flex items-center gap-1"
           >
             <Store />

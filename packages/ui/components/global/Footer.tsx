@@ -50,7 +50,7 @@ const Footer = () => {
             <Link href="/" className="transition hover:text-blue-500">
               {words.Home[lang]}
             </Link>
-            <Link href="/stores" className="transition hover:text-blue-500">
+            <Link href="/stores/all" className="transition hover:text-blue-500">
               {words.AllStores[lang]}
             </Link>
             <Link
