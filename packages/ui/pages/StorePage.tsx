@@ -264,7 +264,7 @@ const StorePage = async ({
               <></>
             )}
 
-            {/* --- coupons list */}
+            {/* --- coupons list area */}
 
             {couponCount &&
             store.coupons
