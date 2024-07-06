@@ -27,7 +27,7 @@ export const SIDENAV_ITEMS = [
   // },
   {
     title: "Stores",
-    path: "/stores",
+    path: "/stores/all",
     icon: <Store />,
   },
   // {
