@@ -15,7 +15,7 @@ const HorizontalStoreCard = ({ store }: { store: any }) => {
       <div className="flex gap-4 my-1">
         <Link
           className="text-lg font-semibold rounded-md bg-muted/20 p-1"
-          href={`${cpath}/${store.slug}`}
+          href={`/${cpath}/${store.slug}`}
         >
           <Image
             src={
@@ -31,7 +31,7 @@ const HorizontalStoreCard = ({ store }: { store: any }) => {
           <h3 className="font-semibold  flex gap-4 items-center">
             <Link
               className="text-lg font-semibold"
-              href={`${cpath}/${store.slug}`}
+              href={`/${cpath}/${store.slug}`}
             >
               {store.nativeName}
             </Link>
