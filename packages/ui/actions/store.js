@@ -260,52 +260,7 @@ export const getStorePage = unstable_cache(
 
       let similarOffersSeen = new Set();
 
-      store.similarCoupons = rawSimilarCoupons
-        ?.filter((item) => item.bestCoupon)
-        ?.map(({ bestCoupon }) => ({
-          _id: bestCoupon._id,
-          title: bestCoupon.title,
-          englishTitle: bestCoupon.englishTitle,
-          description: bestCoupon.description,
-          offer: bestCoupon.offer,
-          englishOffer: bestCoupon.englishOffer,
-          type: bestCoupon.type,
-          code: bestCoupon.code,
-          expiryDate: bestCoupon.expiryDate,
-          isExpired: bestCoupon.isExpired,
-          isVerified: bestCoupon.isVerified,
-          views: bestCoupon.views,
-          votes: bestCoupon.votes,
-          viewsRecord: bestCoupon.viewsRecord,
-
-          store: {
-            _id: bestCoupon.store._id,
-            nativeName: bestCoupon.store.nativeName,
-            img: bestCoupon.store.img,
-            slug: bestCoupon.store.slug,
-            link: bestCoupon.store.link,
-            affLink: bestCoupon.store.affLink,
-          },
-        }))
-        ?.filter((coupon) => {
-          return !filteredWords.some(
-            (word) =>
-              coupon.englishTitle.toLowerCase().includes(word.toLowerCase()) ||
-              coupon.englishOffer.toLowerCase().includes(word.toLowerCase()),
-          );
-        })
-        ?.filter((coupon) => {
-          const off = coupon.englishOffer
-            .toLowerCase()
-            ?.replace("upto ", "")
-            ?.replace("Upto ", "")
-            ?.replace("Up to ", "")
-            ?.replace("up to ", "");
-          let duplicate = similarOffersSeen.has(off);
-          similarOffersSeen.add(off);
-          return !duplicate;
-        })
-        ?.slice(0, 6);
+      store.similarCoupons = filterCoupons(rawSimilarCoupons)?.slice(0, 6);
 
       // similarstores
 
