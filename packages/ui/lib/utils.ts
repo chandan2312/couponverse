@@ -10,6 +10,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 
+
+
+
 export function correctPath(lang: Lang) {
   switch (lang) {
     case "en": return "coupon-codes";
