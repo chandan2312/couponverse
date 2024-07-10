@@ -132,14 +132,6 @@ export const getStorePage = unstable_cache(
         },
       });
 
-      store.coupons = store.coupons?.filter((coupon) => {
-        return !filteredWords.some(
-          (word) =>
-            coupon.englishTitle.toLowerCase().includes(word.toLowerCase()) ||
-            coupon.englishOffer.toLowerCase().includes(word.toLowerCase()),
-        );
-      });
-
       store.coupons = filterCoupons(store.coupons);
       store.couponCount = store.coupons?.length;
 

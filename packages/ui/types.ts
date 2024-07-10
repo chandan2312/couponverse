@@ -9,3 +9,4 @@ export type SideNavItem = {
 
 
 export type Lang = 'en' | 'es' | 'fr' | 'de' | 'ru' | 'da' | 'it' | 'cs' | 'nl' | 'no' | 'pl' | 'sv' | 'tr' | 'ro' | 'bg' | 'be' | 'fi' | 'pt'  | 'hr' | 'sl' | 'el' | 'hu' | 'sk' | 'ga' | 'ja' | 'zh-CN' | 'zh-TW' | 'ko' | 'ar' | 'ms' | 'th' | 'vi' | 'tl' | 'id' | 'ur' | 'fa' | 'my' | 'uk';
+export type Status = "loading" | "unauthenticated" | "authenticated" | "error"

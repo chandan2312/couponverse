@@ -74,7 +74,7 @@ const Navbar = async () => {
 
           <NavbarSearch lang={lang} />
 
-          <ProfileWrapper lang={lang || "en"} />
+          {/* <ProfileWrapper lang={lang || "en"} /> */}
         </div>
       </div>
     </div>
