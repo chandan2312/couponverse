@@ -29,7 +29,7 @@ const CouponListWidget = ({ store }: { store: any }) => {
                       deal={coupon}
                       store={store}
                       lang={lang}
-                      cdnUrl={process.env.CDN_URL}
+                      cdnUrl={process.env.NEXT_PUBLIC_CDN_URL}
                       isListPopup={true}
                     />
                   </td>

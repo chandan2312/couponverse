@@ -1,7 +1,24 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
-  transpilePackages: ["@repo/ui"],
+  transpilePackages: [
+    "@repo/ui",
+    "@repo/eslint-config",
+    "@repo/typescript-config",
+    "@repo/auth-config",
+  ],
+
+  // webpack: (config, { isServer }) => {
+  //   config.module.rules.push({
+  //     test: /\.html$/,
+  //     use: [
+  //       {
+  //         loader: "html-loader",
+  //       },
+  //     ],
+  //   });
+  //   return config;
+  // },
 
   async headers() {
     return [

@@ -4,7 +4,7 @@ import { termsConditionsContent } from "./constant";
 import { words } from "../constants/words";
 
 const TermsAndConditions = async () => {
-  const country = process.env.COUNTRYCODE as string;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
   const lang: Lang = (process.env.LG as Lang) || "en";
   const content = await termsConditionsContent();
 

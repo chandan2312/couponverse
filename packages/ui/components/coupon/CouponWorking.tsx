@@ -3,27 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { words } from "../../constants/words";
 import { Button } from "../../components/ui/button";
-import StoreWrapper from "../../lib/StoreWrapper";
 import { useSelector } from "react-redux";
-import { addCouponVote } from "../../actions/coupon";
+// import { addCouponVote } from "../../actions/coupon";
 import { toast } from "sonner";
 import { Lang } from "../../types";
 
-const CouponWorking = ({ lang, deal }: { lang: Lang; deal: any }) => {
-  return (
-    <StoreWrapper>
-      <CouponWorkingInside lang={lang || "en"} deal={deal} />
-    </StoreWrapper>
-  );
-};
-
-export const CouponWorkingInside = ({
-  lang,
-  deal,
-}: {
-  lang: Lang;
-  deal: any;
-}) => {
+export const CouponWorking = ({ coupon }: { coupon: any }) => {
+  const lang = process.env.NEXT_PUBLIC_LG;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
   const [votedDeals, setVotedDeals] = useState([]);
   const [currVoteStatus, setCurrVoteStatus] = useState("");
 
@@ -32,9 +20,11 @@ export const CouponWorkingInside = ({
 
   useEffect(() => {
     setVotedDeals(voted);
-    const currVoteStatus = voted?.find((vote: any) => vote.dealId === deal.id);
+    const currVoteStatus = voted?.find(
+      (vote: any) => vote.dealId === coupon.id,
+    );
     currVoteStatus && setCurrVoteStatus(currVoteStatus.vote);
-  }, [voted, deal.id]);
+  }, [voted, coupon.id]);
 
   const handleCouponVote = async (vote: string, dealId: string) => {
     const votedDealsJson = localStorage.getItem("votedDeals");
@@ -58,7 +48,8 @@ export const CouponWorkingInside = ({
         return;
       }
 
-      const addCouponVoteRes = await addCouponVote({ dealId, vote });
+      //TODO: addCouponVote fn
+      // const addCouponVoteRes = await addCouponVote({ dealId, vote });
 
       const newVotedDeals = votedDeals?.filter(
         (votedDeal: any) => votedDeal.dealId !== dealId,
@@ -68,15 +59,15 @@ export const CouponWorkingInside = ({
       localStorage.setItem("votedDeals", JSON.stringify(newVotedDeals));
       setCurrVoteStatus(vote);
     } else {
-      const addCouponVoteRes = await addCouponVote({
-        dealId,
-        vote,
-        time: new Date(),
-      });
-      votedDeals.push({ dealId, vote });
-      localStorage.setItem("votedDeals", JSON.stringify(votedDeals));
-      setCurrVoteStatus(vote);
-      toast.success("Voted Successfully");
+      // const addCouponVoteRes = await addCouponVote({
+      //   dealId,
+      //   vote,
+      //   time: new Date(),
+      // });
+      // votedDeals.push({ dealId, vote });
+      // localStorage.setItem("votedDeals", JSON.stringify(votedDeals));
+      // setCurrVoteStatus(vote);
+      // toast.success("Voted Successfully");
     }
   };
 
@@ -86,7 +77,7 @@ export const CouponWorkingInside = ({
 
       <div className="flex gap-1">
         <Button
-          onClick={() => handleCouponVote("yes", deal.id)}
+          onClick={() => handleCouponVote("yes", coupon.id)}
           variant="primaryOutline"
           size="sm"
           className={`font-semibold ${
@@ -96,7 +87,7 @@ export const CouponWorkingInside = ({
           {words.Yes[lang]}
         </Button>
         <Button
-          onClick={() => handleCouponVote("no", deal.id)}
+          onClick={() => handleCouponVote("no", coupon.id)}
           variant="primaryOutline"
           size="sm"
           className={`font-semibold ${

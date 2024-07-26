@@ -8,32 +8,51 @@ datasource db {
 }
 
 model User {
-  id              String      @id @default(auto()) @map("_id") @db.ObjectId
-  email           String      @unique
-  isEmailVerified Boolean     @default(false)
-  username        String      @unique
-  fullName        String?
-  loginMethod     LoginMethod @default(Email)
-  ip4             String?
-  ip6             String?
-  password        String?
-  name            String?
-  avatar          String?
-  refreshToken    String?
-  isBanned        Boolean     @default(false)
-  role            Role        @default(USER)
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @default(now()) @updatedAt
-  coupons         Coupon[]
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  email            String  @unique
+  isEmailVerified  Boolean @default(false)
+  avatar           String?
+  username         String  @unique
+  firstname        String?
+  lastname         String?
+  gender           String?
+  age              Int?
+  country          String?
+  registeredDomain String?
+  role             Role    @default(USER)
+  isBot            Boolean @default(false)
+  password         String?
+
+  loginMethod  LoginMethod @default(EMAIL)
+  ip4          String?
+  ip6          String?
+  refreshToken String?
+  isBanned     Boolean     @default(false)
+
+  subscribedStores Store[]
+  coupons          Coupon[]
+  offers           Offer[]
+  comments         Comment[]
+
+  upvotedOffers   Json[]
+  downvotedOffers Json[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index(firstname)
+  @@index(lastname)
+  @@index(role)
 }
 
 enum Role {
   ADMIN
   USER
+  EDITOR
 }
 
 enum LoginMethod {
-  Email
+  EMAIL
   GOOGLE
   FACEBOOK
 }
@@ -63,6 +82,9 @@ model Store {
   category          Category[] @relation(fields: [categoryIDs], references: [id])
   categoryIDs       String[]   @db.ObjectId
   batch             Int?
+  Offer             Offer[]
+  User              User?      @relation(fields: [userId], references: [id])
+  userId            String?    @db.ObjectId
 
   @@index(access)
   @@index(nativeName)
@@ -105,6 +127,7 @@ model Coupon {
   batch Int?
 
   @@index(access)
+  @@index(shop)
 }
 
 enum CouponStatus {
@@ -120,12 +143,94 @@ enum CouponType {
   DEAL
 }
 
+model Offer {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  sourceTitle   String
+  title         String        @unique
+  slug          String        @unique
+  description   String?
+  sourceImg     String?
+  img           String?
+  discountPrice Int?
+  ogPrice       Int?
+  currency      String?
+  link          String
+  affLink       String?
+  shop          String
+  offer         String?
+  code          String?
+  type          CouponType
+  access        String
+  sourceId      String?
+  expiryDate    String?
+  isExpired     Boolean?
+  scrapeSite    String?
+  terms         Json?
+  batch         Int?
+  status        CouponStatus?
+
+  views          Int?
+  viewsThreshold Int?
+  viewsArr       Json[] //{userId, date}
+
+  votesThreshold Int?
+  upvotes        Int?
+  upvotesArr     Json[]
+  downvotes      Int? //{userId, date}
+  downvotesArr   Json[] //{userId, date}
+
+  store   Store  @relation(fields: [storeID], references: [id])
+  storeID String @db.ObjectId
+
+  comments Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  user   User?   @relation(fields: [userID], references: [id])
+  userID String? @db.ObjectId
+
+  tags   Tag[]    @relation(fields: [tagIDs], references: [id])
+  tagIDs String[] @db.ObjectId
+
+  @@index(access)
+  @@index(shop)
+  @@index([shop, access])
+  @@index(tagIDs)
+  @@index(userID)
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  user      User     @relation(fields: [userID], references: [id])
+  userID    String   @db.ObjectId
+  offer     Offer?   @relation(fields: [offerID], references: [id])
+  offerID   String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Tag {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         Json
+  slug         String   @unique
+  slugVariants String[]
+  parent       Tag?     @relation("TagToParent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parentId     String?  @db.ObjectId
+  children     Tag[]    @relation("TagToParent")
+  offers       Offer[]  @relation(fields: [offerIDs], references: [id])
+  offerIDs     String[] @db.ObjectId
+}
+
 model Category {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   slug     String   @unique
   stores   Store[]  @relation(fields: [storeIDs], references: [id])
   storeIDs String[] @db.ObjectId
+
+  @@index(name)
 }
 
 model Address {

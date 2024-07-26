@@ -3,7 +3,7 @@ import { dmcaContent } from "./constant";
 import { Lang } from "../types";
 
 const Dm = async () => {
-  const country = process.env.COUNTRYCODE as string;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
   const lang: Lang = (process.env.LG as Lang) || "en";
   const content = await dmcaContent();
 

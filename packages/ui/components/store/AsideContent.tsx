@@ -13,11 +13,11 @@ import { Lang } from "../../types";
 const AsideContent = ({
   store,
   couponCount,
-  dealCount,
+  offerCount,
 }: {
   store: any;
   couponCount: number;
-  dealCount: number;
+  offerCount: number;
 }) => {
   const lang: Lang = (process.env.LG as Lang) || "en";
   return (
@@ -40,18 +40,20 @@ const AsideContent = ({
         <div className="space-y-2">
           <div className="flex items-center justify-between px-2">
             <span className="font-semibold">{words.TotalOffers[lang]}</span>
-            <span className="">{couponCount + dealCount}</span>
+            <span className="">
+              {store._count.coupons + store._count.offers}
+            </span>
           </div>
           <Separator />
           <div className="flex items-center justify-between px-2">
             <span className="font-semibold">{words.Coupons[lang]}</span>
-            <span className="">{couponCount}</span>
+            <span className="">{store._count.coupons}</span>
           </div>
           <Separator />
 
           <div className="flex items-center justify-between px-2">
             <span className="font-semibold">{words.Deals[lang]}</span>
-            <span className="">{dealCount}</span>
+            <span className="">{store._count.offers}</span>
           </div>
         </div>
       </SectionWrapper>

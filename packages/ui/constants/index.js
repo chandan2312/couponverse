@@ -1,8 +1,6 @@
-import { Sign } from "crypto";
-import { SideNavItem } from "../types";
+// import { SideNavItem } from "../types";
 import {
   Home,
-  SquareGanttChart,
   Settings,
   LogOut,
   Gift,
@@ -10,13 +8,14 @@ import {
   Store,
   NotebookTabs,
 } from "lucide-react";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { getLang } from "../lib/utils";
+import { signOut } from "@repo/auth-config/client";
 
+export const backurl = `http://localhost:5500/api/v1`;
 export const SIDENAV_ITEMS = [
   {
     title: "Home",
     path: "/",
+    //@ts-ignore
     icon: <Home />,
   },
 
@@ -28,6 +27,7 @@ export const SIDENAV_ITEMS = [
   {
     title: "Stores",
     path: "/stores/all",
+    //@ts-ignore
     icon: <Store />,
   },
   // {
@@ -49,8 +49,45 @@ export const SIDENAV_ITEMS = [
     title: "Logout",
     path: "/logout",
     onClick: () => signOut(),
+    //@ts-ignore
     icon: <LogOut />,
   },
+];
+
+export const defaultAvatars = [
+  "/avatars/avatar_1_m.jpg",
+  "/avatars/avatar_2_m.jpg",
+  "/avatars/avatar_3_m.jpg",
+  "/avatars/avatar_4_m.jpg",
+  "/avatars/avatar_5_m.jpg",
+  "/avatars/avatar_6_m.jpg",
+  "/avatars/avatar_7_m.jpg",
+  "/avatars/avatar_8_m.jpg",
+  "/avatars/avatar_9_f.jpg",
+  "/avatars/avatar_10_f.jpg",
+  "/avatars/avatar_11_f.jpg",
+  "/avatars/avatar_12_f.jpg",
+  "/avatars/avatar_13_f.jpg",
+  "/avatars/avatar_14_f.jpg",
+  "/avatars/avatar_15_f.jpg",
+  "/avatars/avatar_16_f.jpg",
+  "/avatars/avatar_17_f.jpg",
+  "/avatars/avatar_18_f.jpg",
+  "/avatars/avatar_19_f.jpg",
+  "/avatars/avatar_20_m.jpg",
+  "/avatars/avatar_21_f.jpg",
+  "/avatars/avatar_22_f.jpg",
+  "/avatars/avatar_23_f.jpg",
+  "/avatars/avatar_24_f.jpg",
+  "/avatars/avatar_25_m.jpg",
+  "/avatars/avatar_26_f.jpg",
+  "/avatars/avatar_27_m.jpg",
+  "/avatars/avatar_28_f.jpg",
+  "/avatars/avatar_29_m.jpg",
+  "/avatars/avatar_30_m.jpg",
+  "/avatars/avatar_31_m.jpg",
+  "/avatars/avatar_32_m.jpg",
+  "/avatars/avatar_33_f.jpg",
 ];
 
 export const alphabets = [

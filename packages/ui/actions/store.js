@@ -11,6 +11,100 @@ import { checkEnglishCountryArray } from "../lib/utils";
 import { unstable_cache } from "next/cache";
 import filterCoupons from "../lib/filterCoupons";
 
+//-------------------- GENERAL FUNCTIONS ------------------//
+
+export const getStore = async (condition, fields) => {
+  try {
+    const store = await prisma.Store.findFirst({
+      where: condition,
+      ...(fields && { select: fields }),
+    });
+
+    return store;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+
+//------------------- SPECIAL PURPOSE FUNCTIONS ------------------//
+
+export const getTrendingStores = unstable_cache(
+  async (country) => {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    try {
+      const result = await prisma.store.aggregateRaw({
+        pipeline: [
+          {
+            $match: {
+              access: country,
+              popularity: { $gt: 0 },
+            },
+          },
+          {
+            $lookup: {
+              from: "Coupon",
+              localField: "_id",
+              foreignField: "storeID",
+              as: "coupons",
+            },
+          },
+          {
+            $addFields: {
+              couponCount: { $size: "$coupons" },
+            },
+          },
+          {
+            $match: {
+              couponCount: { $gt: 1 },
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              nativeName: 1,
+              slug: 1,
+              img: 1,
+              link: 1,
+              affLink: 1,
+              views: 1,
+              couponCount: 1,
+              coupons: {
+                _id: 1,
+                englishTitle: 1,
+                englishOffer: 1,
+              },
+            },
+          },
+          {
+            $facet: {
+              sampled: [{ $sample: { size: 12 } }],
+            },
+          },
+          {
+            $unwind: "$sampled",
+          },
+          {
+            $replaceRoot: { newRoot: "$sampled" },
+          },
+        ],
+      });
+
+      return result;
+    } catch (error) {
+      console.log(error);
+
+      return null;
+    }
+  },
+  {
+    revalidate: 60 * 60 * 24,
+  },
+);
+
+//-------------------- ACTIONS ------------------//
+
 export const getStoreCount = unstable_cache(
   async (country) => {
     const rawStores = await prisma.Store.findMany({
@@ -120,6 +214,12 @@ export const getStorePage = unstable_cache(
               user: true,
             },
           },
+
+          Offer: {
+            include: {
+              user: true,
+            },
+          }, //TODO: select fields
 
           category: {
             select: {
@@ -560,88 +660,6 @@ export const addStoreView = async (storeId) => {
     };
   }
 };
-
-export const getTrendingStores = unstable_cache(
-  async (country) => {
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    try {
-      const result = await prisma.store.aggregateRaw({
-        pipeline: [
-          {
-            $match: {
-              access: country,
-              popularity: { $gt: 0 },
-            },
-          },
-          {
-            $lookup: {
-              from: "Coupon",
-              localField: "_id",
-              foreignField: "storeID",
-              as: "coupons",
-            },
-          },
-          {
-            $addFields: {
-              couponCount: { $size: "$coupons" },
-            },
-          },
-          {
-            $match: {
-              couponCount: { $gt: 1 },
-            },
-          },
-          {
-            $project: {
-              _id: 1,
-              nativeName: 1,
-              slug: 1,
-              img: 1,
-              link: 1,
-              affLink: 1,
-              views: 1,
-              couponCount: 1,
-              coupons: {
-                _id: 1,
-                englishTitle: 1,
-                englishOffer: 1,
-              },
-            },
-          },
-          {
-            $facet: {
-              sampled: [{ $sample: { size: 12 } }],
-            },
-          },
-          {
-            $unwind: "$sampled",
-          },
-          {
-            $replaceRoot: { newRoot: "$sampled" },
-          },
-        ],
-      });
-
-      return {
-        status: 200,
-        message: "Trending Stores",
-        data: result,
-      };
-    } catch (error) {
-      console.log(error);
-
-      return {
-        status: 500,
-        message: error.message,
-        data: 0,
-      };
-    }
-  },
-  {
-    revalidate: 60 * 60 * 24,
-  },
-);
 
 export const getLatestStores = unstable_cache(
   async (country) => {

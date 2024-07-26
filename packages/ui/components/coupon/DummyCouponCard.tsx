@@ -87,7 +87,7 @@ const DummyCouponCard = ({
               <Image
                 src={
                   store.img
-                    ? `${process.env.CDN_URL}${store.img}`
+                    ? `${process.env.NEXT_PUBLIC_CDN_URL}${store.img}`
                     : store.sourceImg
                 }
                 alt={store.nativeName || store.name}
@@ -120,7 +120,7 @@ const DummyCouponCard = ({
               deal={deal}
               store={store}
               lang={lang}
-              cdnUrl={process.env.CDN_URL as string}
+              cdnUrl={process.env.NEXT_PUBLIC_CDN_URL as string}
             />
           </div>
         </div>
@@ -146,7 +146,7 @@ const DummyCouponCard = ({
               deal={deal}
               store={store}
               lang={lang}
-              cdnUrl={process.env.CDN_URL as string}
+              cdnUrl={process.env.NEXT_PUBLIC_CDN_URL as string}
               isHistoryPopup={true}
             />
             {/* <LikeDealButton /> */}

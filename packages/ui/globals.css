@@ -88,3 +88,64 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+/* animated border */
+.gradient-btn {
+  background: linear-gradient(
+    90deg,
+    #ffffff 3%,
+    #ffffff 47%,
+    #ffff00 53%,
+    #ffa500 72%,
+    #f14444 77%,
+    #d53567 88%,
+    #9a109a 97%
+  );
+
+  padding: 13px 20px;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.001);
+  transition: 256ms all;
+  position: relative;
+  cursor: pointer;
+}
+
+.gradient-btn:before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: -1px;
+  right: -1px;
+  background: linear-gradient(
+    90deg,
+    #ffffff 3%,
+    #ffffff 47%,
+    #ffff00 53%,
+    #ffa500 72%,
+    #f14444 77%,
+    #d53567 88%,
+    #9a109a 97%
+  );
+  transition: 256ms all;
+  z-index: -1;
+  background-size: 200% 100%;
+  background-position: left center;
+}
+
+.gradient-btn:after {
+  background: rgb(24, 24, 24);
+  content: "";
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: -1;
+}
+
+.gradient-btn,
+.gradient-btn:before {
+  background-position: right center;
+}

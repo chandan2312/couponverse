@@ -16,7 +16,7 @@ import { Separator } from "../ui/separator";
 
 const TopBrandsDropDown = ({ stores }: { stores: any }) => {
   const lang: Lang = (process.env.LG as Lang) || "en";
-  const country = process.env.COUNTRYCODE as string;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
 
   const cpath = correctPath(lang);
   return (
@@ -45,7 +45,7 @@ const TopBrandsDropDown = ({ stores }: { stores: any }) => {
                         <Image
                           src={
                             store.img
-                              ? `${process.env.CDN_URL}${store.img}`
+                              ? `${process.env.NEXT_PUBLIC_CDN_URL}${store.img}`
                               : store.sourceImg
                           }
                           alt={store.nativeName || store.name}

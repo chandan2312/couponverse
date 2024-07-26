@@ -11,7 +11,7 @@ export const getSitemapArray = unstable_cache(
     let protocol = "http://";
     if (process.env.NODE_ENV === "production") protocol = "https://";
 
-    const country = process.env.COUNTRYCODE;
+    const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
     const lang = process.env.LG;
     if (!lang || !country) return res.status(404).send("Not found");
     const cPath = correctPath(lang);
@@ -66,7 +66,7 @@ export const getSitemapArray = unstable_cache(
 
 export const getSitemapIndexArray = unstable_cache(
   async () => {
-    const country = process.env.COUNTRYCODE;
+    const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
     const lang = process.env.LG;
     let protocol = "http://";
     if (process.env.NODE_ENV === "production") protocol = "https://";

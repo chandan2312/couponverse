@@ -4,8 +4,8 @@ const filterCoupons = (coupons: any) => {
     // Filter 
     const filteredCoupons = coupons?.filter((item: any) => {
         const offerNormalized = item.englishOffer
-            ?.replace(/upto |Upto |Up to |up to /g, "");
-let duplicate;
+            ?.replace(/upto |Upto |Up to |up to /g, "")?.toLowerCase();
+let duplicate:any;
         if(offerNormalized){
             duplicate = offersSeen.has(offerNormalized);
             offersSeen.add(offerNormalized);
@@ -13,7 +13,7 @@ let duplicate;
         
 
         const includedPattern = /[0-9]|off|OFF|Off|free|Free|Upto|upto|discount|Discount|[$€£¥₹₩₽₣₦₴₫₭₲₳฿₵₡₢₰]|%/;
-        const isIncluded = item.type === "CODE" || includedPattern.test(item.englishOffer) || includedPattern.test(item.englishTitle);
+        const isIncluded = item.type === "CODE" || includedPattern.test(item?.englishOffer) || includedPattern.test(item?.englishTitle);
 
          if (coupons?.length < 5) {
             return true;

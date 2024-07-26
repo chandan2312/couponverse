@@ -9,115 +9,58 @@ import {
 } from "../constants/index.js";
 dotenv.config({ path: "@ui/.env" });
 import { unstable_cache } from "next/cache";
-import { type } from "os";
+import filterCoupons from "../lib/filterCoupons";
 
-// {shop,code, offer,type}
+//---------------- GENERAL FUNCTIONS ----------------//
 
-export const getCouponList = unstable_cache(
-  async (page, perPage) => {
-    const skip = (page - 1) * perPage;
-    const take = perPage;
+export const getCoupons = unstable_cache(
+  async (condition, fields, orderBy, page, perPage) => {
+    let skip = 0;
+    if (page == 2) {
+      skip = 2;
+    } else {
+      skip = (page - 1) * perPage || 0;
+    }
+    const take = perPage || 10;
+
     try {
-      const [data, total] = await Promise.all([
-        prisma.coupon.findMany({
-          skip,
-          take,
-        }),
-        prisma.coupon.count(),
-      ]);
+      const coupons = await prisma.Coupon.findMany({
+        where: condition,
+        ...(fields && { select: fields }),
+        ...(orderBy && { orderBy: orderBy }),
+        skip,
+        take,
+      });
 
-      return {
-        status: 200,
-        message: "Coupons List",
-        data: data,
-        total: total,
-      };
+      const totalCount = await prisma.Coupon.count({
+        where: condition,
+      });
+
+      const filtered = filterCoupons(coupons);
+
+      return filtered;
     } catch (error) {
       console.log(error.message);
 
-      return {
-        status: 500,
-        message: error.message,
-        data: 0,
-      };
+      return null;
     }
   },
   {
-    revalidate: 60 * 60 * 24 * 7,
+    revalidate: 60 * 60 * 24 * 3, // TODO: set
   },
 );
 
-export const getCoupon = async (dealId) => {
-  //single coupon
+export const getCoupon = async (condition, fields) => {
   try {
     const coupon = await prisma.Coupon.findUnique({
-      where: {
-        id: dealId,
-      },
+      where: condition,
+      select: fields,
     });
 
-    return {
-      status: 200,
-      message: "Coupon Found",
-      data: coupon,
-    };
+    return coupon;
   } catch (error) {
     console.log(error.message);
-
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
-  }
-};
-
-export const addCoupon = async (data) => {
-  // {shop,code, offer,type}
-  try {
-    const coupon = await prisma.Coupon.create({
-      data: data,
-    });
-
-    return {
-      status: 200,
-      message: "Coupon Created",
-      data: coupon,
-    };
-  } catch (error) {
-    console.log(error.message);
-
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
-  }
-};
-
-export const updateCoupon = async (dealId, data) => {
-  // {shop,code, offer,type}
-  try {
-    const coupon = await prisma.Coupon.update({
-      where: {
-        id: dealId,
-      },
-      data: data,
-    });
-
-    return {
-      status: 200,
-      message: "Coupon Updated",
-      data: coupon,
-    };
-  } catch (error) {
-    console.log(error.message);
-
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
+    return null;
   }
 };
 
@@ -129,14 +72,78 @@ export const deleteCoupon = async (dealId) => {
       },
     });
 
-    return {
-      status: 200,
-      message: "Coupon Deleted",
-      data: coupon,
-    };
+    return coupon;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+
+export const updateCoupon = async (condition, data, fields) => {
+  try {
+    const coupon = await prisma.Coupon.update({
+      where: condition,
+      data: data,
+      select: fields,
+    });
+
+    return coupon;
   } catch (error) {
     console.log(error.message);
 
+    return null;
+  }
+};
+
+export const addCoupon = async (data, fields) => {
+  try {
+    const coupon = await prisma.Coupon.create({
+      data: data,
+      select: fields,
+    });
+
+    return coupon;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+
+//---------------- SPECIAL PURPOSE FUNCTIONS ----------------//
+
+//TODO: recheck
+export const checkExistingCoupon = async (obj) => {
+  try {
+    const checkedDeal = await prisma.Coupon.findFirst({
+      where: {
+        OR: [
+          {
+            shop: obj.shop,
+            code: obj.code,
+            type: "CODE",
+          },
+          {
+            shop: obj.shop,
+            offer: obj.offer,
+            type: "DEAL",
+          },
+          {
+            shop: obj.shop,
+            offer: obj.offer,
+            type: "DEAL",
+            sourceTitle: obj.sourceTitle,
+          },
+        ],
+      },
+    });
+
+    if (checkedDeal == null) {
+      return { status: 200, message: "Deal Not Exist", data: 0 };
+    } else {
+      return { status: 200, message: "Deal Exist", data: checkedDeal };
+    }
+  } catch (error) {
+    console.log(error.message);
     return {
       status: 500,
       message: error.message,
@@ -242,245 +249,6 @@ export const addCoupons = async (deals, slug) => {
         data: 0,
       };
     }
-
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
-  }
-};
-
-export const increaseCouponViews = async (dealId) => {
-  try {
-    const coupon = await prisma.Coupon.update({
-      where: {
-        id: dealId,
-      },
-      data: {
-        views: {
-          increment: 1,
-        },
-      },
-    });
-
-    return {
-      status: 200,
-      message: "Views Increased",
-      data: coupon,
-    };
-  } catch (error) {
-    console.log(error.message);
-
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
-  }
-};
-
-// {shop,code, offer,type}
-export const checkExistingCoupon = async (obj) => {
-  try {
-    const checkedDeal = await prisma.Coupon.findFirst({
-      where: {
-        OR: [
-          {
-            shop: obj.shop,
-            code: obj.code,
-            type: "CODE",
-          },
-          {
-            shop: obj.shop,
-            offer: obj.offer,
-            type: "DEAL",
-          },
-          {
-            shop: obj.shop,
-            offer: obj.offer,
-            type: "DEAL",
-            sourceTitle: obj.sourceTitle,
-          },
-        ],
-      },
-    });
-
-    if (checkedDeal == null) {
-      return { status: 200, message: "Deal Not Exist", data: 0 };
-    } else {
-      return { status: 200, message: "Deal Exist", data: checkedDeal };
-    }
-  } catch (error) {
-    console.log(error.message);
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
-  }
-};
-
-export const addCouponVote = async (data) => {
-  //structure of data
-  // [
-  // 	{
-  // 		vote: "yes" || "no",
-  // 		time: new Date(),
-  // 	}
-  // ]
-
-  try {
-    const coupon = await prisma.Coupon.findUnique({
-      where: {
-        id: data.dealId,
-      },
-    });
-
-    if (!coupon) {
-      return {
-        status: 404,
-        message: "Coupon Not Found",
-        data: 0,
-      };
-    }
-    let history = coupon?.voteHistory || [];
-
-    if (history?.length > 20) {
-      history.shift();
-    }
-
-    history.push({
-      vote: data.vote,
-      time: new Date(),
-    });
-
-    const updatedCoupon = await prisma.Coupon.update({
-      where: {
-        id: data.dealId,
-      },
-      data: {
-        votes: {
-          increment: 1,
-        },
-        voteHistory: history,
-      },
-    });
-
-    return {
-      status: 200,
-      message: "Vote Added Successfully",
-      data: updatedCoupon,
-    };
-  } catch (error) {
-    console.log(error.message);
-
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
-  }
-};
-
-export const addCouponView = async (dealId) => {
-  const recordToAdd = {
-    time: new Date(),
-  };
-  try {
-    //get current threshhold
-    const threshold = await prisma.Coupon.findUnique({
-      where: {
-        id: dealId,
-      },
-      select: {
-        viewsThreshold: true,
-        viewsRecord: true,
-      },
-    });
-
-    if (threshold == null) {
-      return {
-        status: 404,
-        message: "Coupon Not Found",
-        data: 0,
-      };
-    }
-
-    const coupon = await prisma.Coupon.update({
-      where: {
-        id: dealId,
-      },
-      data: {
-        views: {
-          increment: 1,
-        },
-        viewsThreshold: {
-          increment: 1,
-        },
-        viewsRecord: {
-          push: recordToAdd,
-        },
-      },
-    });
-
-    if (threshold.viewsThreshold + 1 > 20) {
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-      const newRecords =
-        coupon?.viewsRecord?.filter(
-          (record) => new Date(record.time) >= sevenDaysAgo,
-        ) || null;
-      //delete stale records && make threshold 0
-
-      await prisma.Coupon.update({
-        where: {
-          id: dealId,
-        },
-        data: {
-          viewsRecord: newRecords,
-          viewsThreshold: 0,
-        },
-      });
-    }
-
-    return {
-      status: 200,
-      message: "Views Increased",
-      data: coupon,
-    };
-  } catch (error) {
-    console.log(error.message);
-
-    return {
-      status: 500,
-      message: error.message,
-      data: 0,
-    };
-  }
-};
-
-export const likeCoupon = async (dealId) => {
-  try {
-    const coupon = await prisma.Coupon.update({
-      where: {
-        id: dealId,
-      },
-      data: {
-        likes: {
-          increment: 1,
-        },
-      },
-    });
-
-    return {
-      status: 200,
-      message: "Likes Increased",
-      data: coupon,
-    };
-  } catch (error) {
-    console.log(error.message);
 
     return {
       status: 500,
@@ -618,80 +386,81 @@ export const getTrendingCoupons = unstable_cache(
 );
 
 export const getPopularCoupons = unstable_cache(
-  // find popular stores where popularity field is 1, and then find all coupons of those stores, and then select one best coupon from each store
-
   async (country) => {
-    const topStores = await prisma.Store.findMany({
-      where: {
-        popularity: 1,
-        access: country,
-      },
-      select: {
-        id: true,
-        slug: true,
-      },
-    });
-
-    // only pick random 8 stores
-    const randomStores = topStores.sort(() => 0.5 - Math.random()).slice(0, 8);
-
-    const storeIds = randomStores?.map((store) => store.id);
-
-    const coupons = await prisma.Coupon.findMany({
-      where: {
-        storeID: {
-          in: storeIds,
+    try {
+      const topStores = await prisma.Store.findMany({
+        where: {
+          popularity: 1,
+          access: country,
         },
-        type: "CODE",
-        isExpired: false,
-      },
-      select: {
-        sourceTitle: true,
-        title: true,
-        englishTitle: true,
-        sourceDescription: true,
-        description: true,
-        shop: true,
-        offer: true,
-        englishOffer: true,
-        code: true,
-        type: true,
-        isVerified: true,
-        isExpired: true,
-        expiryDate: true,
-        votes: true,
-        rating: true,
-        views: true,
-        viewsRecord: true,
-        voteHistory: true,
-        terms: true,
-        store: {
-          select: {
-            slug: true,
-            nativeName: true,
-            img: true,
+        select: {
+          id: true,
+          slug: true,
+        },
+      });
+
+      // only pick random 8 stores
+      const randomStores = topStores
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 8);
+
+      const storeIds = randomStores?.map((store) => store.id);
+
+      const coupons = await prisma.Coupon.findMany({
+        where: {
+          storeID: {
+            in: storeIds,
+          },
+          type: "CODE",
+          isExpired: false,
+        },
+        select: {
+          sourceTitle: true,
+          title: true,
+          englishTitle: true,
+          sourceDescription: true,
+          description: true,
+          shop: true,
+          offer: true,
+          englishOffer: true,
+          code: true,
+          type: true,
+          isVerified: true,
+          isExpired: true,
+          expiryDate: true,
+          votes: true,
+          rating: true,
+          views: true,
+          viewsRecord: true,
+          voteHistory: true,
+          terms: true,
+          store: {
+            select: {
+              slug: true,
+              nativeName: true,
+              img: true,
+            },
           },
         },
-      },
-    });
+      });
 
-    //TODO: find best coupon from each store
-    const bestCoupons = coupons.reduce((acc, coupon) => {
-      if (!acc[coupon.store.slug]) {
-        acc[coupon.store.slug] = coupon;
-      } else {
-        if (coupon.views > acc[coupon.store.slug].views) {
+      //TODO: find best coupon from each store
+      const bestCoupons = coupons.reduce((acc, coupon) => {
+        if (!acc[coupon.store.slug]) {
           acc[coupon.store.slug] = coupon;
+        } else {
+          if (coupon.views > acc[coupon.store.slug].views) {
+            acc[coupon.store.slug] = coupon;
+          }
         }
-      }
-      return acc;
-    }, {});
+        return acc;
+      }, {});
 
-    return {
-      status: 200,
-      message: "Popular coupons",
-      data: Object.values(bestCoupons),
-    };
+      return Object.values(bestCoupons);
+    } catch (error) {
+      console.log(error.message);
+      return null;
+    }
   },
   {
     revalidate: 60 * 60 * 24 * 3, // 3 days

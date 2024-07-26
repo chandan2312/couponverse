@@ -8,15 +8,15 @@ import { Lang } from "../../types";
 import { Separator } from "../ui/separator";
 import HowToUseSlider from "./HowToUseSlider";
 
-const HowToUseSection = ({ store }: { store: any }) => {
+const HowToUseSection = ({ store, coupons }: { store: any; coupons: any }) => {
   const lang: Lang = (process.env.LG as Lang) || "en";
   const deal =
-    store.coupons?.filter((coupon: any) => coupon.type == "CODE")?.length > 0
-      ? store.coupons?.filter((coupon: any) => coupon.type == "CODE")[0]
-      : store.coupons[0];
+    coupons?.filter((coupon: any) => coupon.type == "CODE")?.length > 0
+      ? coupons?.filter((coupon: any) => coupon.type == "CODE")[0]
+      : coupons[0];
 
   const image = store.img
-    ? `${process.env.CDN_URL}${store.img}`
+    ? `${process.env.NEXT_PUBLIC_CDN_URL}${store.img}`
     : store.sourceUrl;
 
   return (
@@ -55,7 +55,7 @@ const HowToUseSection = ({ store }: { store: any }) => {
             store={store}
             image={image}
             lang={lang}
-            applyImageUrl={`${process.env.CDN_URL}assets/step-3-apply-coupon.png`}
+            applyImageUrl={`${process.env.NEXT_PUBLIC_CDN_URL}assets/step-3-apply-coupon.png`}
           />
         </div>
       </div>

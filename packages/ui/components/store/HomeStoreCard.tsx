@@ -26,7 +26,7 @@ const HomeStoreCard = ({
           <Image
             src={
               store?.img
-                ? `${process.env.CDN_URL}${store.img}`
+                ? `${process.env.NEXT_PUBLIC_CDN_URL}${store.img}`
                 : store.sourceImg
             }
             width={75}

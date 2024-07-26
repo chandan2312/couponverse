@@ -18,7 +18,9 @@ const SimilarStoreCard = ({ store }: { store: any }) => {
         <figure className="lg:w-[40%] w-full max-md:max-h-24 bg-card shadow-md p-2 rounded-md mx-auto flex items-center justify-center  h-24 ">
           <Image
             src={
-              store.img ? `${process.env.CDN_URL}${store.img}` : store.sourceImg
+              store.img
+                ? `${process.env.NEXT_PUBLIC_CDN_URL}${store.img}`
+                : store.sourceImg
             }
             alt={store.nativeName}
             height={90}

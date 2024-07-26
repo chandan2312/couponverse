@@ -8,6 +8,17 @@ import HomeStoreCard from "../components/store/HomeStoreCard";
 import CouponCardSide from "../components/coupon/CouponCardSide";
 import { Lang } from "../types";
 import { contentGenerator } from "../lib/contentGenerator";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
+import axios from "axios";
+import { notFound } from "next/navigation";
+import OfferCard from "../components/offer/OfferCard";
+import MoreOffers from "../components/offer/MoreOffers";
+import CouponCard from "../components/coupon/CouponCard";
 
 export async function generateMetadata({ params }: { params: any }) {
   const lang: Lang = process.env.LG as Lang;
@@ -39,104 +50,165 @@ export async function generateMetadata({ params }: { params: any }) {
 }
 
 const Homepage = async () => {
-  const country = process.env.COUNTRYCODE as string;
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
+  console.log("country", country);
+  console.log("lang", lang);
 
-  const [trendingStoresRes, latestStoresRes, trendingCouponsRes] =
+  const [bestStoresRes, hottestOffersRes, latestOffersRes, hottestCouponsRes] =
     await Promise.all([
-      getTrendingStores(country),
-      getLatestStores(country),
-      getPopularCoupons(country),
+      // best store
+      axios.get(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/store/getMany?&country=${country}&lang=${lang}`,
+      ),
+      // hottest Offers
+      axios.get(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?orderby=hotness_desc&country=${country},in&lang=${lang}&page=1&perpage=2&morefields=viewsArr,upvotesArr,downvotesArr`,
+      ),
+      // // trending Offers
+      // axios.get(
+      //   `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?orderby=hotness_desc&country=${country},in&lang=${lang}&page=1&perpage=2&morefields=viewsArr,upvotesArr,downvotesArr`,
+      // ),
+      // latest Offers
+      axios.get(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?orderby=updatedAt_desc&country=${country}&lang=${lang}&page=1&perpage=2&morefields=upvotesArr,downvotesArr`,
+      ),
+      // hottest Coupons
+      axios.get(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/coupon/getMany?orderby=hotness_desc&country=${country}&lang=${lang}&page=1&perpage=2&morefields=upvotesArr,downvotesArr,store`,
+      ),
     ]);
 
-  const trendingStores = trendingStoresRes.data;
-  const latestStores = latestStoresRes.data;
-  const trendingCoupons = trendingCouponsRes.data;
+  if (bestStoresRes?.status !== 200 || !bestStoresRes?.data) notFound();
+  if (hottestOffersRes.status !== 200 || latestOffersRes.status !== 200)
+    notFound();
+
+  const bestStores = bestStoresRes.data;
+  const hottestOffers = hottestOffersRes.data;
+  const latestOffers = latestOffersRes.data;
+  const hottestCoupons = hottestCouponsRes.data;
 
   return (
     <>
-      <div className="card-section mx-auto max-w-7xl">
-        {/* section 0 - Search Bar */}
-        {/* //TODO: search implement */}
-        {/* <Searchbar lang={lang} /> */}
-        {/* <Separator className="my-5" /> */}
-        {/* section 1 - categories and featured stores */}
-        <div className="">
-          {/* categories */}
-          {/* <div className="col-span-12 lg:col-span-4 max-lg:order-2">
-						<h2 className="text-lg md:text-xl font-semibold my-2">
-							{words.BrowseCategories[lang]}
-						</h2>
+      <div className=" mx-auto max-w-7xl grid lg:grid-cols-12 gap-4 ">
+        <div className="lg:col-span-9">
+          <Tabs defaultValue="hottest-offers" className="sticky top-0 z-40">
+            <TabsList className="w-full  bg-transparent mx-3">
+              <TabsTrigger
+                value="hottest-offers"
+                className="min-w-20 min-h-8 p-auto"
+              >
+                Hottest
+              </TabsTrigger>
+              {/* <TabsTrigger
+                value="trending-offers"
+                className="min-w-20 min-h-8 p-auto"
+              >
+                Trending
+              </TabsTrigger> */}
+              <TabsTrigger
+                value="latest-offers"
+                className="min-w-20 min-h-8 p-auto"
+              >
+                Latest
+              </TabsTrigger>
+              <TabsTrigger
+                value="hottest-coupons"
+                className="min-w-20 min-h-8 p-auto"
+              >
+                Top Coupons
+              </TabsTrigger>
+            </TabsList>
 
-						<div className="grid grid-cols-3 gap-2">
-							{Array.from({ length: 18 })?.map((_, index) => (
-								<div
-									key={index}
-									className="flex items-center gap-1 bg-muted/5 border border-muted/30 rounded-md p-1  "
-								>
-									<figure>
-										<Image
-											src={`https://www.pngall.com/wp-content/uploads/8/World-Travel-PNG-Picture.png`}
-											width={40}
-											height={40}
-											alt="ToDo"
-											className=""
-										/>
-									</figure>
-									<h3>Fashion</h3>
-								</div>
-							))}
-						</div>
-					</div> */}
-          {/* featured stores */}
-
-          <div className="max-lg:order-1 col-span-12 lg:col-span-8">
-            <h2 className="text-lg md:text-xl font-semibold my-2">
-              {words.FeaturedStores[lang]}
-            </h2>
-
-            <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-10 gap-2">
-              {/* map through dummy array of size 9 */}
-              {trendingStores?.length &&
-                trendingStores?.map((store: any, index: any) => (
-                  <HomeStoreCard
-                    key={index}
-                    store={store}
-                    includeOffer={true}
-                  />
-                ))}
-            </div>
-          </div>
+            {/* //1 */}
+            <TabsContent value="hottest-offers" className="w-full">
+              <div className="space-y-4 ">
+                {hottestOffers?.map((offer: any, index: number) => {
+                  return <OfferCard key={offer.id} offer={offer} />;
+                })}
+                <MoreOffers
+                  type="offers"
+                  params={{
+                    country,
+                    lang,
+                    orderby: "hotness_desc",
+                    morefields: "upvotesArr,downvotesArr,store",
+                    page: 2,
+                    perpage: 2,
+                    tab: "hottest-offers",
+                  }}
+                />
+              </div>
+            </TabsContent>
+            {/* 2 -trending offers */}
+            {/* <TabsContent value="trending-offers" className="w-full">
+              <div className="space-y-4 ">
+                {trendingOffers.map((offer: any, index: number) => {
+                  return <OfferCard key={offer.id} offer={offer} />;
+                })}
+                <MoreOffers
+                  // initialOffers={latestOffers}
+                  params={{
+                    country,
+                    orderby: "updatedAt_desc",
+                    lang,
+                    page: 2,
+                    perpage: 2,
+                    tab: "latest-offers",
+                  }}
+                />
+              </div>
+            </TabsContent> */}
+            {/* 3 - latest offers */}
+            <TabsContent value="latest-offers" className="w-full">
+              <div className="space-y-4 ">
+                {latestOffers.map((offer: any, index: number) => {
+                  return <OfferCard key={offer.id} offer={offer} />;
+                })}
+                <MoreOffers
+                  type="offers"
+                  params={{
+                    country,
+                    orderby: "updatedAt_desc",
+                    morefields: "upvotesArr,downvotesArr,store",
+                    lang,
+                    page: 2,
+                    perpage: 2,
+                    tab: "latest-offers",
+                  }}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="hottest-coupons" className="w-full">
+              <div className="space-y-4 ">
+                {hottestCoupons.map((coupon: any, index: number) => {
+                  return (
+                    <CouponCard
+                      key={coupon.id}
+                      store={coupon.store}
+                      coupon={coupon}
+                    />
+                  );
+                })}
+                <MoreOffers
+                  type="coupons"
+                  params={{
+                    country,
+                    lang,
+                    orderby: "hotness_desc",
+                    morefields: "upvotesArr,downvotesArr,store",
+                    page: 2,
+                    perpage: 2,
+                    tab: "hottest-coupons",
+                  }}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
-        <Separator className="my-6" />
-        {/* section 2 - featured Coupons */}
-        <div>
-          <h2 className="text-lg md:text-xl font-semibold my-2">
-            {words.WeekFeaturedCouponOffers[lang]}
-          </h2>
-
-          <div className="grid lg:grid-cols-2 gap-3">
-            {trendingCoupons?.length &&
-              trendingCoupons?.map((deal: any, index: any) => (
-                <CouponCardSide key={index} deal={deal} />
-              ))}
-          </div>
-          <Separator className="my-6" />
-        </div>
-        {/* section 3 - Recently Added Stores */}
-        <div>
-          <h2 className="text-lg md:text-xl font-semibold my-2">
-            {words.RecentlyAddedStores[lang]}
-          </h2>
-
-          <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-10 gap-2">
-            {/* map through dummy array of size 9 */}
-            {latestStores?.length &&
-              latestStores?.map((store: any, index: any) => (
-                <HomeStoreCard key={index} store={store} />
-              ))}
-          </div>
-        </div>
+        <aside className="mt-12 bg-card rounded-lg p-2 border border-muted/40 shadow-md w-full lg:col-span-3">
+          <p>sidebar</p>
+        </aside>
       </div>
     </>
   );

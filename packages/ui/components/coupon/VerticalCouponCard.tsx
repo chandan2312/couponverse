@@ -10,41 +10,36 @@ import CouponPopup from "./CouponPopup";
 import { Lang } from "../../types";
 
 type DealCardProps = {
-  deal?: any;
-  hideWeekViews?: boolean;
+  coupon?: any;
 };
 
-const SimilarCouponCard = ({ deal, hideWeekViews = false }: DealCardProps) => {
+const VerticalCouponCard = ({ coupon }: DealCardProps) => {
   const lang: Lang = (process.env.LG as Lang) || "en";
 
   const cpath = correctPath(lang);
-  const weeklyViews = deal.viewsRecord
-    ? deal.viewsRecord?.filter((item: any) => {
-        return (
-          new Date(item.time).getTime() > Date.now() - 1000 * 60 * 60 * 24 * 7
-        );
-      })?.length
-    : 0;
+  const weeklyViews = 0; //TODO: weeklyViews
 
   let expiryDate = words.LimitedTime[lang];
 
-  if (deal.expiryDate) {
-    expiryDate = getExpiryDate(deal.expiryDate, lang);
+  if (coupon?.expiryDate) {
+    expiryDate = getExpiryDate(coupon.expiryDate, lang);
   }
+
+  const isExpired = coupon.status == "expired" ? true : false;
   return (
     <article
       className={cn(
-        "bg-card h-full w-full flex flex-col justify-between   rounded-lg shadow-sm border border-foreground/50  border-dashed p-2 text-card-foreground",
+        "bg-card mx-2 flex flex-col justify-between   rounded-lg shadow-sm border border-foreground/50  border-dashed p-2 text-card-foreground",
       )}
     >
       <div className="flex items-center justify-between text-xs">
         <div className="flex gap-2 items-center max-md:justify-center">
-          <Store size={16} color={!deal.isExpired ? "#1d9867" : "#5d5d5d"} />
+          <Store size={16} color={!isExpired ? "#1d9867" : "#5d5d5d"} />
           <Link
-            href={`${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${deal.store.slug}`}
-            className={cn(!deal.isExpired && "text-accent", "font-semibold")}
+            href={`${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${coupon?.store?.slug}`}
+            className={cn(!isExpired && "text-accent", "font-semibold")}
           >
-            {deal.store.nativeName || deal.store.name}
+            {coupon?.store?.nativeName}
           </Link>
         </div>
         <div className="flex gap-2  items-center max-md:hidden">
@@ -59,16 +54,16 @@ const SimilarCouponCard = ({ deal, hideWeekViews = false }: DealCardProps) => {
         <div className="flex flex-col text-center justify-center flex-grow ">
           <div className="flex items-center justify-center gap-2">
             <Link
-              href={`${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${deal.store.slug}`}
+              href={`https://${process.env.DOMAIN}/${cpath}/${coupon?.store?.slug}`}
               className="rounded-full border border-foreground/20 shadow-sm p-0.5 h-12 w-12 flex items-center justify-center"
             >
               <Image
                 src={
-                  deal?.store?.img
-                    ? `${process.env.CDN_URL}${deal.store.img}`
-                    : deal.store.sourceImg
+                  coupon?.store?.img
+                    ? `${process.env.NEXT_PUBLIC_CDN_URL}${coupon?.store?.img}`
+                    : coupon?.store?.sourceImg
                 }
-                alt={deal.store.nativeName || deal.store.name}
+                alt={coupon?.store?.nativeName}
                 height={40}
                 width={40}
                 style={{ objectFit: "contain" }}
@@ -77,7 +72,7 @@ const SimilarCouponCard = ({ deal, hideWeekViews = false }: DealCardProps) => {
             </Link>
             <div>
               <h3 className={cn("font-bold  text-lg text-accent")}>
-                {deal.offer}
+                {coupon?.offer}
               </h3>
             </div>
           </div>
@@ -87,18 +82,12 @@ const SimilarCouponCard = ({ deal, hideWeekViews = false }: DealCardProps) => {
               "font-muted-foreground  leading-5 max-md:text-sm font-semibold",
             )}
           >
-            {deal.title}
+            {coupon.title}
           </h2>
         </div>
 
         <div className="p-2 flex items-center justify-center gap-2 min-w-[80%] mx-auto">
-          <CouponPopup
-            deal={deal}
-            store={deal.store}
-            lang={lang}
-            cdnUrl={process.env.CDN_URL as string}
-            fullWidth={!hideWeekViews}
-          />
+          <CouponPopup coupon={coupon} store={coupon?.store} />
         </div>
       </div>
 
@@ -108,19 +97,7 @@ const SimilarCouponCard = ({ deal, hideWeekViews = false }: DealCardProps) => {
         <div className="flex items-center gap-2 ">
           <div className="flex items-center gap-1">
             <Eye size={16} />
-            <span>{deal.views}</span>
-          </div>
-
-          <div
-            className={cn(
-              `flex items-center gap-1`,
-              hideWeekViews && "max-md:hidden",
-            )}
-          >
-            <Users size={16} />
-            <span>
-              {weeklyViews} {words.viewsLastWeek[lang]}
-            </span>
+            <span>{coupon?.views}</span>
           </div>
         </div>
         <div className="flex gap-3 lg:gap-4 items-center justify-end px-2">
@@ -135,4 +112,4 @@ const SimilarCouponCard = ({ deal, hideWeekViews = false }: DealCardProps) => {
   );
 };
 
-export default SimilarCouponCard;
+export default VerticalCouponCard;

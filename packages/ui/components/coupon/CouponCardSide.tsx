@@ -63,7 +63,7 @@ const CouponCardSide = ({ deal }: DealCardProps) => {
             <Image
               src={
                 deal?.store?.img
-                  ? `${process.env.CDN_URL}${deal.store.img}`
+                  ? `${process.env.NEXT_PUBLIC_CDN_URL}${deal.store.img}`
                   : deal.store.sourceImg
               }
               alt={deal.store.nativeName || deal.store.name}
@@ -99,7 +99,7 @@ const CouponCardSide = ({ deal }: DealCardProps) => {
               deal={deal}
               store={deal.store}
               lang={lang}
-              cdnUrl={process.env.CDN_URL as string}
+              cdnUrl={process.env.NEXT_PUBLIC_CDN_URL as string}
               fullWidth={true}
             />
           </div>

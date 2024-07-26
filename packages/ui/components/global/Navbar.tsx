@@ -8,19 +8,19 @@ import { Separator } from "../ui/separator";
 import NavbarSearch from "./NavbarSearch";
 import TopBrandsDropDown from "./TopBrandsDropDown";
 import { getTrendingStores } from "../../actions/store";
-import ProfileWrapper from "./ProfileWrapper";
+import Profile from "./Profile";
 import { getProtocol } from "../../lib/utils";
 import { Lang } from "../../types";
 
 const Navbar = async () => {
   const lang: Lang = (process.env.LG as Lang) || "en";
-  const country = (process.env.COUNTRYCODE as string) || "en";
+  const country = (process.env.NEXT_PUBLIC_COUNTRYCODE as string) || "en";
   const protocol = getProtocol();
 
   const storesRes = await getTrendingStores(country);
   const stores = storesRes.data;
   return (
-    <div className="bg-card sticky top-0 min-h-12  text-card-foreground/90  px-2 md:px-4 lg:px-6">
+    <div className="bg-card z-50 sticky top-0 min-h-12  text-card-foreground/90  px-2 md:px-4 lg:px-6">
       <div className="min-h-10 pt-1 md:max-w-[85%] lg:max-w-[80%] mx-auto flex items-center gap-1 text-sm font-semibold justify-between  ">
         <div className="flex gap-1.5 items-center ">
           <div className="md:hidden flex items-center">
@@ -74,7 +74,10 @@ const Navbar = async () => {
 
           <NavbarSearch lang={lang} />
 
-          {/* <ProfileWrapper lang={lang || "en"} /> */}
+          <Profile
+            lang={lang || "en"}
+            cdnUrl={process.env.NEXT_PUBLIC_CDN_URL}
+          />
         </div>
       </div>
     </div>
