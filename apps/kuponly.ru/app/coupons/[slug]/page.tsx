@@ -4,9 +4,7 @@ import { storePageMetaData } from "@repo/ui/lib/metaDataGenerator";
 import { fetchStorePageData } from "@repo/ui/actions/store";
 import { notFound } from "next/navigation";
 
-let data: any;
-
-// Create a function to fetch data once
+// Fetch data once per request
 async function fetchData(slug: string) {
   const allData = await fetchStorePageData(slug);
   if (!allData) {
@@ -22,15 +20,15 @@ export async function generateMetadata({
   params: any;
   searchParams: any;
 }) {
-  data = await fetchData(params.slug);
+  const data = await fetchData(params.slug);
   if (!data) {
     return notFound();
   }
-  const meta: any = storePageMetaData(data);
+  const meta = storePageMetaData(data);
   return meta;
 }
 
-const StorePageApp = ({
+const StorePageApp = async ({
   params,
   searchParams,
 }: {
@@ -38,6 +36,7 @@ const StorePageApp = ({
   searchParams: any;
 }) => {
   const slug = params.slug;
+  const data = await fetchData(slug);
 
   if (!data) {
     return notFound();

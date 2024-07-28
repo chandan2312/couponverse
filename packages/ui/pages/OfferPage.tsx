@@ -31,7 +31,11 @@ const OfferPage = async ({
   const offerRes: any = await axios.get(
     `${process.env.NEXT_PUBLIC_BACK_URL}/offer/get`,
     {
-      params: { slug, country, morefields: "store,upvotes,downvotes" },
+      params: {
+        slug,
+        country,
+        morefields: "store,upvotes,downvotes,description",
+      },
     },
   );
 
@@ -53,7 +57,7 @@ const OfferPage = async ({
           isExpired ? "text-muted-foreground" : "text-card-foreground",
         )}
       >
-        <figure className=" w-80  flex-grow my-2 mr-2 ml-0.5 md:ml-2 flex items-center justify-center bg-muted/20 rounded-lg shadow-sm overflow-hidden">
+        <figure className=" w-80 max-h-[400px] overflow-y-hidden flex-grow my-2 mr-2 ml-0.5 md:ml-2 flex items-center justify-center bg-muted/20 rounded-lg shadow-sm overflow-hidden">
           <Image
             src={offer.img && `${cdnUrl}${offer.img || ""}`}
             width={320}
@@ -184,7 +188,7 @@ const OfferPage = async ({
 
       <div
         className={cn(
-          "relative flex items-center gap-2 bg-card mx-2 p-2 border-2 border-muted shadow-lg overflow-hidden",
+          "relative  bg-card mx-2 p-2  border-2 border-muted shadow-lg overflow-hidden",
           "   rounded-lg shadow-sm border border-muted/30    ",
           isExpired ? "text-muted-foreground" : "text-card-foreground",
         )}
@@ -192,6 +196,7 @@ const OfferPage = async ({
         <Heading tag="h2" text="Description" />
 
         <div
+          className="px-4"
           dangerouslySetInnerHTML={{
             __html: offer?.description || "",
           }}
