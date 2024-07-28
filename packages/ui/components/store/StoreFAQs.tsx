@@ -12,20 +12,20 @@ import { Lang } from "../../types";
 const StoreFAQs = ({ name, lang }: { name: string; lang: Lang }) => {
   const faqsData = [
     {
-      q: contentGenerator("faq1Question", name, lang),
-      a: contentGenerator("faq1Answer", name, lang),
+      q: contentGenerator({ type: "faq1Question", name }),
+      a: contentGenerator({ type: "faq1Answer", name }),
     },
     {
-      q: contentGenerator("faq2Question", name, lang),
-      a: contentGenerator("faq2Answer", name, lang),
+      q: contentGenerator({ type: "faq2Question", name }),
+      a: contentGenerator({ type: "faq2Answer", name }),
     },
     {
-      q: contentGenerator("faq3Question", name, lang),
-      a: contentGenerator("faq3Answer", name, lang),
+      q: contentGenerator({ type: "faq3Question", name }),
+      a: contentGenerator({ type: "faq3Answer", name }),
     },
     {
-      q: contentGenerator("faq4Question", name, lang),
-      a: contentGenerator("faq4Answer", name, lang),
+      q: contentGenerator({ type: "faq4Question", name }),
+      a: contentGenerator({ type: "faq4Answer", name }),
     },
   ];
   return (

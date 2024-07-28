@@ -2,17 +2,31 @@ import { Lang } from "../types";
 //@ts-ignore
 import { words } from "../constants/words";
 import dotenv from "dotenv";
+// type: string,
+//   name: string,
+//   lang: Lang,
+//   offer?: string,
+//   offersList?: string,
+//   couponCount?: number,
+//   offerCount?: any,
+//   count?: any,
 
-export const contentGenerator = (
-  type: string,
-  name: string,
-  lang: Lang,
-  offer?: string,
-  offersList?: string,
-  couponCount?: number,
-  dealCount?: any,
-  count?: any,
-) => {
+export const contentGenerator = (obj: any) => {
+  const {
+    type,
+    name,
+    offer = "",
+    couponCount = "",
+    offerCount = "",
+    count = "",
+    percentage = "",
+  } = obj;
+
+  const lang = process.env.NEXT_PUBLIC_LG as Lang;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
+  const countryName = process.env.NEXT_PUBLIC_COUNTRY as string;
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
+
   const date = new Date();
   const monthRaw = date.toLocaleString("default", { month: "long" });
   //@ts-ignore
@@ -20,19 +34,13 @@ export const contentGenerator = (
   const year = new Date().getFullYear();
   // todo: make it meaningful
   if (type == "seoTitle") {
-    if (couponCount) {
-      switch (lang) {
-        case "en":
-          return `${offer} ${name} Promo Codes, Coupons & Discounts | ${couponCount} + Offers ${month} ${year} - ${process.env.NEXT_PUBLIC_APP}`;
-        case "ru":
-          return `${offer || ""} ${name} Промокоды, купоны и скидки | ${couponCount}+ предложений на ${month} ${year} - ${process.env.NEXT_PUBLIC_APP}`;
-        case "ar":
-          return `${offer} ${name} أكواد القسائم، العروض والخصومات | ${couponCount} + عروض ${month} ${year} - ${process.env.NEXT_PUBLIC_APP}`;
-        case "es":
-          return `${offer} ${name} Códigos promocionales, cupones y descuentos | ${couponCount} + Ofertas ${month} ${year} - ${process.env.NEXT_PUBLIC_APP}`;
-      }
-    } else {
-      return `null`;
+    switch (lang) {
+      case "en":
+        return `${name} Promo Codes, Coupons & ${percentage} Discount | ${offerCount} ${offerCount && `+ Offers`} ${month} ${year} - ${process.env.NEXT_PUBLIC_APP}`;
+      case "ru":
+        return `${name} Промокоды, Купоны и ${percentage} Скидка | ${offerCount} ${offerCount && `+ Предложения`} ${month} ${year} - ${process.env.NEXT_PUBLIC_APP}`;
+      case "ar":
+        return `${name} أكواد القسائم، القسائم و ${percentage} خصم | ${offerCount} ${offerCount && `+ عروض`} ${month} ${year} - ${process.env.NEXT_PUBLIC_APP}`;
     }
   } else if (
     // todo: make it meaningful
@@ -41,74 +49,111 @@ export const contentGenerator = (
   ) {
     switch (lang) {
       case "en":
-        return `Latest ${offer} ${name} coupon codes, ${couponCount}+ offers & discounts for ${month} ${year}. All coupons are verified and updated daily.`;
+        return `${couponCount}+ coupons ${offerCount && "and"} ${offerCount} offers. Get the latest, trending and hottest ${name} promo codes ${month} ${year}.`;
       case "ru":
-        return `Последние ${offer} промокоды ${name}, ${couponCount}+ предложений и скидок на ${month} ${year}. Все купоны проверены и обновляются ежедневно.`;
+        return `${couponCount}+ купонов ${offerCount && "и"} ${offerCount} предложений. Получите последние, трендовые и самые горячие промокоды ${name} ${month} ${year}.`;
       case "ar":
-        return `أحدث أكواد القسائم ${offer} ${name}، ${couponCount}+ عروض وخصومات لشهر ${month} ${year}. جميع القسائم موثقة ومحدثة يوميًا.`;
-      case "es":
-        return `Últimos códigos promocionales ${offer} ${name}, ${couponCount}+ ofertas y descuentos para ${month} ${year}. Todos los cupones están verificados y actualizados diariamente.`;
+        return `${couponCount}+ قسيمة ${offerCount && "و"} ${offerCount} عرض. احصل على أحدث وأكثر الرموز الترويجية للاتجاهات والساخنة ${name} ${month} ${year}.`;
     }
   } else if (type == "homeTitle") {
     switch (lang) {
       case "en":
-        return `Best Deals, Coupons & Promo Codes | ${month} ${year}`;
+        return `Hottest Offers, Discount & Promo Codes | ${month} ${year}`;
       case "ru":
-        return `Лучшие предложения, купоны и промокоды | ${month} ${year}`;
+        return `Самые горячие предложения, скидки и промокоды | ${month} ${year}`;
       case "ar":
-        return `أفضل العروض وأكواد القسائم | ${month} ${year}`;
+        return `أحدث العروض والخصومات وأكواد القسائم | ${month} ${year}`;
       case "es":
-        return `Mejores ofertas, cupones y códigos promocionales | ${month} ${year}`;
+        return `Ofertas, descuentos y códigos promocionales más calientes | ${month} ${year}`;
     }
   } else if (type == "homeDescription") {
     switch (lang) {
       case "en":
-        return `Best place to find the active, exclusive deals for your favorite store. We have updated coupon codes and discounts for ${month} ${year}.`;
+        return `${process.env.NEXT_PUBLIC_APP} have latest and hottest offers, discounts and promo codes for your favorite stores. Get the best deals and save big on your orders.`;
       case "ru":
-        return `Лучшее место для поиска активных эксклюзивных предложений для вашего любимого магазина. У нас обновлены промокоды и скидки на ${month} ${year}.`;
+        return `${process.env.NEXT_PUBLIC_APP} имеет последние и самые горячие предложения, скидки и промокоды для ваших любимых магазинов. Получите лучшие предложения и сэкономьте крупные суммы на своих заказах.`;
       case "ar":
-        return `أفضل مكان للعثور على الصفقات الحصرية النشطة لمتجرك المفضل. لدينا أكواد قسيمة وخصومات محدثة لشهر ${month} ${year}.`;
+        return `تحتوي ${process.env.NEXT_PUBLIC_APP} على أحدث وأكثر العروض والخصومات وأكواد القسائم شهرة لمتاجرك المفضلة. احصل على أفضل الصفقات ووفر كبيرًا على طلباتك.`;
       case "es":
-        return `El mejor lugar para encontrar las ofertas activas y exclusivas de tu tienda favorita. Hemos actualizado códigos de cupones y descuentos para ${month} ${year}.`;
+        return `${process.env.NEXT_PUBLIC_APP} tiene las ofertas, descuentos y códigos promocionales más recientes y populares para tus tiendas favoritas. Obtenga las mejores ofertas y ahorre mucho en sus pedidos.`;
     }
-  } else if (type == "activeCouponsHeading") {
+    //------------------- Hottest COupons -------------
+  } else if (type == "hottestCouponsHeading") {
     switch (lang) {
       case "en":
-        return `Active ${name} Coupon Codes & Offers | ${month} ${year}`;
+        return `Hottest ${name} Coupons & Promo Codes | ${month} ${year}`;
       case "ru":
-        return `Активные промокоды и предложения ${name} | ${month} ${year}`;
+        return `Самые горячие купоны и скидки ${name} | ${month} ${year}`;
       case "ar":
-        return `أكواد القسائم والعروض النشطة ${name} | ${month} ${year}`;
+        return `أكواد القسائم الأكثر شهرة ${name} | ${month} ${year}`;
       case "es":
-        return `Códigos de cupón y ofertas activos de ${name} | ${month} ${year}`;
+        return `Códigos de cupón más calientes de ${name}, descuentos | ${month} ${year}`;
+    }
+    //---------------- Latest Coupons Heading ----------------//
+  } else if (type == "latestCouponsHeading") {
+    switch (lang) {
+      case "en":
+        return `Latest ${name} Coupon & Promo Codes | ${month} ${year}`;
+      case "ru":
+        return `Последние купоны и промокоды ${name} | ${month} ${year}`;
+      case "ar":
+        return `أحدث أكواد القسائم ${name} | ${month} ${year}`;
+      case "es":
+        return `Últimos códigos de cupón de ${name} | ${month} ${year}`;
+    }
+    //---------------- Trending Coupons Heading ----------------//
+  } else if (type == "trendingCouponsHeading") {
+    switch (lang) {
+      case "en":
+        return `Trending ${name} Coupon & Promo Codes | ${month} ${year}`;
+      case "ru":
+        return `Трендовые купоны и промокоды ${name} | ${month} ${year}`;
+      case "ar":
+        return `أكواد القسائم الشائعة ${name} | ${month} ${year}`;
+      case "es":
+        return `Códigos de cupón de tendencia de ${name} | ${month} ${year}`;
     }
   } else if (
-    //---------------- Expired Deals Heading ----------------//
-    type == "expiredCouponsHeading"
+    //---------------- hottest Offers ----------------//
+    type == "hottestOffersHeading"
   ) {
     switch (lang) {
       case "en":
-        return `${name} Expired Deals`;
+        return `Hottest ${name} Offers & Deals | ${month} ${year}`;
       case "ru":
-        return `Истекшие предложения ${name}`;
+        return `Самые горячие предложения и сделки ${name} | ${month} ${year}`;
       case "ar":
-        return `عروض ${name} منتهية الصلاحية`;
+        return `أفضل عروض ${name} | ${month} ${year}`;
       case "es":
-        return `Ofertas caducadas de ${name}`;
+        return `Ofertas y ofertas más calientes de ${name} | ${month} ${year}`;
     }
   } else if (
-    //---------------- Popular Deals Heading ----------------//
-    type == "popularCouponsHeading"
+    //---------------- latest Offers ----------------//
+    type == "latestOffersHeading"
   ) {
     switch (lang) {
       case "en":
-        return `Popular ${name} Coupon Codes 2024`;
+        return `Latest ${name} Offers & Deals | ${month} ${year}`;
       case "ru":
-        return `Популярные промокоды ${name} 2024`;
+        return `Последние предложения и сделки ${name} | ${month} ${year}`;
       case "ar":
-        return `أكواد القسائم الشهيرة ${name} 2024`;
+        return `أحدث عروض ${name} | ${month} ${year}`;
       case "es":
-        return `Códigos de cupón populares de ${name} 2024`;
+        return `Últimas ofertas y ofertas de ${name} | ${month} ${year}`;
+    }
+  } else if (
+    //---------------- Trending Offers ----------------//
+    type == "trendingOffersHeading"
+  ) {
+    switch (lang) {
+      case "en":
+        return `Trending ${name} Offers & Deals | ${month} ${year}`;
+      case "ru":
+        return `Трендовые предложения и сделки ${name} | ${month} ${year}`;
+      case "ar":
+        return `أفضل عروض ${name} | ${month} ${year}`;
+      case "es":
+        return `Ofertas y ofertas de tendencia de ${name} | ${month} ${year}`;
     }
   } else if (
     //---------------- Store Page Heading ----------------//
@@ -143,13 +188,13 @@ export const contentGenerator = (
   ) {
     switch (lang) {
       case "en":
-        return `${name} is offering ${couponCount || 1} coupons and ${dealCount || 1} deals today, and shoppers can save up to ${offer} on their orders. ${name} coupon codes are verified for ${month} ${year}`;
+        return `${name} is offering ${couponCount || 1} coupons ${offerCount && "and"} ${offerCount} ${offerCount && "Offers"} today. Shoppers can save up to ${offer} on their orders. All Offers and promo codes are updated to ${month} ${year}`;
       case "ru":
-        return `${name} предлагает ${couponCount || 1} купонов и ${dealCount || 1} сделок сегодня, и покупатели могут сэкономить до ${offer} на своих заказах. Купоны ${name} проверены на ${month} ${year}`;
+        return `${name} предлагает ${couponCount || 1} купонов ${offerCount && "и"} ${offerCount} ${offerCount && "предложения"} сегодня. Покупатели могут сэкономить до ${offer} на своих заказах. Все предложения и промокоды обновляются до ${month} ${year}`;
       case "ar":
-        return `تقدم ${name} ${couponCount || 1} قسيمة و ${dealCount || 1} صفقة اليوم، ويمكن للمتسوقين توفير ما يصل إلى ${offer} على طلباتهم. تم التحقق من أكواد القسائم ${name} لشهر ${month} ${year}`;
+        return `تقدم ${name} ${couponCount || 1} قسيمة ${offerCount && "و"} ${offerCount} ${offerCount && "عروض"} اليوم. يمكن للمتسوقين توفير ما يصل إلى ${offer} على طلباتهم. تم تحديث جميع العروض وأكواد الخصم حتى ${month} ${year}`;
       case "es":
-        return `${name} ofrece ${couponCount || 1} cupones y ${dealCount || 1} ofertas hoy, y los compradores pueden ahorrar hasta ${offer} en sus pedidos. Los códigos de cupón ${name} están verificados para ${month} ${year}`;
+        return `${name} está ofreciendo ${couponCount || 1} cupones ${offerCount && "y"} ${offerCount} ${offerCount && "Ofertas"} hoy. Los compradores pueden ahorrar hasta ${offer} en sus pedidos. Todas las ofertas y códigos promocionales se actualizan hasta ${month} ${year}`;
     }
   } else if (
     //---------------- FAQ Heading ----------------//

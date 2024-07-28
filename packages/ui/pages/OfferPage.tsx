@@ -19,31 +19,18 @@ import { Lang } from "../types";
 
 const OfferPage = async ({
   slug,
+  data,
   searchParams,
 }: {
   slug: string;
+  data: any;
   searchParams: any;
 }) => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
   const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
 
-  const offerRes: any = await axios.get(
-    `${process.env.NEXT_PUBLIC_BACK_URL}/offer/get`,
-    {
-      params: {
-        slug,
-        country,
-        morefields: "store,upvotes,downvotes,description",
-      },
-    },
-  );
-
-  if (offerRes.status !== 200) {
-    return notFound();
-  }
-
-  const offer = offerRes.data;
+  const offer = data.offer;
 
   const isExpired = offer?.status == "expired" ? true : false;
 

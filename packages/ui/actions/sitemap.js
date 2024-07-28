@@ -49,7 +49,7 @@ export const getSitemapArray = unstable_cache(
 
     const urlsArray = storeRes?.map((item) => {
       return {
-        loc: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cPath}/${item.slug}`,
+        loc: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/coupons/${item.slug}`,
         lastmod: new Date().toISOString(),
         changefreq: "weekly",
         priority: 0.9,

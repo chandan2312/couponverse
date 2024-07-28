@@ -24,7 +24,10 @@ const AsideContent = ({
     <>
       {/* ---SimilarStores mobile */}
       <SectionWrapper
-        title={contentGenerator("similarStoresHeading", store.nativeName, lang)}
+        title={contentGenerator({
+          type: "similarStoresHeading",
+          name: store.nativeName,
+        })}
         className="order-1 lg:order-4 lg:hidden"
       >
         <div className="">

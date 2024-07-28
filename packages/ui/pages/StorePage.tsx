@@ -129,11 +129,10 @@ const StorePage = async ({
                   <div>
                     <Heading
                       tag="h2"
-                      text={contentGenerator(
-                        "activeCouponsHeading",
-                        storeName,
-                        lang,
-                      )}
+                      text={contentGenerator({
+                        type: "activeCouponsHeading",
+                        name: storeName,
+                      })}
                     />
 
                     <div className="active-coupons flex flex-col gap-5">
@@ -165,11 +164,10 @@ const StorePage = async ({
 
                 <Heading
                   tag="h2"
-                  text={contentGenerator(
-                    "expiredCouponsHeading",
-                    storeName,
-                    lang,
-                  )} //TODO: offer title
+                  text={contentGenerator({
+                    type: "expiredCouponsHeading",
+                    name: storeName,
+                  })} //TODO: offer title
                 />
 
                 <>
@@ -199,11 +197,10 @@ const StorePage = async ({
               <TabsContent value="coupons" className="w-full">
                 <Heading
                   tag="h2"
-                  text={contentGenerator(
-                    "expiredCouponsHeading",
-                    storeName,
-                    lang,
-                  )} //TODO: offer title
+                  text={contentGenerator({
+                    type: "expiredCouponsHeading",
+                    name: storeName,
+                  })} //TODO: offer title
                 />
 
                 <>
@@ -240,11 +237,11 @@ const StorePage = async ({
                 <TabsContent value="offers" className="w-full">
                   <Heading
                     tag="h2"
-                    text={contentGenerator(
-                      "expiredCouponsHeading",
-                      storeName,
+                    text={contentGenerator({
+                      type: "expiredCouponsHeading",
+                      name: storeName,
                       lang,
-                    )} //TODO: offer title
+                    })} //TODO: offer title
                   />
 
                   <>
@@ -313,7 +310,7 @@ const StorePage = async ({
 
             <Heading
               tag="h2"
-              text={contentGenerator("aboutHeading", storeName, lang)}
+              text={contentGenerator({ type: "aboutHeading", name: storeName })}
             />
 
             <div className="card-section">
@@ -343,15 +340,12 @@ const StorePage = async ({
                 )}
 
                 <p>
-                  {contentGenerator(
-                    "aboutContent",
-                    storeName,
-                    lang,
-                    // theOffer,
-                    "",
-                    coupons.length,
-                    offers?.length,
-                  )}
+                  {contentGenerator({
+                    type: "aboutContent",
+                    name: storeName,
+                    coupon: coupons.length,
+                    offers: offers?.length,
+                  })}
                 </p>
               </div>
             </div>
@@ -360,7 +354,10 @@ const StorePage = async ({
 
             <Heading
               tag="h2"
-              text={contentGenerator("faqHeading", storeName, lang)}
+              text={contentGenerator({
+                type: "faqHeading",
+                name: storeName,
+              })}
             />
 
             <div className="card-section">
@@ -369,7 +366,10 @@ const StorePage = async ({
 
             <Heading
               tag="h2"
-              text={contentGenerator("howToApplyHeading", storeName, lang)}
+              text={contentGenerator({
+                text: "howToApplyHeading",
+                name: storeName,
+              })}
             />
 
             <div className="card-section">
@@ -378,7 +378,10 @@ const StorePage = async ({
 
             <Heading
               tag="h2"
-              text={contentGenerator("popularCouponsHeading", storeName, lang)}
+              text={contentGenerator({
+                type: "popularCouponsHeading",
+                name: storeName,
+              })}
             />
           </div>
         </div>

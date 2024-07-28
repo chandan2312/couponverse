@@ -130,7 +130,8 @@ export function getExpiryDate(expiryDate: string, lang: Lang) {
   return `${day} ${month} ${year}`;
 }
 
-export function generateOffer(coupons: any, storeName: string, lang: Lang) {
+export function generateOffer(coupons: any, storeName: string) {
+  const lang = process.env.NEXT_PUBLIC_LG as Lang;
   // fn
   function extractPercentage(str: string) {
     const percentages = str?.match(/\d{1,2}%/) || 0;
@@ -178,20 +179,20 @@ export function generateOffer(coupons: any, storeName: string, lang: Lang) {
 
   // 3
   if (bestOffer !== null) {
-    return `${bestOffer}% ${words.Off[lang]}`;
+    return `${bestOffer}`;
   } else {
     const storeNameLength = storeName?.length;
     const modulo = storeNameLength % 4;
 
     switch (modulo) {
       case 0:
-        return `25% ${words.Off[lang]}`;
+        return `25%`;
       case 1:
-        return `40% ${words.Off[lang]}`;
+        return `40%`;
       case 2:
-        return `50% ${words.Off[lang]}`;
+        return `50%`;
       case 3:
-        return `60% ${words.Off[lang]}`;
+        return `60%`;
     }
   }
 

@@ -13,11 +13,11 @@ const protocol = getProtocol();
 
 export const homeMetaData = () => ({
   title: `${process.env.NEXT_PUBLIC_APP} ${country.toUpperCase()} - ${contentGenerator(
-    "homeTitle",
-    "",
-    lang,
+    {
+      type: "homeTitle",
+    },
   )}`,
-  description: contentGenerator("homeDescription", "", lang),
+  description: contentGenerator({ type: "homeDescription" }),
   canonical: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}`,
   url: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}`,
 
@@ -37,7 +37,6 @@ export const homeMetaData = () => ({
 
 //--------------------- Store Page ---------------------//
 export const storePageMetaData = async (data: any) => {
-  console.log(data.store);
   const d = new Date();
 
   const offersList =
@@ -47,27 +46,24 @@ export const storePageMetaData = async (data: any) => {
       .join(", ") || "";
 
   const couponCount = data?.store?._count?.coupons || 0;
-  const dealCount = data?.store?._count?.offers || 0;
+  const offerCount = data?.store?._count?.offers || 0;
+  const percentage = generateOffer(data.coupons, data.store.nativeName);
 
   const meta = {
-    title: contentGenerator(
-      "seoTitle",
-      data.store.nativeName,
-      lang,
-      "",
-      "",
-      couponCount + dealCount,
-    ),
-    description: contentGenerator(
-      "seoDescription",
-      data.store.nativeName,
-      lang,
-      // theOffer,
-      offersList,
-      couponCount,
-      dealCount,
-      couponCount || 0,
-    ),
+    title: contentGenerator({
+      type: "seoTitle",
+      name: data.store.nativeName,
+      percentage: percentage,
+      count: couponCount + offerCount,
+    }),
+    description: contentGenerator({
+      type: "seoDescription",
+      name: data.store.nativeName,
+
+      couponCount: couponCount,
+      offerCount: offerCount,
+      count: couponCount || 0,
+    }),
     canonical: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/coupons/${data.store.slug}`,
     url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/coupons/${data.store.slug}`,
 
@@ -86,13 +82,11 @@ export const storePageMetaData = async (data: any) => {
           url: `${process.env.NEXT_PUBLIC_CDN_URL}${data.store.img.replace(/\\/g, "/")}`,
           width: 320,
           height: 320,
-          alt: contentGenerator(
-            "seoTitle",
-            data.store.nativeName,
-            lang,
-            // theOffer,
-            data?.store?._count?.coupons,
-          ),
+          alt: contentGenerator({
+            type: "seoTitle",
+            name: data.store.nativeName,
+            couponCount: data?.store?._count?.coupons,
+          }),
         },
       }),
       site_name: process.env.NEXT_PUBLIC_APP,
@@ -103,8 +97,48 @@ export const storePageMetaData = async (data: any) => {
 };
 
 //--------------------- Store Page ---------------------//
-export const offerPageMetaData = async (slug: string) => {
-  const meta = {};
+export const offerPageMetaData = async (data: any, storeName: string) => {
+  const d = new Date();
+
+  const lang = process.env.NEXT_PUBLIC_LG as Lang;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
+
+  const name = storeName
+    ? storeName
+    : data.offer.store
+      ? data.offer.store.nativeName.find(
+          (el: any) => Object.keys(el)[0] == lang,
+        )?.[lang]
+      : "";
+
+  const meta = {
+    title: `${data.offer.title} | ${name} | ${process.env.NEXT_PUBLIC_APP}`,
+    description: data.offer?.description,
+    canonical: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/offer/${data.offer.slug}`,
+    url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/offer/${data.offer.slug}`,
+
+    locale: process.env.HTML_LANG,
+    type: "article",
+    openGraph: {
+      type: "article",
+      article: {
+        publishedTime: data.offer.createdAt,
+        modifiedTime: data.offer.updatedAt,
+        authors: ["couponverse"],
+      },
+      url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/offer/${data.offer.slug}`,
+      ...(data.offer.img && {
+        images: {
+          url: `${process.env.NEXT_PUBLIC_CDN_URL}${data.offer.img.replace(/\\/g, "/")}`,
+          width: 320,
+          height: 320,
+          alt: contentGenerator({ type: "seoTitle" }),
+        },
+      }),
+      site_name: process.env.NEXT_PUBLIC_APP,
+    },
+  };
 
   return meta;
 };

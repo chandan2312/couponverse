@@ -25,12 +25,10 @@ export async function generateMetadata({ params }: { params: any }) {
   const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
 
   return {
-    title: `${process.env.NEXT_PUBLIC_APP}  - ${contentGenerator(
-      "subdomainTitle",
-      "",
-      lang,
-    )}`,
-    description: contentGenerator("subdomainDescription", "", lang),
+    title: `${process.env.NEXT_PUBLIC_APP}  - ${contentGenerator({
+      type: "subdomainTitle",
+    })}`,
+    description: contentGenerator({ type: "subdomainDescription" }),
     canonical: `https://${process.env.NEXT_PUBLIC_DOMAIN}`,
     url: `https://${process.env.NEXT_PUBLIC_DOMAIN}`,
 

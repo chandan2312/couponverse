@@ -98,7 +98,10 @@ const CouponCard = ({ coupon, store, showImage = true }: CouponCardProps) => {
 
           <div className="flex items-center gap-2">
             {showImage && (
-              <figure className="max-md:hidden bg-muted/10 rounded-md p-1 w-16 h-16 flex items-center justify-center">
+              <Link
+                href={`/coupons/${store.slug}`}
+                className=" bg-muted/10 rounded-full object-contain border border-muted/50 shadow-sm  w-[90px] h-[90px] min-w-[90px] flex items-center justify-center"
+              >
                 <Image
                   src={
                     store?.img
@@ -106,32 +109,35 @@ const CouponCard = ({ coupon, store, showImage = true }: CouponCardProps) => {
                       : ""
                   }
                   alt={storeName}
-                  width={60}
-                  height={60}
+                  width={90}
+                  height={90}
+                  className="rounded-full "
                 />
-              </figure>
+              </Link>
             )}
-            <div className="flex flex-col justify-center flex-grow ">
-              <h3
-                className={cn(
-                  "font-bold  text-lg",
-                  !isExpired ? "text-accent" : "text-muted-foreground",
-                )}
-              >
-                {coupon.offer || coupon.englishOffer}
-              </h3>
-              <h2
-                className={cn(
-                  "font-muted-foreground  leading-5 ",
-                  !isExpired && "font-semibold",
-                )}
-              >
-                {coupon.title || coupon.englishTitle}
-              </h2>
-            </div>
+            <div className="w-full flex-grow flex gap-2 max-md:flex-col lg:justify-between ">
+              <div className="">
+                <h3
+                  className={cn(
+                    "font-bold  text-lg",
+                    !isExpired ? "text-accent" : "text-muted-foreground",
+                  )}
+                >
+                  {coupon.offer || coupon.englishOffer}
+                </h3>
+                <h2
+                  className={cn(
+                    "font-muted-foreground  leading-5 ",
+                    !isExpired && "font-semibold",
+                  )}
+                >
+                  {coupon.title || coupon.englishTitle}
+                </h2>
+              </div>
 
-            <div className="flex items-center justify-between gap-2 pl-2">
-              <CouponPopup coupon={coupon} store={store} />
+              <div className="flex items-center lg:justify-end gap-2 ">
+                <CouponPopup coupon={coupon} store={store} />
+              </div>
             </div>
           </div>
 
