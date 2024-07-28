@@ -1,23 +1,20 @@
 import translate from "google-translate-api-x";
 import { Lang } from "../types";
-import { unstable_cache } from "next/cache";
 
-const appName = process.env.APP
-const lang = process.env.LG as Lang
-async function translateContent(content: string) {
-   
-   const translatedContentRes = await translate(content, {
-							to: lang,
-						});
-		const translatedContent = translatedContentRes.text;
-      return translatedContent
+const appName = process.env.NEXT_PUBLIC_APP;
+const lang = process.env.NEXT_PUBLIC_LG;
+async function translateContent(content) {
+  const translatedContentRes = await translate(content, {
+    to: lang,
+  });
+  const translatedContent = translatedContentRes.text;
+  return translatedContent;
 }
 
 // ---------------- About Us ------------------
 
 export function aboutContent() {
-
-   const raw = `
+  const raw = `
   <div className="my-8">
     <h3 className="h3">Meet Our Team at ${appName}!</h3>
     <p>
@@ -53,15 +50,14 @@ export function aboutContent() {
       and collaborate with us, we'd love to hear from you!
     </p>
     
-  </div>`
+  </div>`;
 
-  return translateContent(raw)
-
-}  
+  return translateContent(raw);
+}
 
 // ---------------- Contact Us ------------------
-export function contactUsContent(){
-   const raw = `
+export function contactUsContent() {
+  const raw = `
 		<h3 className="h3">${appName} is Here to Help</h3>
 					<p>
 						${appName} is not an online store, but your ultimate source for the best
@@ -84,12 +80,12 @@ export function contactUsContent(){
 					<p>
 						Feel free to reach out to us during our hours of operation, and we’ll
 						respond promptly to any inquiries or feedback you may have.
-					</p>`
-    return translateContent(raw)
-  }
+					</p>`;
+  return translateContent(raw);
+}
 
-  // ---------------- Disclaimer ------------------
-export function disclaimerContent(){
+// ---------------- Disclaimer ------------------
+export function disclaimerContent() {
   const raw = `
 	<p>
 						If you require any more information or have any questions about our site's
@@ -138,11 +134,11 @@ export function disclaimerContent(){
 						Should we update, amend or make any changes to this document, those
 						changes will be prominently posted here.
 					</p>`;
-    return translateContent(raw)
-  }
+  return translateContent(raw);
+}
 
-    // ---------------- privacyPolicy------------------
-export function privacyPolicyContent(){
+// ---------------- privacyPolicy------------------
+export function privacyPolicyContent() {
   const raw = `
 		<p>
 						By using our website, you agree to our use of your personal information.
@@ -169,13 +165,12 @@ export function privacyPolicyContent(){
 						such as an email address.
 					</p>
 	`;
-    return translateContent(raw)
-  }
+  return translateContent(raw);
+}
 
-
-      // ---------------- termsConditions------------------
-export function termsConditionsContent(){
- const raw = `
+// ---------------- termsConditions------------------
+export function termsConditionsContent() {
+  const raw = `
 		<p>Welcome to ${appName}!</p>
 
 					<p>
@@ -471,13 +466,12 @@ export function termsConditionsContent(){
 						any nature.
 					</p>
 	`;
-    return translateContent(raw)
-  }
+  return translateContent(raw);
+}
 
-
-        // ---------------- dmca------------------
-export function dmcaContent(){
- const raw = `
+// ---------------- dmca------------------
+export function dmcaContent() {
+  const raw = `
 		<p>Welcome to ${appName}!</p>
 
 					<p>
@@ -773,7 +767,5 @@ export function dmcaContent(){
 						any nature.
 					</p>
 	`;
-    return translateContent(raw)
-  }
-
-
+  return translateContent(raw);
+}

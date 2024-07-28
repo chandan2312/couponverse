@@ -4,7 +4,7 @@ import { Lang } from "../types";
 
 const Dm = async () => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
   const content = await dmcaContent();
 
   return (

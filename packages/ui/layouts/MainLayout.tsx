@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import StoreWrapper from "../lib/wrapper/StoreWrapper";
 import QueryWrapper from "../lib/wrapper/QueryWrapper";
 import { CookiesProvider } from "next-client-cookies/server";
+//@ts-ignore
 import { SessionProvider } from "@repo/auth-config/client";
 
 const font = localFont({

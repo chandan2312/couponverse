@@ -5,7 +5,7 @@ import { codeTrim } from "../../lib/codeTrim";
 import CouponPopup from "./CouponPopup";
 
 const CouponListWidget = ({ store }: { store: any }) => {
-  const lang: Lang = process.env.LG as Lang;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   return (
     <>
       <div className="card-section">

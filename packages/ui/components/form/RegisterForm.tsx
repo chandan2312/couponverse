@@ -22,7 +22,6 @@ import {
 } from "../ui/select";
 
 import { Input } from "../ui/input";
-import { register } from "../../actions/auth2";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setSessionUser,
@@ -31,6 +30,7 @@ import {
   setUser,
 } from "../../store/slices/user.slice";
 import { setPopup } from "../../store/slices/form.slice";
+// @ts-ignore
 import { signOut } from "@repo/auth-config/client";
 
 import CircularLoader from "../other/CircularLoader";
@@ -301,6 +301,7 @@ const RegisterForm = () => {
               onClick={(e) => {
                 e.preventDefault();
                 console.log("clearing session");
+                // @ts-ignore
                 signOut();
                 dispatch(setSessionUser(null));
                 dispatch(setSessionMethod(null));

@@ -4,17 +4,13 @@ import { words } from "../constants/words";
 import { contentGenerator } from "../lib/contentGenerator";
 import Image from "next/image";
 import Link from "next/link";
-import { correctPath, generateOffer } from "../lib/utils";
 import HowToUseSection from "../components/store/HowToUseSection";
-import prisma from "../lib/db";
 import { notFound, redirect } from "next/navigation";
 import SectionWrapper from "../components/store/SectionWrapper";
 import LinkButton from "../components/custom/LinkButton";
 import Heading from "../components/custom/Heading";
 import AsideContent from "../components/store/AsideContent";
-import HorizontalStoreCard from "../components/store/HorizontalStoreCard";
 import { Lang } from "../types";
-import CouponListWidget from "../components/coupon/CouponListWidget";
 import {
   Tabs,
   TabsContent,
@@ -31,11 +27,9 @@ import TrendingOffers from "../components/offer/TrendingOffers";
 
 const StorePage = async ({
   slug,
-  storePath,
   searchParams,
 }: {
   slug: string;
-  storePath: string;
   searchParams: any;
 }) => {
   if (!slug) {
@@ -44,7 +38,7 @@ const StorePage = async ({
 
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE || "global";
   const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
-  const perpage = 2;
+  const perpage = 10;
 
   const [storeRes, couponsRes, offersRes] =
     // popularStores, popularCoupons, popularOffers
@@ -55,11 +49,11 @@ const StorePage = async ({
       ), //TODO: select fields
       // coupons
       axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/coupon/getMany?shop=${slug}&orderby=hotness_desc&country=${country},in&lang=${lang}&page=1&perpage=${perpage}&morefields=viewsArr,upvotesArr,downvotesArr`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/coupon/getMany?shop=${slug}&orderby=hotness_desc&country=${country},in&lang=${lang}&page=1&perpage=${perpage}&morefields=views,upvotes,downvotes`,
       ),
       // offers
       axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?shop=${slug}&orderby=hotness_desc&country=${country}&lang=${lang}&page=1&perpage=${perpage}&morefields=upvotesArr,downvotesArr`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?shop=${slug}&orderby=hotness_desc&country=${country}&lang=${lang}&page=1&perpage=${perpage}&morefields=views,upvotes,downvotes`,
       ),
       // popularStores
       // axios.get(
@@ -81,9 +75,10 @@ const StorePage = async ({
   const coupons = couponsRes.data || []; // coupons
   const offers = offersRes.data || []; // offers
 
-  // console.log("store", store);
+  const storeName =
+    typeof store?.nativeName == "string" ? store.nativeName : "";
 
-  const couponCount = coupons?.length || 0;
+  // const couponCount = coupons?.length || 0;
   // const theOffer = generateOffer(coupons, store.nativeName, lang);
 
   if (coupons?.length) {
@@ -98,9 +93,9 @@ const StorePage = async ({
             </li>{" "}
             /{" "}
             <li>
-              <Link href="/stores/all">{words.Stores[lang]}</Link>
+              <Link href="/stores">{words.Stores[lang]}</Link>
             </li>{" "}
-            / <li className="font-semibold">{store.nativeName}</li>
+            / <li className="font-semibold">{storeName}</li>
           </ul>
         </div>
 
@@ -124,12 +119,12 @@ const StorePage = async ({
             </figure>
 
             <div className="flex flex-col justify-center gap-2">
-              <h2>{store.nativeName}</h2>
+              <h2>{storeName}</h2>
               <LinkButton
                 link={
                   store?.affLink ? store.affLink : store.link ? store.link : ""
                 }
-                text={`${words.Visit[lang]} ${store.nativeName}`}
+                text={`${words.Visit[lang]} ${storeName}`}
               />
             </div>
           </div>
@@ -153,7 +148,7 @@ const StorePage = async ({
                   Coupons
                 </TabsTrigger>
                 <TabsTrigger value="offers" className="min-w-20 min-h-8 p-auto">
-                  {offers?.length ? "Offers" : "Deals"}
+                  Offers
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="all" className="w-full">
@@ -164,7 +159,7 @@ const StorePage = async ({
                       tag="h2"
                       text={contentGenerator(
                         "activeCouponsHeading",
-                        store.nativeName,
+                        storeName,
                         lang,
                       )}
                     />
@@ -186,14 +181,13 @@ const StorePage = async ({
                         shop: store.slug,
                         country: country,
                         orderby: "hotness_desc",
-                        morefields: "upvotesArr,downvotesArr",
+                        morefields: "upvotes,downvotes",
                         lang: lang,
-                        page: 2,
-                        perpage: perpage,
+                        page: 3,
+                        perpage: 5,
                       }}
                     />
                   </div>
-                  )
                 </div>
                 {/* ----------- ALL - Offers --------------- */}
 
@@ -201,7 +195,7 @@ const StorePage = async ({
                   tag="h2"
                   text={contentGenerator(
                     "expiredCouponsHeading",
-                    store.nativeName,
+                    storeName,
                     lang,
                   )} //TODO: offer title
                 />
@@ -222,10 +216,10 @@ const StorePage = async ({
                       shop: store.slug,
                       country: country,
                       orderby: "hotness_desc",
-                      morefields: "upvotesArr,downvotesArr",
+                      morefields: "upvotes,downvotes",
                       lang: lang,
-                      page: 2,
-                      perpage: perpage,
+                      page: 3,
+                      perpage: 5,
                     }}
                   />
                 </>
@@ -235,7 +229,7 @@ const StorePage = async ({
                   tag="h2"
                   text={contentGenerator(
                     "expiredCouponsHeading",
-                    store.nativeName,
+                    storeName,
                     lang,
                   )} //TODO: offer title
                 />
@@ -262,10 +256,10 @@ const StorePage = async ({
                       shop: store.slug,
                       country: country,
                       orderby: "hotness_desc",
-                      morefields: "upvotesArr,downvotesArr",
+                      morefields: "upvotes,downvotes",
                       lang: lang,
-                      page: 2,
-                      perpage: perpage,
+                      page: 3,
+                      perpage: 5,
                     }}
                   />
                 </>
@@ -276,7 +270,7 @@ const StorePage = async ({
                     tag="h2"
                     text={contentGenerator(
                       "expiredCouponsHeading",
-                      store.nativeName,
+                      storeName,
                       lang,
                     )} //TODO: offer title
                   />
@@ -297,10 +291,10 @@ const StorePage = async ({
                         shop: store.slug,
                         country: country,
                         orderby: "hotness_desc",
-                        morefields: "upvotesArr,downvotesArr",
+                        morefields: "upvotes,downvotes",
                         lang: lang,
-                        page: 2,
-                        perpage: perpage,
+                        page: 3,
+                        perpage: 5,
                       }}
                     />
                   </>
@@ -315,11 +309,11 @@ const StorePage = async ({
           <aside className="lg:col-span-3 w-full lg:sticky lg:top-20 lg:z-10 ">
             {/* ---STATS */}
 
-            <AsideContent
+            {/* <AsideContent
               store={store}
               couponCount={couponCount}
               offerCount={offers?.length || 0}
-            />
+            /> */}
           </aside>
         </div>
 
@@ -347,7 +341,7 @@ const StorePage = async ({
 
             <Heading
               tag="h2"
-              text={contentGenerator("aboutHeading", store.nativeName, lang)}
+              text={contentGenerator("aboutHeading", storeName, lang)}
             />
 
             <div className="card-section">
@@ -358,7 +352,6 @@ const StorePage = async ({
                     alt=""
                     width={200}
                     height={200}
-                    priority
                     style={{ objectFit: "contain" }}
                     className="rounded-md"
                   />
@@ -380,11 +373,11 @@ const StorePage = async ({
                 <p>
                   {contentGenerator(
                     "aboutContent",
-                    store.nativeName,
+                    storeName,
                     lang,
                     // theOffer,
                     "",
-                    couponCount,
+                    coupons.length,
                     offers?.length,
                   )}
                 </p>
@@ -395,20 +388,16 @@ const StorePage = async ({
 
             <Heading
               tag="h2"
-              text={contentGenerator("faqHeading", store.nativeName, lang)}
+              text={contentGenerator("faqHeading", storeName, lang)}
             />
 
             <div className="card-section">
-              <StoreFAQs name={store.nativeName} lang={lang} />
+              <StoreFAQs name={storeName} lang={lang} />
             </div>
 
             <Heading
               tag="h2"
-              text={contentGenerator(
-                "howToApplyHeading",
-                store.nativeName,
-                lang,
-              )}
+              text={contentGenerator("howToApplyHeading", storeName, lang)}
             />
 
             <div className="card-section">
@@ -417,55 +406,9 @@ const StorePage = async ({
 
             <Heading
               tag="h2"
-              text={contentGenerator(
-                "popularCouponsHeading",
-                store.nativeName,
-                lang,
-              )}
+              text={contentGenerator("popularCouponsHeading", storeName, lang)}
             />
-
-            {/* <div className="card-section w-full">
-              {popularCoupons?.map((coupon: any, index: any) => (
-                <div key={index} className="w-full">
-                  <div className="w-full flex items-center gap-3 ">
-                    <figure className="w-28 h-28 p-1 m-auto flex items-center justify-center flex-shrink-0">
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_CDN_URL}${coupon.store.img}`}
-                        alt={coupon.title}
-                        width={100}
-                        height={100}
-                        priority
-                        style={{ objectFit: "contain" }}
-                        className="rounded-md"
-                      />
-                    </figure>
-
-                    <h4 className="font-semibold">{coupon.offer}</h4>
-
-                    <p className="flex-grow">{coupon.title}</p>
-                    <Link href={`/${validPath}/${coupon.store.slug}`}>
-                      View
-                    </Link>
-                  </div>
-
-                  <Separator />
-                </div>
-              ))}
-            </div> */}
           </div>
-
-          {/* ---------- Right Section - featured stores ------------ */}
-          {/* {popularStores?.length ? (
-            <div className="col-span-12 lg:col-span-3 w-full lg:sticky lg:top-20 ">
-              <SectionWrapper title={words.FeaturedStores[lang]}>
-                {popularStores?.map((store: any, index: any) => (
-                  <HorizontalStoreCard key={index} store={store} />
-                ))}
-              </SectionWrapper>
-            </div>
-          ) : (
-            <></>
-          )} */}
         </div>
       </>
     );

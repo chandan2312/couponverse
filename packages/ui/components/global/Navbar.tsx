@@ -13,27 +13,29 @@ import { getProtocol } from "../../lib/utils";
 import { Lang } from "../../types";
 
 const Navbar = async () => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
   const country = (process.env.NEXT_PUBLIC_COUNTRYCODE as string) || "en";
   const protocol = getProtocol();
 
   const storesRes = await getTrendingStores(country);
   const stores = storesRes.data;
   return (
-    <div className="bg-card z-50 sticky top-0 min-h-12  text-card-foreground/90  px-2 md:px-4 lg:px-6">
+    <div className="bg-card sticky z-10  min-h-12  text-card-foreground/90  px-2 md:px-4 lg:px-6">
       <div className="min-h-10 pt-1 md:max-w-[85%] lg:max-w-[80%] mx-auto flex items-center gap-1 text-sm font-semibold justify-between  ">
         <div className="flex gap-1.5 items-center ">
           <div className="md:hidden flex items-center">
             <MobileMenu lang={lang || "en"} country={country} />
           </div>
-          <Link href={`${process.env.PROTOCOL}${process.env.DOMAIN}`}>
+          <Link href={`https://${process.env.NEXT_PUBLIC_DOMAIN}`}>
             <h1 className="flex items-center gap-2">
-              <span className="font-bold text-lg">{process.env.APP}</span>
+              <span className="font-bold text-lg">
+                {process.env.NEXT_PUBLIC_APP}
+              </span>
 
               {country && country != "en" && (
                 <Image
                   src={`https://flagsapi.com/${country.toUpperCase()}/flat/64.png`}
-                  alt={`${process.env.APP} ${country.toUpperCase()}`}
+                  alt={`${process.env.NEXT_PUBLIC_APP} ${country.toUpperCase()}`}
                   width={32}
                   height={32}
                 />
@@ -53,7 +55,7 @@ const Navbar = async () => {
           <Separator orientation="vertical" />
 
           <Link
-            href={`${process.env.PROTOCOL}${process.env.DOMAIN}/stores/all`}
+            href={`https://${process.env.NEXT_PUBLIC_DOMAIN}/stores`}
             className="flex items-center gap-1"
           >
             <Store />
@@ -74,10 +76,7 @@ const Navbar = async () => {
 
           <NavbarSearch lang={lang} />
 
-          <Profile
-            lang={lang || "en"}
-            cdnUrl={process.env.NEXT_PUBLIC_CDN_URL}
-          />
+          <Profile />
         </div>
       </div>
     </div>

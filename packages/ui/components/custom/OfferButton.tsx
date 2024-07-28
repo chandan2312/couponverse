@@ -3,10 +3,19 @@ import { words } from "../../constants/words";
 import { cn } from "../../lib/utils";
 import { codeTrim } from "../../lib/codeTrim";
 import Link from "next/link";
+import { Lang } from "../../types";
 
-const OfferButton = ({ code, slug, isExpired }) => {
+const OfferButton = ({
+  code,
+  slug,
+  isExpired,
+}: {
+  code?: string;
+  slug: string;
+  isExpired?: boolean;
+}) => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE || "us";
-  const lang = process.env.LG || "en";
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   if (code) {
     const trimmedCode = codeTrim(code);
     return (

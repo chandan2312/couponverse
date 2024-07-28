@@ -13,6 +13,9 @@ import Heading from "../components/custom/Heading";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
 import { Separator } from "../components/ui/separator";
+import TrendingOffers from "../components/offer/TrendingOffers";
+import TrendingCoupons from "../components/coupon/TrendingCoupons";
+import { Lang } from "../types";
 
 const OfferPage = async ({
   slug,
@@ -22,13 +25,13 @@ const OfferPage = async ({
   searchParams: any;
 }) => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
-  const lang = process.env.NEXT_PUBLIC_LG as string;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
 
   const offerRes: any = await axios.get(
     `${process.env.NEXT_PUBLIC_BACK_URL}/offer/get`,
     {
-      params: { slug, country, morefields: "store,upvotesArr,downvotesArr" },
+      params: { slug, country, morefields: "store,upvotes,downvotes" },
     },
   );
 
@@ -38,7 +41,7 @@ const OfferPage = async ({
 
   const offer = offerRes.data;
 
-  const isExpired = offer.status == "expired" ? true : false;
+  const isExpired = offer?.status == "expired" ? true : false;
 
   return (
     <div className="mx-auto px-auto space-y-4 max-w-5xl">
@@ -214,9 +217,43 @@ const OfferPage = async ({
           <Button variant="accent">Send message</Button>
         </div>
 
-        <Separator />
+        {/* <Separator /> */}
+      </div>
 
-        <div className=""></div>
+      {/* --------------------- SECTION 4 - trending offers ------------------ */}
+
+      <div
+        className={cn(
+          "relative  gap-2 bg-card mx-2 p-2 border-2 border-muted shadow-lg overflow-hidden",
+          "   rounded-lg shadow-sm border border-muted/30    ",
+        )}
+      >
+        <TrendingOffers />
+        <div className="flex py-4 items-center justify-center">
+          <LinkButton
+            link="/#trending-offers"
+            text="View more offers"
+            className="px-5 py-auto my-auto h-10"
+          />
+        </div>
+      </div>
+
+      {/* --------------------- SECTION 5 - trending coupons------------------ */}
+
+      <div
+        className={cn(
+          "relative  gap-2 bg-card mx-2 p-2 border-2 border-muted shadow-lg overflow-hidden",
+          "   rounded-lg shadow-sm border border-muted/30    ",
+        )}
+      >
+        <TrendingCoupons />
+        <div className="flex py-4 items-center justify-center">
+          <LinkButton
+            link="/#trending-Coupons"
+            text="View more coupons"
+            className="px-5 py-auto my-auto h-10"
+          />
+        </div>
       </div>
     </div>
   );

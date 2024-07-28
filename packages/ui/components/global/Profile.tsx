@@ -25,11 +25,17 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+//@ts-ignore
 import { signOut } from "@repo/auth-config/client";
 import { Lang } from "../../types";
+// @ts-ignore
 import { words } from "../../constants/words";
+import Link from "next/link";
 
-const Profile = ({ lang, cdnUrl }: { lang: Lang; cdnUrl: string }) => {
+const Profile = () => {
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
   const cookies = useCookies();
   const accessToken = cookies.get("accessToken") || null;
   const dispatch = useDispatch();
@@ -115,18 +121,21 @@ const Profile = ({ lang, cdnUrl }: { lang: Lang; cdnUrl: string }) => {
         <DropdownMenuTrigger>
           <Avatar className="h-8 w-8">
             <AvatarImage
-              src={currUser.image}
-              alt={`${currUser.fullName || currUser.name}`}
+              src={`${cdnUrl}${currUser.avatar}`}
+              alt={`${currUser.username}`}
             />
-            <AvatarFallback>{currUser.fallbackAvatr}</AvatarFallback>
+            {/* <AvatarFallback>{currUser.fallbackAvatr}</AvatarFallback> */}
+            {/* ---- //TODO:Create fallback avatar text */}
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href={`/user/${currUser.username}`}>Profile</Link>
+          </DropdownMenuItem>
+          {/* <DropdownMenuItem>Billing</DropdownMenuItem>
+          <DropdownMenuItem>Team</DropdownMenuItem> */}
           <DropdownMenuItem onClick={() => signOut()}>
             Sign Out
           </DropdownMenuItem>

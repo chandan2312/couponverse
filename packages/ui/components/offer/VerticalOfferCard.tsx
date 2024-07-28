@@ -14,10 +14,11 @@ import {
 import IconButton from "../custom/IconButton";
 import OfferButton from "../custom/OfferButton";
 import OfferVote from "./OfferVote";
+import { Lang } from "../../types";
 
 const VerticalOfferCard = ({ offer }: { offer: any }) => {
   const country = process?.env?.NEXT_PUBLIC_COUNTRYCODE || "global";
-  const lang = process?.env?.NEXT_PUBLIC_LG || "en";
+  const lang: Lang = process?.env?.NEXT_PUBLIC_LG as Lang;
   const isExpired = offer.status == "expired" ? true : false;
   return (
     <article

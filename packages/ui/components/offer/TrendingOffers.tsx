@@ -13,10 +13,11 @@ import {
 import OfferCard from "./OfferCard";
 import VerticalOfferCard from "./VerticalOfferCard";
 import Heading from "../custom/Heading";
+import { Lang } from "../../types";
 
 const TrendingOffers = () => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
-  const lang = process.env.NEXT_PUBLIC_LG;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   const [offers, setOffers] = useState([]);
 
   const newoffers = useQuery({

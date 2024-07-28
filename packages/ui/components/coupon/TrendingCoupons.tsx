@@ -12,10 +12,11 @@ import {
 } from "../../components/ui/carousel";
 import VerticalCouponCard from "./VerticalCouponCard";
 import Heading from "../custom/Heading";
+import { Lang } from "../../types";
 
 const TrendingCoupons = () => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
-  const lang = process.env.NEXT_PUBLIC_LG;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   const [coupons, setCoupons] = useState([]);
 
   const newoffers = useQuery({

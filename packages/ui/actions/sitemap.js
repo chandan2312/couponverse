@@ -1,4 +1,3 @@
-import { cache } from "react";
 import prisma from "../lib/db";
 import { correctPath } from "../lib/utils";
 import { getStoreCount } from "./store";
@@ -12,7 +11,7 @@ export const getSitemapArray = unstable_cache(
     if (process.env.NODE_ENV === "production") protocol = "https://";
 
     const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
-    const lang = process.env.LG;
+    const lang = process.env.NEXT_PUBLIC_LG;
     if (!lang || !country) return res.status(404).send("Not found");
     const cPath = correctPath(lang);
 
@@ -67,7 +66,7 @@ export const getSitemapArray = unstable_cache(
 export const getSitemapIndexArray = unstable_cache(
   async () => {
     const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
-    const lang = process.env.LG;
+    const lang = process.env.NEXT_PUBLIC_LG;
     let protocol = "http://";
     if (process.env.NODE_ENV === "production") protocol = "https://";
 

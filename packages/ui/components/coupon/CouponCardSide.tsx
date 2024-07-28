@@ -12,7 +12,7 @@ type DealCardProps = {
 };
 
 const CouponCardSide = ({ deal }: DealCardProps) => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
 
   const cpath = correctPath(lang);
   const protocol = getProtocol();
@@ -95,13 +95,7 @@ const CouponCardSide = ({ deal }: DealCardProps) => {
           </div>
 
           <div className="p-2 flex items-center justify-start  gap-2 min-w-[80%] mx-auto">
-            <CouponPopup
-              deal={deal}
-              store={deal.store}
-              lang={lang}
-              cdnUrl={process.env.NEXT_PUBLIC_CDN_URL as string}
-              fullWidth={true}
-            />
+            <CouponPopup coupon={deal} store={deal.store} />
           </div>
         </div>
       </div>

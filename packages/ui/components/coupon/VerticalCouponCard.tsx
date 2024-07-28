@@ -14,7 +14,7 @@ type DealCardProps = {
 };
 
 const VerticalCouponCard = ({ coupon }: DealCardProps) => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
 
   const cpath = correctPath(lang);
   const weeklyViews = 0; //TODO: weeklyViews

@@ -9,12 +9,12 @@ import Login from "../global/Login";
 
 const CouponVote = ({ coupon }: { coupon: any }) => {
   const queryClient = new QueryClient();
-  const [upvotes, setUpvotes] = useState(coupon.upvotes || 0);
-  const [downvotes, setDownvotes] = useState(coupon.downvotes || 0);
-  const [hotness, setHotness] = useState(coupon.hotness || 0);
-  const [upvotesArr, setUpvotesArr] = useState(coupon.upvotesArray || []);
-  const [downvoteArr, setDownvotesArr] = useState(coupon.downvotesArray || []);
-  const currUser = useSelector((state: any) => state.user.user);
+  const [upvotes, setUpvotes] = useState(coupon?.upvotesCount || 0);
+  const [downvotes, setDownvotes] = useState(coupon?.downvotesCount || 0);
+  const [hotness, setHotness] = useState(coupon?.hotness || 0);
+  const [upvotesArr, setUpvotesArr] = useState(coupon?.upvotes || []);
+  const [downvoteArr, setDownvotesArr] = useState(coupon?.downvotes || []);
+  const currUser = useSelector((state: any) => state?.user?.user);
 
   const mutation = useMutation({
     mutationFn: async (voteData: {
@@ -28,11 +28,11 @@ const CouponVote = ({ coupon }: { coupon: any }) => {
       return res.data;
     },
     onSuccess: (data: any) => {
-      setUpvotes(data.upvotes);
-      setDownvotes(data.downvotes);
+      setUpvotes(data.upvotesCount);
+      setDownvotes(data.downvotesCount);
       setHotness(data.hotness);
-      setUpvotesArr(data?.upvotesArr || []);
-      setDownvotesArr(data?.downvotesArr || []);
+      setUpvotesArr(data?.upvotes || []);
+      setDownvotesArr(data?.downvotes || []);
     },
     onError: (error: any, variables, context) => {
       console.error(error?.response?.status);

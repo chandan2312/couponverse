@@ -21,10 +21,7 @@ const StorePageApp = ({
   searchParams: any;
 }) => {
   const slug = params.slug;
-  const storePath = params.storePath;
-  return (
-    <StorePage slug={slug} storePath={storePath} searchParams={searchParams} />
-  );
+  return <StorePage slug={slug} searchParams={searchParams} />;
 };
 
 export default StorePageApp;

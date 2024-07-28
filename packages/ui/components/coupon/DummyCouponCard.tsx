@@ -116,12 +116,7 @@ const DummyCouponCard = ({
           </div>
 
           <div className="flex items-center justify-between gap-2 p-2">
-            <CouponPopup
-              deal={deal}
-              store={store}
-              lang={lang}
-              cdnUrl={process.env.NEXT_PUBLIC_CDN_URL as string}
-            />
+            <CouponPopup coupon={deal} store={store} />
           </div>
         </div>
 
@@ -142,13 +137,7 @@ const DummyCouponCard = ({
             </div>
           </div>
           <div className="flex gap-3 lg:gap-4 items-center justify-end px-2">
-            <CouponPopup
-              deal={deal}
-              store={store}
-              lang={lang}
-              cdnUrl={process.env.NEXT_PUBLIC_CDN_URL as string}
-              isHistoryPopup={true}
-            />
+            <CouponPopup store={store} coupon={deal} isHistoryPopup={true} />
             {/* <LikeDealButton /> */}
             <span>
               <Share2 size={16} />

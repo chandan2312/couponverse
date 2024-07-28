@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { Lang } from "../../types";
 
 export const CouponWorking = ({ coupon }: { coupon: any }) => {
-  const lang = process.env.NEXT_PUBLIC_LG;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
   const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
   const [votedDeals, setVotedDeals] = useState([]);

@@ -28,17 +28,29 @@ type CouponCardProps = {
 
 const CouponCard = ({ coupon, store, showImage = true }: CouponCardProps) => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE || "global";
-  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   if (!coupon) return null;
 
-  const isExpired = coupon.status == "expired" ? true : false;
+  console.log("coupon", coupon);
+  console.log("store", store);
+
+  const isExpired = coupon?.status == "expired" ? true : false;
+
+  const storeName =
+    typeof store?.nativeName == "string"
+      ? store?.nativeName
+      : store?.nativeName?.find((el: any) => Object.keys(el)[0] == lang)?.[lang]
+        ? store?.nativeName.find((el: any) => Object.keys(el)[0] == lang)?.[
+            lang
+          ]
+        : store?.slug;
 
   //week count from viewsRecord
 
-  const weeklyViews = coupon.viewsArr
-    ? coupon?.viewsArr?.filter((item: any) => {
+  const weeklyViews = coupon?.views
+    ? coupon?.views?.filter((item: any) => {
         return (
-          new Date(item.time).getTime() > Date.now() - 1000 * 60 * 60 * 24 * 7
+          new Date(item.date).getTime() > Date.now() - 1000 * 60 * 60 * 24 * 7
         );
       })?.length
     : 0;
@@ -48,6 +60,8 @@ const CouponCard = ({ coupon, store, showImage = true }: CouponCardProps) => {
   if (coupon?.expiryDate) {
     expiryDate = getExpiryDate(coupon?.expiryDate, lang);
   }
+
+  // return <>hello</>;
 
   return (
     // <Suspense fallback={<div>Loading...</div>}>
@@ -93,7 +107,7 @@ const CouponCard = ({ coupon, store, showImage = true }: CouponCardProps) => {
                       ? `${process?.env.NEXT_PUBLIC_CDN_URL}${store.img}`
                       : ""
                   }
-                  alt={store.nativeName || store.name}
+                  alt={storeName}
                   width={60}
                   height={60}
                 />
@@ -129,7 +143,7 @@ const CouponCard = ({ coupon, store, showImage = true }: CouponCardProps) => {
             <div className="flex items-center gap-2 ">
               <div className="flex items-center gap-1">
                 <Eye size={16} />
-                <span>{coupon.views}</span>
+                <span>{coupon.viewsCount}</span>
               </div>
 
               <div className="flex items-center gap-1">
@@ -143,8 +157,6 @@ const CouponCard = ({ coupon, store, showImage = true }: CouponCardProps) => {
               <CouponPopup
                 coupon={coupon}
                 store={store}
-                lang={lang}
-                country={country}
                 isHistoryPopup={true}
               />
               {/* <LikeDealButton /> */}

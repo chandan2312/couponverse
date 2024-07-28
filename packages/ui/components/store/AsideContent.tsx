@@ -19,7 +19,7 @@ const AsideContent = ({
   couponCount: number;
   offerCount: number;
 }) => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
   return (
     <>
       {/* ---SimilarStores mobile */}

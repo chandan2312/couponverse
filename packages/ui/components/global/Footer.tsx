@@ -5,7 +5,7 @@ import { words } from "../../constants/words";
 import { Lang } from "../../types";
 
 const Footer = () => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
   return (
     <>
       <footer className="mx-auto max-w-7xl space-y-8 px-4 pt-4 font-medium bg-card text-card-foreground rounded-t-lg">
@@ -50,10 +50,10 @@ const Footer = () => {
             <Link href="/" className="transition hover:text-blue-500">
               {words.Home[lang]}
             </Link>
-            <Link href="/stores/all" className="transition hover:text-blue-500">
+            <Link href="/stores" className="transition hover:text-blue-500">
               {words.AllStores[lang]}
             </Link>
-            <Link
+            {/* <Link
               href="/view/popular-stores"
               className="transition hover:text-blue-500"
             >
@@ -64,11 +64,11 @@ const Footer = () => {
               className="transition hover:text-blue-500"
             >
               {words.TrendingCouponOffers[lang]}
-            </Link>
+            </Link> */}
           </nav>
         </div>
         <div className="text-sm flex flex-col space-y-4 border-t border-slate-200 py-8 sm:items-center sm:justify-between md:flex-row md:space-y-0">
-          <p>© 2024 {process.env.APP}, Inc.</p>
+          <p>© 2024 {process.env.NEXT_PUBLIC_APP}, Inc.</p>
 
           <p>{words.HaveANiceDay[lang]}</p>
         </div>

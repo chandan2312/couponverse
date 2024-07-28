@@ -70,6 +70,7 @@ const MoreOffers = ({
             },
           };
         });
+        //@ts-ignore
         firstNewOfferIndex.current = offers.length || 0;
       }
     }

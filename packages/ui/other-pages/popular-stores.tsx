@@ -5,7 +5,7 @@ import { getTrendingStores } from "../actions/store";
 import HomeStoreCard from "../components/store/HomeStoreCard";
 
 const PopularStores = async () => {
-  const lang: Lang = process.env.LG as Lang;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   const trendingStoresRes = await getTrendingStores(lang);
   const trendingStores = trendingStoresRes.data;
   return (

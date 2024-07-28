@@ -11,11 +11,11 @@ import {
 } from "../../store/slices/coupons.slice";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { Lang } from "../../types";
 
 const MoreCoupons = ({ store, slug }: { store: any; slug: string }) => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE || "global";
-  const lang = process.env.NEXT_PUBLIC_LG || "en";
-
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   // Redux states
   const loadedCoupons = useSelector(
     (state: any) => state.coupons.loadedCoupons,

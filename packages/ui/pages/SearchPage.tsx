@@ -6,7 +6,7 @@ import { correctPath } from "../lib/utils";
 import { Lang } from "../types";
 
 const SearchPage = async ({ params }: { params: any }) => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
   const term = params.term;
 
   const cpath = correctPath(lang);

@@ -4,7 +4,7 @@ import { Lang } from "../types";
 import { getTrendingCoupons } from "../actions/coupon";
 import CouponCardSide from "../components/coupon/CouponCardSide";
 const TrendingCoupons = async () => {
-  const lang: Lang = process.env.LG as Lang;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   const trendingCouponsRes = await getTrendingCoupons(lang);
   const trendingCoupons = trendingCouponsRes.data;
   return (

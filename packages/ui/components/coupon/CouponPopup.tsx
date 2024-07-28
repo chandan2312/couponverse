@@ -13,11 +13,9 @@ import { Button } from "../ui/button";
 import { words } from "../../constants/words";
 import Link from "next/link";
 import Image from "next/image";
-import { faker } from "@faker-js/faker";
 import { codeTrim } from "../../lib/codeTrim";
 import { Clipboard, Eye, History } from "lucide-react";
 import CouponWorking from "../coupon/CouponWorking";
-// import { addCouponView, increaseCouponViews } from "../../actions/coupon";
 import { cn } from "../../lib/utils";
 import { Lang } from "../../types";
 import LinkButton from "../custom/LinkButton";
@@ -34,11 +32,13 @@ const CouponPopup = ({
   isListPopup?: boolean;
 }) => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
-  const lang = process.env.NEXT_PUBLIC_LG;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
   const trimmedCode = codeTrim(coupon?.code);
   const [currCode, setCurrCode] = useState(trimmedCode);
   const [isUpdated, setIsUpdated] = useState(false);
+
+  console.log("Lang from couponpopup", lang);
 
   const dealHistory = coupon?.upvotesArr;
 
@@ -172,7 +172,7 @@ const CouponPopup = ({
                     ? `${coupon?.store?.affLink}`
                     : `${coupon?.store?.link}`
                 }
-                text={`${words.GoToStore[lang]}`}
+                text={`Go To Store`}
               />
             </div>
 
@@ -186,9 +186,9 @@ const CouponPopup = ({
             <hr className="w-full border-t my-2 border-primary/10" />
 
             {/* -------------------------- Working or not -------------------------------- */}
-            <div className="w-full   px-1.5  flex items-center justify-between gap-2 py-1 ">
-              <CouponWorking coupon={coupon} />
-            </div>
+            {/* <div className="w-full   px-1.5  flex items-center justify-between gap-2 py-1 ">
+              <CouponWorking coupon={coupon} /> //TODO:change it
+            </div> */}
 
             <hr className="w-full border-t my-2 border-primary/10" />
 

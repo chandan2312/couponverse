@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   DropdownMenu,
@@ -15,10 +17,9 @@ import { words } from "../../constants/words";
 import { Separator } from "../ui/separator";
 
 const TopBrandsDropDown = ({ stores }: { stores: any }) => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
 
-  const cpath = correctPath(lang);
   return (
     <>
       <DropdownMenu>
@@ -38,7 +39,7 @@ const TopBrandsDropDown = ({ stores }: { stores: any }) => {
                     className="flex justify-center max-w-4xl mx-auto"
                   >
                     <Link
-                      href={`/${cpath}/${store.slug}`}
+                      href={`/coupons/${store.slug}`}
                       className="p-1 flex flex-col items-center gap-1 "
                     >
                       <figure className="h-12 w-12 bg-card p-0.5 rounded-full border border-muted flex items-center justify-center">

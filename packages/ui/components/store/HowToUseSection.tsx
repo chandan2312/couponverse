@@ -9,7 +9,7 @@ import { Separator } from "../ui/separator";
 import HowToUseSlider from "./HowToUseSlider";
 
 const HowToUseSection = ({ store, coupons }: { store: any; coupons: any }) => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
   const deal =
     coupons?.filter((coupon: any) => coupon.type == "CODE")?.length > 0
       ? coupons?.filter((coupon: any) => coupon.type == "CODE")[0]

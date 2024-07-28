@@ -11,6 +11,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
+//@ts-ignore
 import { words } from "../../constants/words";
 import { Lang } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +22,7 @@ import {
   setUser,
 } from "../../store/slices/user.slice";
 
+//@ts-ignore
 import { signIn, useSession } from "@repo/auth-config/client";
 import useFetchData from "../../lib/hooks/useQuery";
 import { useEffect } from "react";

@@ -1,12 +1,15 @@
 {
   "extends": "@repo/typescript-config/react-library.json",
   "compilerOptions": {
-    "noImplicitAny": false,
+     "ignoreDeprecations": "5.0",
+    // "noImplicitAny": false,
     "baseUrl": ".",
-    "paths": {
-      "@ui/*": ["./*"]
-    }
+        "paths": {
+      "@repo/auth-config/*": ["../auth-config/*"],
+       "@ui/*": ["./*"]
+    },
+    "typeRoots": ["./node_modules/@types", "./types"],
   },
-  "include": ["src", "components","pages","layouts","constants","actions", "lib"],
+  "include": ["src", "components","pages","layouts","constants","actions", "lib", "./"],
   "exclude": ["node_modules"]
 }

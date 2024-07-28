@@ -25,7 +25,7 @@ const Popup = ({
   const popupState = useSelector((state: any) => state.form.popup);
   const sessionUser = useSelector((state: any) => state.user.sessionUser);
 
-  function handleRegisterPopup(bool) {
+  function handleRegisterPopup(bool: boolean) {
     dispatch(setPopup(bool));
   }
 

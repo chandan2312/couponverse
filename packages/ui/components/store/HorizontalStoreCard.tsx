@@ -7,7 +7,7 @@ import { Lang } from "../../types";
 import { correctPath } from "../../lib/utils";
 
 const HorizontalStoreCard = ({ store }: { store: any }) => {
-  const lang: Lang = (process.env.LG as Lang) || "en";
+  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
   const cpath = correctPath(lang);
 
   return (

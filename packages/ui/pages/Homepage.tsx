@@ -19,9 +19,10 @@ import { notFound } from "next/navigation";
 import OfferCard from "../components/offer/OfferCard";
 import MoreOffers from "../components/offer/MoreOffers";
 import CouponCard from "../components/coupon/CouponCard";
+import TopStoresWidget from "../components/store/TopStoresWidget";
 
 export async function generateMetadata({ params }: { params: any }) {
-  const lang: Lang = process.env.LG as Lang;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
 
   return {
     title: `${process.env.APP}  - ${contentGenerator(
@@ -52,18 +53,16 @@ export async function generateMetadata({ params }: { params: any }) {
 const Homepage = async () => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
   const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
-  console.log("country", country);
-  console.log("lang", lang);
 
   const [bestStoresRes, hottestOffersRes, latestOffersRes, hottestCouponsRes] =
     await Promise.all([
       // best store
       axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/store/getMany?&country=${country}&lang=${lang}`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/store/getMany?&country=${country}&lang=${lang}&orderby=views_desc&perpage=20`,
       ),
       // hottest Offers
       axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?orderby=hotness_desc&country=${country},in&lang=${lang}&page=1&perpage=2&morefields=viewsArr,upvotesArr,downvotesArr`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?orderby=hotness_desc&country=${country},in&lang=${lang}&page=1&perpage=10&morefields=upvotes,downvotes,store,shortDescription`,
       ),
       // // trending Offers
       // axios.get(
@@ -71,11 +70,11 @@ const Homepage = async () => {
       // ),
       // latest Offers
       axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?orderby=updatedAt_desc&country=${country}&lang=${lang}&page=1&perpage=2&morefields=upvotesArr,downvotesArr`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?orderby=updatedAt_desc&country=${country}&lang=${lang}&page=1&perpage=10&morefields=upvotes,downvotes,store,shortDescription`,
       ),
       // hottest Coupons
       axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/coupon/getMany?orderby=hotness_desc&country=${country}&lang=${lang}&page=1&perpage=2&morefields=upvotesArr,downvotesArr,store`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/coupon/getMany?orderby=hotness_desc&country=${country}&lang=${lang}&page=1&perpage=10&morefields=upvotes,downvotes,store`,
       ),
     ]);
 
@@ -90,10 +89,13 @@ const Homepage = async () => {
 
   return (
     <>
-      <div className=" mx-auto max-w-7xl grid lg:grid-cols-12 gap-4 ">
+      <div className=" mx-auto max-w-7xl lg:grid lg:grid-cols-12 lg:gap-4 ">
         <div className="lg:col-span-9">
-          <Tabs defaultValue="hottest-offers" className="sticky top-0 z-40">
-            <TabsList className="w-full  bg-transparent mx-3">
+          <Tabs
+            defaultValue="hottest-offers"
+            className="sticky top-0 z-40 w-auto"
+          >
+            <TabsList className="sticky top-0 z-20   bg-card py-2 rounded-lg  w-auto mx-3">
               <TabsTrigger
                 value="hottest-offers"
                 className="min-w-20 min-h-8 p-auto"
@@ -132,7 +134,7 @@ const Homepage = async () => {
                     country,
                     lang,
                     orderby: "hotness_desc",
-                    morefields: "upvotesArr,downvotesArr,store",
+                    morefields: "upvotes,downvotes,store",
                     page: 2,
                     perpage: 2,
                     tab: "hottest-offers",
@@ -170,10 +172,10 @@ const Homepage = async () => {
                   params={{
                     country,
                     orderby: "updatedAt_desc",
-                    morefields: "upvotesArr,downvotesArr,store",
+                    morefields: "upvotes,downvotes,store",
                     lang,
-                    page: 2,
-                    perpage: 2,
+                    page: 3,
+                    perpage: 5,
                     tab: "latest-offers",
                   }}
                 />
@@ -196,9 +198,9 @@ const Homepage = async () => {
                     country,
                     lang,
                     orderby: "hotness_desc",
-                    morefields: "upvotesArr,downvotesArr,store",
-                    page: 2,
-                    perpage: 2,
+                    morefields: "upvotes,downvotes,store",
+                    page: 3,
+                    perpage: 5,
                     tab: "hottest-coupons",
                   }}
                 />
@@ -206,8 +208,8 @@ const Homepage = async () => {
             </TabsContent>
           </Tabs>
         </div>
-        <aside className="mt-12 bg-card rounded-lg p-2 border border-muted/40 shadow-md w-full lg:col-span-3">
-          <p>sidebar</p>
+        <aside className="mt-12 bg-card rounded-lg p-2 border border-muted/40 shadow-md lg:w-full lg:col-span-3 m-3">
+          <TopStoresWidget stores={bestStores} />
         </aside>
       </div>
     </>

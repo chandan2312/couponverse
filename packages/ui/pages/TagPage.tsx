@@ -23,7 +23,7 @@ import MoreOffers from "../components/offer/MoreOffers";
 import OfferCard from "../components/offer/OfferCard";
 import { Flame, TicketPercent } from "lucide-react";
 
-const UserPage = async ({
+const TagPage = async ({
   slug,
   searchParams,
 }: {
@@ -34,36 +34,38 @@ const UserPage = async ({
     notFound();
   }
 
-  const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
   const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
   const perpage = 10;
 
-  const [userRes, couponsRes, offersRes] =
+  const [tagRes, couponsRes, offersRes] =
     // popularStores, popularCoupons, popularOffers
     await Promise.all([
       // store
       axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/user/get?username=${slug}&country=${country}&lang=${lang}`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/tag/get?slug=${slug}&lang=${lang}`,
       ), //TODO: select fields
       // coupons
       axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/coupon/getMany?username=${slug}&orderby=updatedAt_desc&country=${country}&lang=${lang}&page=1&perpage=${perpage}&morefields=views,upvotes,downvotes,store`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/coupon/getMany?tagSlug=${slug}&orderby=hotness_desc&country=${country}&lang=${lang}&page=1&perpage=${perpage}&morefields=views,upvotes,downvotes,store`,
       ),
       // offers
       axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?username=${slug}&orderby=updatedAt_desc&country=${country}&lang=${lang}&page=1&perpage=${perpage}&morefields=upvotes,downvotes,store`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?tagSlug=${slug}&orderby=hotness_desc&country=${country}&lang=${lang}&page=1&perpage=${perpage}&morefields=upvotes,downvotes,store`,
       ),
     ]);
 
-  if (userRes.status !== 200 || !userRes.data) notFound();
+  if (tagRes.status !== 200 || !tagRes.data) notFound();
   if (couponsRes.status !== 200 || offersRes.status !== 200) notFound();
-  const user = userRes.data; // store
+  const tag = tagRes.data; // store
   const coupons = couponsRes.data || []; // coupons
   const offers = offersRes.data || []; // offers
 
+  // console.log(tag);
+
   // console.log("store", store);
 
-  const couponCount = coupons?.length || 0;
   // const theOffer = generateOffer(coupons, store.nativeName, lang);
 
   return (
@@ -77,16 +79,16 @@ const UserPage = async ({
           </li>{" "}
           /{" "}
           <li>
-            <Link href="#">User</Link>
+            <Link href="#">Tag</Link>
           </li>{" "}
-          / <li className="font-semibold">{user.username}</li>
+          / <li className="font-semibold">{tag.slug}</li>
         </ul>
       </div>
 
       {/* ------------------------ Header ------------------------- */}
       <div className="mt-2 mb-4 min-w-[100vw] left-0 right-0 bg-card ">
         <div className="max-w-5xl mx-auto flex gap-2 lg:gap-4 px-2 py-6">
-          <figure className="rounded-md w-30 h-30 bg-muted/20 shadow-md flex items-center justify-center p-2">
+          {/* <figure className="rounded-md w-30 h-30 bg-muted/20 shadow-md flex items-center justify-center p-2">
             <Image
               src={
                 user?.avatar
@@ -100,19 +102,19 @@ const UserPage = async ({
               style={{ objectFit: "contain" }}
               className="rounded-md w-full h-full"
             />
-          </figure>
+          </figure> */}
 
           <div className="flex flex-col justify-center gap-1">
-            <h2 className="text-lg font-semibold">{user.username}</h2>
-            <h3>
-              {user.firstname} {user.lastname}
-            </h3>
+            <h2 className="text-lg font-semibold">{tag.slug}</h2>
+            {/* <h3>
+              {tag.firstname} {user.lastname}
+            </h3> */}
             <div className="flex gap-4">
               <span className="flex gap-1">
-                <Flame /> <span>{user._count.offers} Offers</span>
+                <Flame /> <span>{tag._count.offers} Offers</span>
               </span>
               <span className="flex gap-2">
-                <TicketPercent /> <span>{user._count.coupons} Coupons</span>
+                <TicketPercent /> <span>{tag._count.coupons} Coupons</span>
               </span>
             </div>
           </div>
@@ -147,10 +149,10 @@ const UserPage = async ({
                 <MoreOffers
                   type="offers"
                   params={{
-                    username: slug,
+                    tagSlug: slug,
                     country: country,
                     lang: lang,
-                    orderby: "updatedAt_desc",
+                    orderby: "hotness_desc",
                     morefields: "upvotes,downvotes",
                     page: 3,
                     perpage: 5,
@@ -177,10 +179,10 @@ const UserPage = async ({
               <MoreOffers
                 type="coupons"
                 params={{
-                  username: slug,
+                  tagSlug: slug,
                   country: country,
                   lang: lang,
-                  orderby: "updatedAt_desc",
+                  orderby: "hotness_desc",
                   morefields: "upvotes,downvotes,store",
                   page: 3,
                   perpage: 5,
@@ -221,4 +223,4 @@ const UserPage = async ({
   );
 };
 
-export default UserPage;
+export default TagPage;
