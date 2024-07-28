@@ -1,5 +1,6 @@
 import StoreFAQs from "../components/store/StoreFAQs";
 import { Separator } from "../components/ui/separator";
+//@ts-ignore
 import { words } from "../constants/words";
 import { contentGenerator } from "../lib/contentGenerator";
 import Image from "next/image";
@@ -26,9 +27,11 @@ import TrendingCoupons from "../components/coupon/TrendingCoupons";
 import TrendingOffers from "../components/offer/TrendingOffers";
 
 const StorePage = async ({
+  data,
   slug,
   searchParams,
 }: {
+  data: any;
   slug: string;
   searchParams: any;
 }) => {
@@ -36,44 +39,13 @@ const StorePage = async ({
     notFound();
   }
 
-  const country = process.env.NEXT_PUBLIC_COUNTRYCODE || "global";
-  const lang: Lang = (process.env.NEXT_PUBLIC_LG as Lang) || "en";
-  const perpage = 10;
+  const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
 
-  const [storeRes, couponsRes, offersRes] =
-    // popularStores, popularCoupons, popularOffers
-    await Promise.all([
-      // store
-      axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/store/get?slug=${slug}&country=${country}&lang=${lang}`,
-      ), //TODO: select fields
-      // coupons
-      axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/coupon/getMany?shop=${slug}&orderby=hotness_desc&country=${country},in&lang=${lang}&page=1&perpage=${perpage}&morefields=views,upvotes,downvotes`,
-      ),
-      // offers
-      axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?shop=${slug}&orderby=hotness_desc&country=${country}&lang=${lang}&page=1&perpage=${perpage}&morefields=views,upvotes,downvotes`,
-      ),
-      // popularStores
-      // axios.get(
-      //   `${process.env.NEXT_PUBLIC_BACK_URL}/store/getMany?orderby=views_desc&country=${country}&lang=${lang}&page=1&perpage=2`,
-      // ),
-      // // popularCoupons
-      // axios.get(
-      //   `${process.env.NEXT_PUBLIC_BACK_URL}/coupon/getMany?country=${country}&page=1&perpage=3`,
-      // ),
-      // // popularOffers
-      // axios.get(
-      //   `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getMany?country=${country}&page=1&perpage=3`,
-      // ),
-    ]);
-
-  if (storeRes.status !== 200 || !storeRes.data) notFound();
-  if (couponsRes.status !== 200 || offersRes.status !== 200) notFound();
-  const store = storeRes.data; // store
-  const coupons = couponsRes.data || []; // coupons
-  const offers = offersRes.data || []; // offers
+  const store = data.store; // store
+  const coupons = data.coupons || []; // coupons
+  const offers = data.offers || []; // offers
 
   const storeName =
     typeof store?.nativeName == "string" ? store.nativeName : "";

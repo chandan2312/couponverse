@@ -75,14 +75,14 @@ const AsideContent = ({
       >
         <ul className="list-disc list-inside">
           <li>
-            <a href="#coupons">{words.Coupons[lang]}</a>
+            <Link href="#coupons">{words.Coupons[lang]}</Link>
           </li>
           <li>
-            <a href="#deals">{words.Deals[lang]}</a>
+            <Link href="#deals">{words.Deals[lang]}</Link>
           </li>
           <li>
             {/* TODO: dynamic */}
-            <a href="#similarStores">Similar Stores</a>
+            <Link href="#similarStores">Similar Stores</Link>
           </li>
         </ul>
       </SectionWrapper>

@@ -42,7 +42,6 @@ const TrendingCoupons = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       setCoupons(data);
     }
   }, [data]);

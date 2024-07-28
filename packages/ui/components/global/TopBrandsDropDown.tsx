@@ -68,7 +68,7 @@ const TopBrandsDropDown = ({ stores }: { stores: any }) => {
 
           <Link
             className="my-3 flex justify-center text-sm text-blue-600 font-semibold"
-            href={`${process.env.PROTOCOL}${process.env.DOMAIN}/stores/all`}
+            href={`${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`}
           >
             {words.ViewAll[lang]}
           </Link>

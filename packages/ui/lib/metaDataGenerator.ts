@@ -1,6 +1,8 @@
 import { contentGenerator } from "./contentGenerator";
+//@ts-ignore
 import { getStorePage } from "../actions/store";
 import { correctPath, generateOffer, getProtocol } from "./utils";
+//@ts-ignore
 import { words } from "../constants/words";
 import { Lang } from "../types";
 
@@ -10,97 +12,90 @@ const cpath = correctPath(lang);
 const protocol = getProtocol();
 
 export const homeMetaData = () => ({
-  title: `${process.env.APP} ${country.toUpperCase()} - ${contentGenerator(
+  title: `${process.env.NEXT_PUBLIC_APP} ${country.toUpperCase()} - ${contentGenerator(
     "homeTitle",
     "",
     lang,
   )}`,
   description: contentGenerator("homeDescription", "", lang),
-  canonical: `${process.env.PROTOCOL}${process.env.DOMAIN}`,
-  url: `${process.env.PROTOCOL}${process.env.DOMAIN}`,
+  canonical: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}`,
+  url: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}`,
 
-  locale: process.env.HTML_LANG,
+  locale: process.env.NEXT_PUBLIC_HTML_LANG,
   type: "article",
   openGraph: {
     type: "article",
     article: {
       publishedTime: Date.now(),
       modifiedTime: Date.now(),
-      authors: [process.env.DOMAIN as string],
+      authors: [process.env.NEXT_PUBLIC_DOMAIN as string],
     },
-    url: `${process.env.PROTOCOL}${process.env.DOMAIN}`,
-    site_name: process.env.APP,
+    url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}`,
+    site_name: process.env.NEXT_PUBLIC_APP,
   },
 });
 
 //--------------------- Store Page ---------------------//
-export const storePageMetaData = async (slug: string) => {
-  const response = await getStorePage(slug, lang, country);
-  const store = response.data;
-  let theOffer;
-
-  if (store?.coupons?.length > 0) {
-    theOffer = generateOffer(store.coupons, store.nativeName, lang);
-  }
-
+export const storePageMetaData = async (data: any) => {
+  console.log(data.store);
   const d = new Date();
 
   const offersList =
-    store?.coupons
+    data.store?.coupons
       ?.slice(0, 3)
       ?.map((coupon: any) => coupon.offer)
       .join(", ") || "";
 
-  const couponCount = store.coupons?.filter((item: any) => item.type == "CODE");
-  const dealCount = store.coupons?.filter((item: any) => item.type == "DEAL");
+  const couponCount = data?.store?._count?.coupons || 0;
+  const dealCount = data?.store?._count?.offers || 0;
 
   const meta = {
     title: contentGenerator(
       "seoTitle",
-      store.nativeName,
+      data.store.nativeName,
       lang,
-      theOffer,
       "",
-      store.coupons?.length,
+      "",
+      couponCount + dealCount,
     ),
     description: contentGenerator(
       "seoDescription",
-      store.nativeName,
+      data.store.nativeName,
       lang,
-      theOffer,
+      // theOffer,
       offersList,
       couponCount,
       dealCount,
-      store?.coupons?.length || 0,
+      couponCount || 0,
     ),
-    canonical: `${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${slug}`,
-    url: `${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${slug}`,
+    canonical: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/coupons/${data.store.slug}`,
+    url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/coupons/${data.store.slug}`,
 
     locale: process.env.HTML_LANG,
     type: "article",
     openGraph: {
       type: "article",
       article: {
-        publishedTime: store.createdAt,
-        modifiedTime: store.updatedAt,
-        authors: ["dealcodie"],
+        publishedTime: data.store.createdAt,
+        modifiedTime: data.store.updatedAt,
+        authors: ["couponverse"],
       },
-      url: `${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${slug}`,
-      ...(store.img && {
+      url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/coupons/${data.store.slug}`,
+      ...(data.store.img && {
         images: {
-          url: `${process.env.NEXT_PUBLIC_CDN_URL}${store.img.replace(/\\/g, "/")}`,
+          url: `${process.env.NEXT_PUBLIC_CDN_URL}${data.store.img.replace(/\\/g, "/")}`,
           width: 320,
           height: 320,
           alt: contentGenerator(
             "seoTitle",
-            store.name,
+            data.store.nativeName,
             lang,
-            theOffer,
-            store.coupons?.length,
+            // theOffer,
+            data?.store?._count?.coupons,
           ),
         },
       }),
-      site_name: process.env.APP,
+      site_name: process.env.NEXT_PUBLIC_APP,
     },
   };
 
@@ -116,10 +111,10 @@ export const offerPageMetaData = async (slug: string) => {
 
 export const storeListMetaData = () => {
   const meta = {
-    title: `${words.AllStores[lang]} | ${process.env.APP}`,
-    description: `${words.AllStores[lang]} List - ${words.ViewAllStores[lang]} | ${process.env.APP}`,
-    canonical: `${process.env.PROTOCOL}${country}.${process.env.DOMAIN}/stores/all`,
-    url: `${process.env.PROTOCOL}${country}.${process.env.DOMAIN}/stores/all`,
+    title: `${words.AllStores[lang]} | ${process.env.NEXT_PUBLIC_APP}`,
+    description: `${words.AllStores[lang]} List - ${words.ViewAllStores[lang]} | ${process.env.NEXT_PUBLIC_APP}`,
+    canonical: `${process.env.PROTOCOL}${country}.${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`,
+    url: `${process.env.PROTOCOL}${country}.${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`,
 
     locale: process.env.HTML_LANG,
     type: "article",
@@ -128,10 +123,10 @@ export const storeListMetaData = () => {
       article: {
         publishedTime: Date.now(),
         modifiedTime: Date.now(),
-        authors: [process.env.DOMAIN as string],
+        authors: [process.env.NEXT_PUBLIC_DOMAIN as string],
       },
-      url: `${process.env.PROTOCOL}${process.env.DOMAIN}/stores/all`,
-      site_name: process.env.APP,
+      url: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`,
+      site_name: process.env.NEXT_PUBLIC_APP,
     },
   };
 

@@ -36,7 +36,7 @@ const VerticalCouponCard = ({ coupon }: DealCardProps) => {
         <div className="flex gap-2 items-center max-md:justify-center">
           <Store size={16} color={!isExpired ? "#1d9867" : "#5d5d5d"} />
           <Link
-            href={`${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${coupon?.store?.slug}`}
+            href={`${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${coupon?.store?.slug}`}
             className={cn(!isExpired && "text-accent", "font-semibold")}
           >
             {coupon?.store?.nativeName}
@@ -54,7 +54,7 @@ const VerticalCouponCard = ({ coupon }: DealCardProps) => {
         <div className="flex flex-col text-center justify-center flex-grow ">
           <div className="flex items-center justify-center gap-2">
             <Link
-              href={`https://${process.env.DOMAIN}/${cpath}/${coupon?.store?.slug}`}
+              href={`https://${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${coupon?.store?.slug}`}
               className="rounded-full border border-foreground/20 shadow-sm p-0.5 h-12 w-12 flex items-center justify-center"
             >
               <Image

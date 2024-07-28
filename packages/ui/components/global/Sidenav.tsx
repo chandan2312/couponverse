@@ -19,12 +19,14 @@ const SideNav = ({ lang, country }: { lang: Lang; country: string }) => {
           className="mx-auto flex gap-1.5 space-x-3 items-center   md:px-6 border-b  h-12 w-full"
         >
           <h1 className="flex items-center gap-2">
-            <span className="font-bold text-lg">{process.env.APP}</span>
+            <span className="font-bold text-lg">
+              {process.env.NEXT_PUBLIC_APP}
+            </span>
 
             {country && country != "en" && (
               <Image
                 src={`https://flagsapi.com/${country.toUpperCase()}/flat/64.png`}
-                alt={`${process.env.APP} ${country.toUpperCase()}`}
+                alt={`${process.env.NEXT_PUBLIC_APP} ${country.toUpperCase()}`}
                 width={32}
                 height={32}
               />

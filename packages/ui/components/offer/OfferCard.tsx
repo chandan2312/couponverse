@@ -53,18 +53,19 @@ const OfferCard = ({ offer, store }: { offer: any; store?: any }) => {
             title={offer.title}
             className="m-auto my-2 p-auto rounded-md overflow-hidden"
           />
-
-          {storeName ? (
-            <Link
-              href={`/coupons/${store ? store.slug : offer.store.slug}`}
-              className="text-xs px-1 absolute top-0 left-0 bg-accent2 text-accent-foreground font-semibold rounded-lg overflow-hidden max-w-36 max-h-[18px]"
-            >
-              {storeName}
-            </Link>
-          ) : (
-            ""
-          )}
         </Link>
+
+        {storeName ? (
+          <Link
+            href={`/coupons/${store ? store.slug : offer.store.slug}`}
+            className="text-xs px-1 absolute top-0 left-0 bg-accent2 text-accent-foreground font-semibold rounded-lg overflow-hidden max-w-36 max-h-[18px]"
+          >
+            {storeName}
+          </Link>
+        ) : (
+          ""
+        )}
+
         {/* //----------------- Right side */}
         <div className="w-full flex flex-col justify-center gap-1">
           {/*  Right - 1*/}

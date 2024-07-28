@@ -25,14 +25,14 @@ export async function generateMetadata({ params }: { params: any }) {
   const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
 
   return {
-    title: `${process.env.APP}  - ${contentGenerator(
+    title: `${process.env.NEXT_PUBLIC_APP}  - ${contentGenerator(
       "subdomainTitle",
       "",
       lang,
     )}`,
     description: contentGenerator("subdomainDescription", "", lang),
-    canonical: `https://${process.env.DOMAIN}`,
-    url: `https://${process.env.DOMAIN}`,
+    canonical: `https://${process.env.NEXT_PUBLIC_DOMAIN}`,
+    url: `https://${process.env.NEXT_PUBLIC_DOMAIN}`,
 
     locale: process.env.HTML_LANG,
     type: "article",
@@ -41,11 +41,11 @@ export async function generateMetadata({ params }: { params: any }) {
       article: {
         publishedTime: Date.now(),
         modifiedTime: Date.now(),
-        authors: ["dealcodie"],
+        authors: ["couponverse"],
       },
-      url: `https://${process.env.DOMAIN}`,
+      url: `https://${process.env.NEXT_PUBLIC_DOMAIN}`,
 
-      site_name: process.env.APP,
+      site_name: process.env.NEXT_PUBLIC_APP,
     },
   };
 }

@@ -46,7 +46,6 @@ const TrendingOffers = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       setOffers(data);
     }
   }, [data]);

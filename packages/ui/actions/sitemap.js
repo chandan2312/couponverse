@@ -49,7 +49,7 @@ export const getSitemapArray = unstable_cache(
 
     const urlsArray = storeRes?.map((item) => {
       return {
-        loc: `${process.env.PROTOCOL}${process.env.DOMAIN}/${cPath}/${item.slug}`,
+        loc: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cPath}/${item.slug}`,
         lastmod: new Date().toISOString(),
         changefreq: "weekly",
         priority: 0.9,
@@ -84,7 +84,7 @@ export const getSitemapIndexArray = unstable_cache(
     const pageArray = [];
     for (let i = 1; i <= pageCount; i++) {
       pageArray.push(
-        `${process.env.PROTOCOL}${process.env.DOMAIN}/map/v1/store-${i}.xml`,
+        `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/map/v1/store-${i}.xml`,
       );
     }
 

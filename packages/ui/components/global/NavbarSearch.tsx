@@ -16,7 +16,7 @@ const NavbarSearch = ({ lang }: { lang: Lang }) => {
   }
 
   const router = useRouter();
-  const pushLink = `${process.env.PROTOCOL}${process.env.DOMAIN}/search/${searchTerm}`;
+  const pushLink = `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/search/${searchTerm}`;
 
   const handleSearch = () => {
     if (searchBar) {

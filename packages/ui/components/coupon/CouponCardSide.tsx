@@ -39,7 +39,7 @@ const CouponCardSide = ({ deal }: DealCardProps) => {
         <div className="flex gap-2 items-center max-md:justify-center">
           <Store size={16} color={!deal.isExpired ? "#1d9867" : "#5d5d5d"} />
           <Link
-            href={`${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${deal.store.slug}`}
+            href={`${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${deal.store.slug}`}
             className={cn(!deal.isExpired && "text-accent", "font-semibold")}
           >
             {deal.store.nativeName || deal.store.name}
@@ -57,7 +57,7 @@ const CouponCardSide = ({ deal }: DealCardProps) => {
         {/* ----------------------- Left Side --------------------------- */}
         <div>
           <Link
-            href={`${process.env.PROTOCOL}${process.env.DOMAIN}/${cpath}/${deal.store.slug}`}
+            href={`${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${deal.store.slug}`}
             className="rounded-lg border border-foreground/20 shadow-sm p-2 h-32 w-32 flex items-center justify-center"
           >
             <Image

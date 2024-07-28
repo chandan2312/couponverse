@@ -14,6 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import { cn, getExpiryDate } from "../../lib/utils";
+//@ts-ignore
 import { words } from "../../constants/words";
 import CouponPopup from "../../components/coupon/CouponPopup";
 import { Suspense } from "react";
@@ -30,9 +31,6 @@ const CouponCard = ({ coupon, store, showImage = true }: CouponCardProps) => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE || "global";
   const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   if (!coupon) return null;
-
-  console.log("coupon", coupon);
-  console.log("store", store);
 
   const isExpired = coupon?.status == "expired" ? true : false;
 

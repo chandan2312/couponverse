@@ -71,7 +71,7 @@ export function contactUsContent() {
 						<strong>CONTACT:</strong>
 					</p>
 					<p>
-						Email: <a rel="noreferrer">contact@${process.env.DOMAIN}</a>
+						Email: <a rel="noreferrer">contact@${process.env.NEXT_PUBLIC_DOMAIN}</a>
 					</p>
 					<p>
 						<strong>HOURS OF OPERATION:</strong>
@@ -94,7 +94,7 @@ export function disclaimerContent() {
 					</p>
 
 					<p>
-						All the information on this website - https://${process.env.DOMAIN} - is published
+						All the information on this website - https://${process.env.NEXT_PUBLIC_DOMAIN} - is published
 						in good faith and for general information purpose only. ${appName} does not
 						make any warranties about the completeness, reliability and accuracy of
 						this information. Any action you take upon the information you find on
@@ -175,7 +175,7 @@ export function termsConditionsContent() {
 
 					<p>
 						These terms and conditions outline the rules and regulations for the use
-						of ${appName}'s Website, located at https://${process.env.DOMAIN}.
+						of ${appName}'s Website, located at https://${process.env.NEXT_PUBLIC_DOMAIN}.
 					</p>
 
 					<p>
@@ -476,7 +476,7 @@ export function dmcaContent() {
 
 					<p>
 						These terms and conditions outline the rules and regulations for the use
-						of ${appName}'s Website, located at https://${process.env.DOMAIN}.
+						of ${appName}'s Website, located at https://${process.env.NEXT_PUBLIC_DOMAIN}.
 					</p>
 
 					<p>
