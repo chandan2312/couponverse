@@ -97,7 +97,7 @@ export const storePageMetaData = async (data: any) => {
 };
 
 //--------------------- Store Page ---------------------//
-export const offerPageMetaData = async (data: any, storeName: string) => {
+export const offerPageMetaData = async (data: any, storeName?: string) => {
   const d = new Date();
 
   const lang = process.env.NEXT_PUBLIC_LG as Lang;

@@ -50,7 +50,7 @@ const HomeStoreCard = ({
           </Link>
           {includeOffer && (
             <span className="py-1 text-xs text-accent">
-              {generateOffer(store.coupons, store.nativeName, lang)}
+              {generateOffer(store.coupons, store.nativeName)}
             </span>
           )}
           {store.couponCount && (
