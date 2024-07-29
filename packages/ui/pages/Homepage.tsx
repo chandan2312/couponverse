@@ -133,8 +133,8 @@ const Homepage = async () => {
                     lang,
                     orderby: "hotness_desc",
                     morefields: "upvotes,downvotes,store",
-                    page: 2,
-                    perpage: 2,
+                    page: 3,
+                    perpage: 5,
                     tab: "hottest-offers",
                   }}
                 />
