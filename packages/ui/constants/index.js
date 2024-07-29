@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { signOut } from "@repo/auth-config/client";
 
-export const backurl = `http://localhost:5500/api/v1`;
 export const SIDENAV_ITEMS = [
   {
     title: "Home",

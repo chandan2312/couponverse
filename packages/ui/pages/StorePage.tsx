@@ -47,10 +47,6 @@ const StorePage = async ({
   const coupons = data.coupons || []; // coupons
   const offers = data.offers || []; // offers
 
-  console.log("store", store);
-  console.log("coupons", coupons);
-  console.log("offers", offers);
-
   const storeName =
     typeof store?.nativeName == "string" ? store.nativeName : "";
 

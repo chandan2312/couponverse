@@ -3,6 +3,8 @@ import Google from "next-auth/providers/google";
 // import GoogleProvider from "next-auth/providers/google";
 
 const options = {
+  trustHost: true,
+  trustHostedDomain: true,
   providers: [
     // GoogleProvider({
     //   clientId:
@@ -17,8 +19,6 @@ const options = {
   ],
   callbacks: {
     async redirect({ url, baseUrl }) {
-      console.log("url", url);
-      console.log("baseUrl", baseUrl);
       // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       // Allows callback URLs on the same origin

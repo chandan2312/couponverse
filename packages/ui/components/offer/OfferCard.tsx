@@ -148,13 +148,13 @@ const OfferCard = ({ offer, store }: { offer: any; store?: any }) => {
             </div>
           </div>
 
-          {offer?.description ? (
+          {/* {offer?.description ? (
             <p className="text-xs px-2">
               {htmlTextTrimmer(offer.description, 20)}
             </p>
           ) : (
             <p></p>
-          )}
+          )} */}
           {/* //----------------- Author & COupon Button */}
 
           <div className="w-full  flex justify-end max-md:flex-col md:gap-4 ">
@@ -203,13 +203,13 @@ const OfferCard = ({ offer, store }: { offer: any; store?: any }) => {
         </div>
       </div>
 
-      {offer?.shortDescription ? (
+      {/* {offer?.shortDescription ? (
         <div className="max-md:mt-2 py-1 px-2 max-md:text-xs text-sm max-h-[54px] md:max-h-[62px] overflow-hidden">
           {offer.shortDescription}
         </div>
       ) : (
         ""
-      )}
+      )} */}
 
       {/* //----------------- Tag */}
 
