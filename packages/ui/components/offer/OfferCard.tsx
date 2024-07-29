@@ -106,9 +106,7 @@ const OfferCard = ({ offer, store }: { offer: any; store?: any }) => {
               <div className="text-md md:text-lg w-full flex md:justify-between md:items-center max-md:flex-col gap-1">
                 <div>
                   <Link href={`/offer/${offer.slug}`}>
-                    <h3 className="font-semibold text-sm w-full">
-                      {offer.title}
-                    </h3>
+                    <h3 className="font-semibold  w-full">{offer.title}</h3>
                   </Link>
                   <Link href={`/offer/${offer.slug}`} className="w-full">
                     <span className="text-accent font-semibold ">

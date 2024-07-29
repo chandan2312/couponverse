@@ -10,7 +10,6 @@ import {
 import { useCookies } from "next-client-cookies";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { backurl } from "../../constants";
 import Login from "./Login";
 import RegisterForm from "../form/RegisterForm";
 import Popup from "../form/Popup";
@@ -49,7 +48,7 @@ const Profile = () => {
     queryFn: async () => {
       if (!accessToken) return null;
       const res = await axios.get(
-        `${backurl}/user/decodeToken?token=${accessToken}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/decodeToken?token=${accessToken}`,
       );
       return res.data;
     },
@@ -63,7 +62,7 @@ const Profile = () => {
     queryFn: async () => {
       if (!sessionUser) return null;
       const res = await axios.get(
-        `${backurl}/user/get?email=${sessionUser?.email}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/get?email=${sessionUser?.email}`,
       );
       return res.data;
     },

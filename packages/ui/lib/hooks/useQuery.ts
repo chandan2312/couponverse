@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { backurl } from "../../constants";
 
 const useFetchData = (apipath: string) => {
   const {
@@ -12,7 +11,7 @@ const useFetchData = (apipath: string) => {
   } = useQuery({
     queryKey: [apipath],
     queryFn: ({ signal }) =>
-      axios.get(`${backurl}${apipath}`, {
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}${apipath}`, {
         signal,
       }),
   });
