@@ -47,7 +47,11 @@ export const storePageMetaData = async (data: any) => {
 
   const couponCount = data?.store?._count?.coupons || 0;
   const offerCount = data?.store?._count?.offers || 0;
-  const percentage = generateOffer(data.coupons, data.store.nativeName);
+  let percentage = "";
+
+  if (data.coupons.length > 0) {
+    percentage = generateOffer(data.coupons, data.store.nativeName);
+  }
 
   const meta = {
     title: contentGenerator({
@@ -67,7 +71,7 @@ export const storePageMetaData = async (data: any) => {
     canonical: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/coupons/${data.store.slug}`,
     url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/coupons/${data.store.slug}`,
 
-    locale: process.env.HTML_LANG,
+    locale: process.env.NEXT_PUBLIC_HTML_LANG,
     type: "article",
     openGraph: {
       type: "article",
@@ -104,9 +108,11 @@ export const offerPageMetaData = async (data: any, storeName?: string) => {
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
   const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
 
+  if (!data?.offer) return null;
+
   const name = storeName
     ? storeName
-    : data.offer.store
+    : data?.offer?.store
       ? data.offer.store.nativeName.find(
           (el: any) => Object.keys(el)[0] == lang,
         )?.[lang]

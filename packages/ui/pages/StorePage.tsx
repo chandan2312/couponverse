@@ -47,66 +47,70 @@ const StorePage = async ({
   const coupons = data.coupons || []; // coupons
   const offers = data.offers || []; // offers
 
+  console.log("store", store);
+  console.log("coupons", coupons);
+  console.log("offers", offers);
+
   const storeName =
     typeof store?.nativeName == "string" ? store.nativeName : "";
 
   // const couponCount = coupons?.length || 0;
   // const theOffer = generateOffer(coupons, store.nativeName, lang);
 
-  if (coupons?.length) {
-    return (
-      <>
-        {/* ------------------------ Breadcrumb ------------------------- */}
+  return (
+    <>
+      {/* ------------------------ Breadcrumb ------------------------- */}
 
-        <div className="mx-auto max-w-7xl">
-          <ul id="breadcrumb" className="flex gap-2 text-sm">
-            <li>
-              <Link href="/">{words.Home[lang]}</Link>
-            </li>{" "}
-            /{" "}
-            <li>
-              <Link href="/stores">{words.Stores[lang]}</Link>
-            </li>{" "}
-            / <li className="font-semibold">{storeName}</li>
-          </ul>
-        </div>
+      <div className="mx-auto max-w-7xl">
+        <ul id="breadcrumb" className="flex gap-2 text-sm">
+          <li>
+            <Link href="/">{words.Home[lang]}</Link>
+          </li>{" "}
+          /{" "}
+          <li>
+            <Link href="/stores">{words.Stores[lang]}</Link>
+          </li>{" "}
+          / <li className="font-semibold">{storeName}</li>
+        </ul>
+      </div>
 
-        {/* ------------------------ Header ------------------------- */}
-        <div className="mt-2 mb-4 min-w-[100vw] left-0 right-0 bg-card ">
-          <div className="max-w-7xl mx-auto flex gap-2 lg:gap-4 px-2 py-6">
-            <figure className="rounded-md w-30 h-30 bg-muted/20 shadow-md flex items-center justify-center p-2">
-              <Image
-                src={
-                  store?.img
-                    ? `${process.env.NEXT_PUBLIC_CDN_URL}${store.img}`
-                    : ""
-                }
-                alt=""
-                width={90}
-                height={90}
-                priority
-                style={{ objectFit: "contain" }}
-                className="rounded-md w-full h-full"
-              />
-            </figure>
+      {/* ------------------------ Header ------------------------- */}
+      <div className="mt-2 mb-4 min-w-[100vw] left-0 right-0 bg-card ">
+        <div className="max-w-7xl mx-auto flex gap-2 lg:gap-4 px-2 py-6">
+          <figure className="rounded-md w-30 h-30 bg-muted/20 shadow-md flex items-center justify-center p-2">
+            <Image
+              src={
+                store?.img
+                  ? `${process.env.NEXT_PUBLIC_CDN_URL}${store.img}`
+                  : ""
+              }
+              alt=""
+              width={90}
+              height={90}
+              priority
+              style={{ objectFit: "contain" }}
+              className="rounded-md w-full h-full"
+            />
+          </figure>
 
-            <div className="flex flex-col justify-center gap-2">
-              <h2>{storeName}</h2>
-              <LinkButton
-                link={
-                  store?.affLink ? store.affLink : store.link ? store.link : ""
-                }
-                text={`${words.Visit[lang]} ${storeName}`}
-              />
-            </div>
+          <div className="flex flex-col justify-center gap-2">
+            <h2>{storeName}</h2>
+            <LinkButton
+              link={
+                store?.affLink ? store.affLink : store.link ? store.link : ""
+              }
+              text={`${words.Visit[lang]} ${storeName}`}
+            />
           </div>
         </div>
-        {/* ------------------------ Main ------------------------- */}
+      </div>
+      {/* ------------------------ Main ------------------------- */}
 
-        <div className="relative w-full my-4 max-w-7xl mx-auto lg:grid lg:grid-cols-12 gap-4">
-          {/* ----------------- left Section --------------------- */}
-          {/* ----------------- TABS  */}
+      <div className="relative w-full my-4 max-w-7xl mx-auto lg:grid lg:grid-cols-12 gap-4">
+        {/* ----------------- left Section --------------------- */}
+        {/* ----------------- TABS  */}
 
+        {coupons.length > 0 || offers.length > 0 ? (
           <div className=" lg:col-span-9 w-full  ">
             <Tabs defaultValue="all" className="sticky top-0 z-40">
               <TabsList className="w-full  bg-transparent mx-3">
@@ -273,72 +277,78 @@ const StorePage = async ({
 
             <Separator />
           </div>
-          {/* ----------------- right Section --------------------- */}
+        ) : (
+          <div className="p-2  rounded-lg shadow-md bg-card w-full h-full min-h-52 flex items-center justify-center">
+            No working Coupons and Offers available for {store.nativeName}
+          </div>
+        )}
+        {/* ----------------- right Section --------------------- */}
 
-          <aside className="lg:col-span-3 w-full lg:sticky lg:top-20 lg:z-10 ">
-            {/* ---STATS */}
+        <aside className="lg:col-span-3 w-full lg:sticky lg:top-20 lg:z-10 ">
+          {/* ---STATS */}
 
-            {/* <AsideContent
+          {/* <AsideContent
               store={store}
               couponCount={couponCount}
               offerCount={offers?.length || 0}
             /> */}
-          </aside>
-        </div>
+        </aside>
+      </div>
 
-        {/* SECOND PART */}
-        {/* --------------- List Coupons --------------- */}
+      {/* SECOND PART */}
+      {/* --------------- List Coupons --------------- */}
 
-        <div className="w-full mx-auto max-w-7xl grid grid-cols-12 gap-4 ">
-          {/* ---------- Left Section ------------ */}
-          <div className="col-span-12 lg:col-span-9 w-full  lg:sticky lg:z-10 p-2">
-            {/* --- ListCoupons */}
+      <div className="w-full mx-auto max-w-7xl grid grid-cols-12 gap-4 ">
+        {/* ---------- Left Section ------------ */}
+        <div className="col-span-12 lg:col-span-9 w-full  lg:sticky lg:z-10 p-2">
+          {/* --- ListCoupons */}
 
-            <TrendingOffers />
+          <TrendingOffers />
 
-            <TrendingCoupons />
+          <TrendingCoupons />
 
-            {/* --- coupons list area */}
+          {/* --- coupons list area */}
 
-            {/* {couponCount ?
+          {/* {couponCount ?
             <CouponListWidget store={store} />
             ) : (
               <></>
             )} */}
 
-            {/* --- About */}
+          {/* --- About */}
 
-            <Heading
-              tag="h2"
-              text={contentGenerator({ type: "aboutHeading", name: storeName })}
-            />
+          <Heading
+            tag="h2"
+            text={contentGenerator({ type: "aboutHeading", name: storeName })}
+          />
 
-            <div className="card-section">
-              <div className="lg:flex gap-4 items-center">
-                <div className="flex items-center justify-center">
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_CDN_URL}${store.img}`}
-                    alt=""
-                    width={200}
-                    height={200}
-                    style={{ objectFit: "contain" }}
-                    className="rounded-md"
-                  />
-                </div>
+          <div className="card-section">
+            <div className="lg:flex gap-4 items-center">
+              <div className="flex items-center justify-center">
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_CDN_URL}${store.img}`}
+                  alt=""
+                  width={200}
+                  height={200}
+                  style={{ objectFit: "contain" }}
+                  className="rounded-md"
+                />
+              </div>
 
-                {store.description ? (
-                  <p>
-                    {store.description
-                      .replace(/\*\*\*/g, "")
-                      .replace(/\*\*/g, "")
-                      .replace(/\*/g, "")
-                      .replace(/\#\#/g, "")
-                      .replace(/\#/g, "")}
-                  </p>
-                ) : (
-                  <></>
-                )}
+              {store.description ? (
+                <p>
+                  {store.description
+                    .replace(/\*\*\*/g, "")
+                    .replace(/\*\*/g, "")
+                    .replace(/\*/g, "")
+                    .replace(/\#\#/g, "")
+                    .replace(/\#/g, "")}
+                </p>
+              ) : (
+                <></>
+              )}
 
+              {coupons.length ? (
                 <p>
                   {contentGenerator({
                     type: "aboutContent",
@@ -347,47 +357,55 @@ const StorePage = async ({
                     offers: offers?.length,
                   })}
                 </p>
-              </div>
+              ) : (
+                <></>
+              )}
             </div>
-
-            {/* --- FAQs */}
-
-            <Heading
-              tag="h2"
-              text={contentGenerator({
-                type: "faqHeading",
-                name: storeName,
-              })}
-            />
-
-            <div className="card-section">
-              <StoreFAQs name={storeName} lang={lang} />
-            </div>
-
-            <Heading
-              tag="h2"
-              text={contentGenerator({
-                text: "howToApplyHeading",
-                name: storeName,
-              })}
-            />
-
-            <div className="card-section">
-              <HowToUseSection store={store} coupons={coupons} />
-            </div>
-
-            <Heading
-              tag="h2"
-              text={contentGenerator({
-                type: "popularCouponsHeading",
-                name: storeName,
-              })}
-            />
           </div>
+
+          {/* --- FAQs */}
+
+          <Heading
+            tag="h2"
+            text={contentGenerator({
+              type: "faqHeading",
+              name: storeName,
+            })}
+          />
+
+          <div className="card-section">
+            <StoreFAQs name={storeName} lang={lang} />
+          </div>
+
+          {coupons?.length > 0 ? (
+            <>
+              <Heading
+                tag="h2"
+                text={contentGenerator({
+                  text: "howToApplyHeading",
+                  name: storeName,
+                })}
+              />
+
+              <div className="card-section">
+                <HowToUseSection store={store} coupons={coupons} />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
+          <Heading
+            tag="h2"
+            text={contentGenerator({
+              type: "popularCouponsHeading",
+              name: storeName,
+            })}
+          />
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 };
 
 export default StorePage;

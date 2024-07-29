@@ -49,7 +49,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
             />
             <Navbar />
             <main
-              className={`${font} bg-muted/10 mx-auto py-6 px-auto  min-h-[80vh]`}
+              className={`${font.className} bg-muted/10 mx-auto py-6 px-auto  min-h-[80vh]`}
             >
               {children}
             </main>
