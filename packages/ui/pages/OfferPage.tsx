@@ -30,7 +30,11 @@ const OfferPage = async ({
   const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
   const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
 
-  const offer = data.offer;
+  const offer = data?.offer;
+
+  if (!offer) {
+    return notFound();
+  }
 
   const isExpired = offer?.status == "expired" ? true : false;
 
@@ -108,7 +112,7 @@ const OfferPage = async ({
           {/* button */}
           <div className="w-full">
             <LinkButton
-              link={offer.link}
+              link={offer?.affLink ? offer.affLink : offer.link}
               text={`Go to link`}
               className="h-14 py-2 text-base px-4 min-w-50"
             />
@@ -162,13 +166,13 @@ const OfferPage = async ({
 
         {/* //----------------- Tag */}
 
-        {offer?.isHot ? (
+        {/* {offer?.isHot ? (
           <div className="absolute transform rotate-[-45deg] bg-accent2 text-accent2-foreground text-center font-semibold py-0.5 left-[-35px] top-[15px] w-[130px]">
             <span>Hot</span>
           </div>
         ) : (
           ""
-        )}
+        )} */}
       </div>
 
       {/* --------------------- SECTION 2 ------------------ */}

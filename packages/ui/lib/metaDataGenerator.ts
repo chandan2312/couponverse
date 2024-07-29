@@ -118,7 +118,7 @@ export const offerPageMetaData = async (data: any, storeName?: string) => {
     canonical: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/offer/${data.offer.slug}`,
     url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/offer/${data.offer.slug}`,
 
-    locale: process.env.HTML_LANG,
+    locale: process.env.NEXT_PUBLIC_HTML_LANG,
     type: "article",
     openGraph: {
       type: "article",
@@ -144,13 +144,16 @@ export const offerPageMetaData = async (data: any, storeName?: string) => {
 };
 
 export const storeListMetaData = () => {
+  const lang = process.env.NEXT_PUBLIC_LG as Lang;
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
   const meta = {
     title: `${words.AllStores[lang]} | ${process.env.NEXT_PUBLIC_APP}`,
     description: `${words.AllStores[lang]} List - ${words.ViewAllStores[lang]} | ${process.env.NEXT_PUBLIC_APP}`,
-    canonical: `${process.env.PROTOCOL}${country}.${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`,
-    url: `${process.env.PROTOCOL}${country}.${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`,
+    canonical: `${process.env.NEXT_PUBLIC_PROTOCOL}${country}.${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`,
+    url: `${process.env.NEXT_PUBLIC_PROTOCOL}${country}.${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`,
 
-    locale: process.env.HTML_LANG,
+    locale: process.env.NEXT_PUBLIC_HTML_LANG,
     type: "article",
     openGraph: {
       type: "article",
@@ -159,7 +162,7 @@ export const storeListMetaData = () => {
         modifiedTime: Date.now(),
         authors: [process.env.NEXT_PUBLIC_DOMAIN as string],
       },
-      url: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`,
+      url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/stores/all`,
       site_name: process.env.NEXT_PUBLIC_APP,
     },
   };
