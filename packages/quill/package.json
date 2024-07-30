@@ -1,0 +1,14 @@
+{
+  "name": "@repo/quill",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "quill": "2.0.2",
+    "react": "^18.3.1"
+  }
+}

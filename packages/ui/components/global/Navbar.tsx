@@ -18,7 +18,7 @@ const Navbar = async () => {
   const protocol = getProtocol();
 
   const storesRes = await getTrendingStores(country);
-  const stores = storesRes.data;
+  const stores = storesRes?.data || [];
   return (
     <div className="bg-card sticky z-10  min-h-12  text-card-foreground/90  px-2 md:px-4 lg:px-6">
       <div className="min-h-10 pt-1 md:max-w-[85%] lg:max-w-[80%] mx-auto flex items-center gap-1 text-sm font-semibold justify-between  ">

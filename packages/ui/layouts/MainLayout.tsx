@@ -8,6 +8,7 @@ import QueryWrapper from "../lib/wrapper/QueryWrapper";
 import { CookiesProvider } from "next-client-cookies/server";
 //@ts-ignore
 import { SessionProvider } from "@repo/auth-config/client";
+import { Toaster } from "../components/ui/sonner";
 
 const font = localFont({
   src: [
@@ -54,6 +55,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
               {children}
             </main>
             <Footer />
+            <Toaster />
           </StoreWrapper>
         </QueryWrapper>
       </CookiesProvider>

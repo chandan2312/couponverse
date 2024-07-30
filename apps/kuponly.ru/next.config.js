@@ -46,6 +46,15 @@ module.exports = {
         source: "/map/:dynamic/store-:page.xml",
         destination: "/map/:dynamic/store/:page",
       },
+      {
+        source: "/map/:dynamic/offers.xml",
+        destination: "/map/:dynamic/offer",
+      },
+
+      {
+        source: "/map/:dynamic/offer-:page.xml",
+        destination: "/map/:dynamic/offer/:page",
+      },
 
       {
         source: "/map.xml",

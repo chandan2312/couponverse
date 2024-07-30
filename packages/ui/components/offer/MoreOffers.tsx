@@ -17,7 +17,7 @@ const MoreOffers = ({
 }) => {
   const initialState = {
     offers: [],
-    page: 2,
+    page: params.page || 3,
   };
 
   const [state, setState] = useState({ [params.tab]: initialState });

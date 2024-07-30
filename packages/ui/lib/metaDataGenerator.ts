@@ -18,8 +18,8 @@ export const homeMetaData = () => ({
     },
   )}`,
   description: contentGenerator({ type: "homeDescription" }),
-  canonical: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}`,
-  url: `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}`,
+  canonical: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}`,
+  url: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}`,
 
   locale: process.env.NEXT_PUBLIC_HTML_LANG,
   type: "article",

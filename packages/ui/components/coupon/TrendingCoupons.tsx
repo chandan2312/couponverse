@@ -31,6 +31,7 @@ const TrendingCoupons = () => {
             orderby: "hotness_desc",
             page: 1,
             perpage: 10,
+            morefields: "store",
           },
         },
       );

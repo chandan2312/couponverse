@@ -52,6 +52,17 @@ export function timeLeft(dateString: any) {
   }
 }
 
+export function flatComments(comments: any) {
+  const flattened: any = [];
+  comments.forEach((comment: any) => {
+    flattened.push(comment);
+    if (comment.children) {
+      flattened.push(...flatComments(comment.children));
+    }
+  });
+  return flattened;
+}
+
 export function correctPath(lang: Lang) {
   switch (lang) {
     case "en":

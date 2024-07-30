@@ -62,16 +62,15 @@ export const fetchOfferPageData = async (slug: string) => {
   const lang: Lang = process.env.NEXT_PUBLIC_LG as Lang;
 
   try {
-    const offerRes: any = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACK_URL}/offer/get`,
-      {
+    const [offerRes] = await Promise.all([
+      axios.get(`${process.env.NEXT_PUBLIC_BACK_URL}/offer/get`, {
         params: {
           slug,
           country,
           morefields: "store,upvotes,downvotes,description",
         },
-      },
-    );
+      }),
+    ]);
 
     if (offerRes.status !== 200) {
       return null;

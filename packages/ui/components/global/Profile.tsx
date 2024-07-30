@@ -46,9 +46,12 @@ const Profile = () => {
   const tokenQuery = useQuery({
     queryKey: ["tokenQuery"],
     queryFn: async () => {
-      if (!accessToken) return null;
+      if (!accessToken) {
+        dispatch(setUser(null));
+        return null;
+      }
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/decodeToken?token=${accessToken}`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/user/decodeToken?token=${accessToken}`,
       );
       return res.data;
     },
@@ -60,9 +63,12 @@ const Profile = () => {
   const sessionQuery = useQuery({
     queryKey: [`session_${sessionUser?.email || ""}`],
     queryFn: async () => {
-      if (!sessionUser) return null;
+      if (!sessionUser) {
+        dispatch(setSessionUser(null));
+        return null;
+      }
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/get?email=${sessionUser?.email}`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/user/get?email=${sessionUser?.email}`,
       );
       return res.data;
     },
@@ -76,7 +82,7 @@ const Profile = () => {
       cookies.set("accessToken", tokenQuery.data.accessToken);
       dispatch(setSessionUser(null));
     }
-  }, [tokenQuery.data, dispatch]);
+  }, [tokenQuery.data]);
 
   //session useeffect
 
@@ -87,9 +93,9 @@ const Profile = () => {
 
       dispatch(setSessionUser(null));
     }
-  }, [sessionQuery.data, dispatch]);
+  }, [sessionQuery.data]);
 
-  if (tokenQuery.isLoading) return <span>Loading...</span>;
+  if (tokenQuery.isFetching) return <span>Loading...</span>;
 
   if (!tokenQuery.data && !currUser && !sessionUser) {
     return (

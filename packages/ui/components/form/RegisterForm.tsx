@@ -34,6 +34,7 @@ import { setPopup } from "../../store/slices/form.slice";
 import { signOut } from "@repo/auth-config/client";
 
 import CircularLoader from "../other/CircularLoader";
+//@ts-ignore
 import { defaultAvatars } from "../../constants";
 import Popup from "./Popup";
 import Image from "next/image";
@@ -42,8 +43,10 @@ import { useCookies } from "next-client-cookies";
 
 import { AlertDialogCancel } from "../ui/alert-dialog";
 import { QueryClient, useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const RegisterForm = () => {
+  const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
   const cookies = useCookies();
   const dispatch = useDispatch();
   const popupState = useSelector((state: any) => state.form.popup);
@@ -64,14 +67,12 @@ const RegisterForm = () => {
       lastname: sessionUser?.name.slice(sessionUser?.name.indexOf(" ") + 1),
       // avatar: sessionUser?.avatar,
       gender: "M",
-      country: "IN",
+      country: country,
       role: "USER",
       isEmailVerified: sessionMethod ? sessionMethod !== "EMAIL" : false,
       loginMethod: sessionMethod,
     },
   });
-
-  console.log("img", form.watch("avatar"));
 
   const mutation = useMutation({
     mutationFn: (values: any) => {
@@ -85,19 +86,18 @@ const RegisterForm = () => {
       dispatch(setSessionUser(null));
       cookies.set("accessToken", res.data.accessToken);
       queryClient.invalidateQueries({ queryKey: ["tokenQuery"] });
+      toast.success("User Registered Successfully ✅");
     },
     onError: (error) => {
-      console.log("axios- post error", error.message);
       //TODO: show toast
       dispatch(setSessionUser(null));
       dispatch(setRegisterPopup(false));
       cookies.remove("accessToken");
+      toast.error("Registration Failed ❌");
     },
   });
 
   async function onSubmit(values: z.infer<typeof registerSchema>) {
-    console.log("onsubmit");
-    console.log("back url", process.env.NEXT_PUBLIC_BACK_URL);
     mutation.mutate(values);
   }
 
@@ -260,31 +260,6 @@ const RegisterForm = () => {
               )}
             />
           </div>
-
-          {/* //------------------- Country ------------------- */}
-
-          <FormField
-            control={form.control}
-            name="country"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Select Your Country</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full bg-muted/20">
-                      <SelectValue placeholder="country" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="RU">Russia</SelectItem>
-                      <SelectItem value="IN">India</SelectItem>
-                      <SelectItem value="JP">Japan</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
           {/* //------------------- Submit ------------------- */}
 

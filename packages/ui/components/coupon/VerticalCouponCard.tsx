@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CalendarX2, Eye, Share2, Store, Users } from "lucide-react";
 import { cn, correctPath, getExpiryDate } from "../../lib/utils";
+//@ts-ignore
 import { words } from "../../constants/words";
 import CouponPopup from "./CouponPopup";
 import { Lang } from "../../types";
@@ -36,7 +37,7 @@ const VerticalCouponCard = ({ coupon }: DealCardProps) => {
         <div className="flex gap-2 items-center max-md:justify-center">
           <Store size={16} color={!isExpired ? "#1d9867" : "#5d5d5d"} />
           <Link
-            href={`${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${coupon?.store?.slug}`}
+            href={`${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${coupon?.store?.slug}`}
             className={cn(!isExpired && "text-accent", "font-semibold")}
           >
             {coupon?.store?.nativeName}

@@ -20,7 +20,7 @@ const HomeStoreCard = ({
       <div className="bg-muted/10 border border-muted/40 rounded-md p-1  flex flex-col gap-1">
         {/* store logo */}
         <Link
-          href={`${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${store.slug}`}
+          href={`${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${store.slug}`}
           className=" shadow-sm mx-auto  h-24  p-1.5 my-1   flex items-center justify-center"
         >
           <Image
@@ -39,7 +39,7 @@ const HomeStoreCard = ({
 
         <div className="h-full flex flex-col items-center max-md:justify-between md:justify-center">
           <Link
-            href={`${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${store.slug}`}
+            href={`${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${store.slug}`}
             className=""
           >
             <h3 className="font-semibold text-accent max-md:text-sm text-center ">

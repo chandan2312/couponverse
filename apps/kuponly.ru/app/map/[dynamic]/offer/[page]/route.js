@@ -7,7 +7,7 @@ export const revalidate = 14400;
 export async function GET(req, res) {
   //   const pageNo = req.params.page;
   const pageNo = req.url.replace(".xml", "").replace(/.*-/, "");
-  const take = 500;
+  const take = 1000;
   const skip = (parseInt(pageNo) - 1) * take;
   const country = process.env.NEXT_PUBLIC_COUNTRYCODE;
   const lang = process.env.NEXT_PUBLIC_LG;
@@ -19,18 +19,18 @@ export async function GET(req, res) {
   let urlsArray = [];
   try {
     // urlsArray = await getSitemapArray(pageNo);
-    const storesRes = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACK_URL}/store/getManyMinimal?country=${country}&skip=${skip}&take=${take}`,
+    const offersRes = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACK_URL}/offer/getManyMinimal?country=${country}&skip=${skip}&take=${take}`,
     );
 
-    if (!storesRes || storesRes?.status != 200) return [];
+    if (!offersRes || offersRes?.status != 200) return [];
 
-    const stores = storesRes?.data;
-    if (!stores || stores?.length == 0) return [];
+    const offers = offersRes?.data;
+    if (!offers || offers?.length == 0) return [];
 
-    const urlsArray = stores?.map((item) => {
+    const urlsArray = offers?.map((item) => {
       return {
-        loc: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/coupons/${item.slug}`,
+        loc: `${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/offer/${item.slug}`,
         lastmod: new Date(item?.updatedAt).toISOString(),
         changefreq: "weekly",
         priority: 0.9,

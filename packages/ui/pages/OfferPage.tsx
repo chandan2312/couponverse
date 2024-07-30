@@ -2,7 +2,7 @@ import LinkButton from "../components/custom/LinkButton";
 import IconButton from "../components/custom/IconButton";
 import OfferButton from "../components/custom/OfferButton";
 import OfferVote from "../components/offer/OfferVote";
-import { cn, htmlTextTrimmer } from "../lib/utils";
+import { cn, htmlTextTrimmer, timeAgo } from "../lib/utils";
 import axios from "axios";
 import { Bookmark, CalendarX, Clock, MessageSquare } from "lucide-react";
 import Image from "next/image";
@@ -16,6 +16,8 @@ import { Separator } from "../components/ui/separator";
 import TrendingOffers from "../components/offer/TrendingOffers";
 import TrendingCoupons from "../components/coupon/TrendingCoupons";
 import { Lang } from "../types";
+import CommentPost from "../components/comment/CommentPost";
+import CommentSection from "../components/comment/CommentSection";
 
 const OfferPage = async ({
   slug,
@@ -66,18 +68,25 @@ const OfferPage = async ({
               <OfferVote offer={offer} />
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm">
-              <div className="flex items-center gap-1">
-                <CalendarX size={18} />{" "}
-                <span>
-                  <span className="max-md:hidden">Expires: </span>20/07/24
-                </span>
-              </div>
-              <div className="max-md:hidden flex items-center gap-1">
-                <Clock size={18} />{" "}
-                <span>
-                  <span className="max-md:hidden">Added: </span>2 days ago
-                </span>
-              </div>
+              {offer.expiryDate ? (
+                <div className="flex items-center gap-1">
+                  <CalendarX size={18} />{" "}
+                  <span>
+                    <span className="max-md:hidden">Expires: </span>20/07/24
+                  </span>
+                </div>
+              ) : offer.status !== "expired" ? (
+                <div className="max-md:hidden flex items-center gap-1">
+                  <Clock size={18} />{" "}
+                  <span>
+                    <span className="max-md:hidden">Added: </span>
+                    {timeAgo(offer.createdAt)}
+                  </span>
+                </div>
+              ) : (
+                <></>
+              )}
+
               <div className="cursor-pointer text-card-foreground/70">•••</div>
             </div>
           </div>
@@ -204,16 +213,9 @@ const OfferPage = async ({
         )}
       >
         <Heading tag="h2" text="Comments" />
-
-        <div className="w-full add-comment p-4 flex gap-4 items-center">
-          <Textarea
-            placeholder="Type your message here."
-            className="flex-grow"
-          />
-          <Button variant="accent">Send message</Button>
-        </div>
-
-        {/* <Separator /> */}
+        <CommentPost offer={offer} />
+        <Separator />
+        <CommentSection offerId={offer.id} />
       </div>
 
       {/* --------------------- SECTION 4 - trending offers ------------------ */}
