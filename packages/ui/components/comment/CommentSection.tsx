@@ -55,7 +55,7 @@ const CommentSection = ({ offerId }: { offerId: any }) => {
 
   return (
     <div className="p-3">
-      <Heading tag="h2" text="Comments" />
+      {/* <Heading tag="h2" text="Comments" /> */}
 
       <div>
         {newParentComment ? (

@@ -123,7 +123,7 @@ const OfferPage = async ({
             <LinkButton
               link={offer?.affLink ? offer.affLink : offer.link}
               text={`Go to link`}
-              className="h-14 py-2 text-base px-4 min-w-50"
+              className="h-10 max-w-60 w-auto py-2 text-base px-4 "
             />
           </div>
 

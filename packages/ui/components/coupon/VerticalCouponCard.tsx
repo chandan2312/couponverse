@@ -26,6 +26,11 @@ const VerticalCouponCard = ({ coupon }: DealCardProps) => {
     expiryDate = getExpiryDate(coupon.expiryDate, lang);
   }
 
+  const name =
+    coupon?.store?.nativeName.find((el: any) => Object.keys(el)[0] == lang)?.[
+      lang
+    ] || "";
+
   const isExpired = coupon.status == "expired" ? true : false;
   return (
     <article
@@ -40,7 +45,7 @@ const VerticalCouponCard = ({ coupon }: DealCardProps) => {
             href={`${process.env.NEXT_PUBLIC_PROTOCOL}${process.env.NEXT_PUBLIC_DOMAIN}/${cpath}/${coupon?.store?.slug}`}
             className={cn(!isExpired && "text-accent", "font-semibold")}
           >
-            {coupon?.store?.nativeName}
+            {name}
           </Link>
         </div>
         <div className="flex gap-2  items-center max-md:hidden">
@@ -64,7 +69,7 @@ const VerticalCouponCard = ({ coupon }: DealCardProps) => {
                     ? `${process.env.NEXT_PUBLIC_CDN_URL}${coupon?.store?.img}`
                     : coupon?.store?.sourceImg
                 }
-                alt={coupon?.store?.nativeName}
+                alt={name}
                 height={40}
                 width={40}
                 style={{ objectFit: "contain" }}

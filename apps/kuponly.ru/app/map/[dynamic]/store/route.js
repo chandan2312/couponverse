@@ -15,8 +15,6 @@ export async function GET(req, res) {
 
   const storesCount = storesCountRes?.data;
 
-  console.log("storesCount", storesCount);
-
   const pageCount = Math.ceil(parseInt(storesCount) / 500);
 
   const pageArray = [];

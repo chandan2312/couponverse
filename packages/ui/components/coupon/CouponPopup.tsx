@@ -38,8 +38,6 @@ const CouponPopup = ({
   const [currCode, setCurrCode] = useState(trimmedCode);
   const [isUpdated, setIsUpdated] = useState(false);
 
-  console.log("Lang from couponpopup", lang);
-
   const dealHistory = coupon?.upvotesArr;
 
   //add couponview only if deal not present in localstorage in last 24 hr
