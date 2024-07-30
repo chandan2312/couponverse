@@ -27,7 +27,7 @@ const CommentPost = ({ offer }: { offer: any }) => {
         content: content,
         type: "OFFER",
         offer: offer.id,
-        user: "669be29150c4016030ee7b02", //TODO:
+        user: currUser?.id, //TODO:
         lang: lang,
       });
     },
