@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { cn } from "../../lib/utils";
 import IconButton from "../custom/IconButton";
 import Login from "../global/Login";
+import { toast } from "sonner";
 
 const OfferVote = ({ offer }: { offer: any }) => {
   const queryClient = new QueryClient();
@@ -34,9 +35,11 @@ const OfferVote = ({ offer }: { offer: any }) => {
       setHotness(data.hotness);
       setUpvotesArr(data?.upvotesArr || []);
       setDownvotesArr(data?.downvotesArr || []);
+      toast.success("Vote Updated ✅ ");
     },
     onError: (error: any, variables, context) => {
       console.error(error?.response?.status);
+      toast.error("Something went wrong ❌");
     },
   });
 

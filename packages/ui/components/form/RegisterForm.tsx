@@ -140,7 +140,7 @@ const RegisterForm = () => {
                       className="w-auto h-auto "
                     >
                       <Image
-                        src={`https://cdn.kuponly.ru${avatar}`}
+                        src={`${process.env.NEXT_PUBLIC_CDN_URL}${avatar}`}
                         width={120}
                         height={120}
                         alt="avatar"

@@ -88,7 +88,13 @@ const CouponVote = ({ coupon }: { coupon: any }) => {
           )}
         </Login>
       )}
-      <span className="block text-sm font-semibold ">{hotness && hotness}</span>
+      {mutation.isPending ? (
+        <span className="text-xs">loading</span>
+      ) : (
+        <span className="block text-sm font-semibold ">
+          {hotness && hotness}
+        </span>
+      )}
       {currUser?.id ? (
         renderVoteButton(
           "down",

@@ -36,7 +36,7 @@ const CommentPost = ({ offer }: { offer: any }) => {
       queryClient.invalidateQueries({ queryKey: ["comments", offer.id] });
       setContent("");
       dispatch(setParentComment(res.data));
-      toast.success("Comment posted successfully");
+      toast.success("Comment added successfully ✅");
       //toast
     },
     onError: (error) => {
