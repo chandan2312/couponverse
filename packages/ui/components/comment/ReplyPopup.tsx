@@ -16,7 +16,7 @@ import CommentEditor from "./CommentEditor";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { setNestedComment } from "../../store/slices/comment.slice";
+import { setNestedComment, setRefresh } from "../../store/slices/comment.slice";
 import { toast } from "sonner";
 
 const ReplyPopup = ({
@@ -51,7 +51,9 @@ const ReplyPopup = ({
       queryClient.invalidateQueries({ queryKey: ["comments", offerId] });
       setContent("");
       dispatch(setNestedComment(res.data));
+      dispatch(setRefresh(true));
       toast.success("Comment Replied ");
+      window.location.reload();
     },
     onError: (error) => {
       console.log("axios- post comment error", error.message);

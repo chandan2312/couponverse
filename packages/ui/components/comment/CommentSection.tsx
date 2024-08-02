@@ -4,38 +4,37 @@ import { useQuery } from "@tanstack/react-query";
 import { Lang } from "../../types";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import Heading from "../custom/Heading";
 import CommentCard from "./CommentCard";
-import { Separator } from "../ui/separator";
 import { flatComments } from "../../lib/utils";
 import { useSelector } from "react-redux";
+import { Button } from "../ui/button";
 
 const CommentSection = ({ offerId }: { offerId: any }) => {
   const [page, setPage] = useState(1);
+  const [btnVisible, setBtnVisible] = useState(true);
   const [comments, setComments] = useState<any>([]);
   const lang = process.env.NEXT_PUBLIC_LG as Lang;
-  const country = process.env.NEXT_PUBLIC_COUNTRYCODE as string;
-  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
   const newParentComment = useSelector(
     (state: any) => state.comments.newParentComment,
   );
+  const refresh = useSelector((state: any) => state.comments.refresh);
 
   const {
     data: currComments,
     refetch,
     isFetching,
   } = useQuery({
-    queryKey: ["comments", offerId],
+    queryKey: ["comments", offerId, page],
     queryFn: async () => {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACK_URL}/comment/getMany`,
         {
           params: {
             lang: lang,
-            offerId: offerId,
+            offer: offerId,
             onlyparents: "true",
             page: page,
-            perpage: 5,
+            perpage: 10,
             orderby: "upvotes_desc",
           },
         },
@@ -43,52 +42,69 @@ const CommentSection = ({ offerId }: { offerId: any }) => {
 
       return res.data;
     },
-
-    //  enabled: false,
+    //@ts-ignore
+    keepPreviousData: true,
   });
 
   useEffect(() => {
     if (currComments) {
-      setComments([...comments, ...currComments]);
+      setComments((prevComments: any) => {
+        const mergedComments = [...prevComments, ...currComments].reduce(
+          (acc, comment) => {
+            if (!acc.some((c: any) => c.id === comment.id)) {
+              acc.push(comment);
+            }
+            return acc;
+          },
+          [],
+        );
+        return mergedComments;
+      });
     }
-  }, [isFetching]);
+
+    if (currComments?.length < 10) {
+      setBtnVisible(false);
+    }
+  }, [currComments, refresh]);
 
   return (
     <div className="p-3">
-      {/* <Heading tag="h2" text="Comments" /> */}
-
       <div>
-        {newParentComment ? (
-          <>
-            <CommentCard data={newParentComment} offerId={offerId} />
-          </>
-        ) : (
-          <></>
+        {newParentComment && (
+          <CommentCard data={newParentComment} offerId={offerId} />
         )}
-        {comments.map((comment: any, index: number) => {
+        {comments.map((comment: any) => {
           const childrens = flatComments(comment.children);
           return (
-            <>
-              <CommentCard key={index} data={comment} offerId={offerId} />
-
-              <div className="w-full ">
-                {
-                  childrens.map((child: any, index: number) => {
-                    return (
-                      <CommentCard
-                        key={index}
-                        data={child}
-                        isNested={true}
-                        offerId={offerId}
-                      />
-                    );
-                  })
-                  // <CommentCard key={index} data={comment.children} />
-                }
+            <React.Fragment key={comment.id}>
+              <CommentCard data={comment} offerId={offerId} />
+              <div className="w-full">
+                {childrens.map((child: any) => (
+                  <CommentCard
+                    key={child.id}
+                    data={child}
+                    isNested={true}
+                    offerId={offerId}
+                  />
+                ))}
               </div>
-            </>
+            </React.Fragment>
           );
         })}
+      </div>
+
+      <div className="w-full flex items-center justify-center">
+        {btnVisible ?? (
+          <Button
+            onClick={() => {
+              setPage((prevPage) => prevPage + 1);
+              refetch();
+            }}
+            disabled={isFetching}
+          >
+            {isFetching ? "Loading..." : "Load More"}
+          </Button>
+        )}
       </div>
     </div>
   );

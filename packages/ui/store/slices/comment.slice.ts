@@ -5,6 +5,7 @@ export const commentsSlice: any = createSlice({
   initialState: {
     newParentComment: null,
     newNestedComment: null,
+    refresh: false,
   },
   reducers: {
     setParentComment: (state, payload) => {
@@ -13,8 +14,12 @@ export const commentsSlice: any = createSlice({
     setNestedComment: (state, payload) => {
       state.newNestedComment = payload.payload;
     },
+    setRefresh: (state, payload) => {
+      state.refresh = payload.payload;
+    },
   },
 });
 
-export const { setParentComment, setNestedComment } = commentsSlice.actions;
+export const { setParentComment, setNestedComment, setRefresh } =
+  commentsSlice.actions;
 export default commentsSlice.reducer;
