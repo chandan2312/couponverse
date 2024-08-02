@@ -1,4 +1,5 @@
 import { Lang } from "../types";
+//@ts-ignore
 import { words } from "../constants/words";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -67,65 +68,14 @@ export function correctPath(lang: Lang) {
   switch (lang) {
     case "en":
       return "coupon-codes";
-    case "es":
-      return "codigos-de-cupon";
-    case "fr":
-      return "code-promo";
-    case "de":
-      return "gutscheincodes";
     case "ru":
       return "kupon-kody";
-    case "da":
-      return "kupon-kode";
-    case "it":
-      return "codici-sconto";
-    case "cs":
-      return "kuponove-kody";
-    case "nl":
-      return "kortingscodes";
-    case "no":
-      return "kupongkode";
-    case "pl":
-      return "kody-kuponow";
-    case "sv":
-      return "rabattkoder";
-    case "tr":
-      return "kupon-kodu";
-    case "uk":
-      return "kod-kupona";
-    case "ro":
-      return "coduri-promotionale";
-    case "bg":
-      return "kodove-na-kuponi";
-    case "be":
-      return "kody-kuponau";
-    case "fi":
-      return "kuponkikoodit";
+
     case "pt":
       return "codigos-de-cupom";
-    case "hr":
-      return "kodovi-kupona";
-    case "sl":
-      return "kode-kuponov";
-    case "el":
-      return "kodikoi-kouponiou";
-    case "hu":
-      return "kuponkodok";
-    case "sk":
-      return "kuponove-kody";
-    case "ga":
-      return "coid cupon";
 
     case "ja":
-    case "zh-CN":
-    case "zh-TW":
-    case "ko":
     case "ar":
-    case "th":
-    case "vi":
-    case "ur":
-    case "fa":
-    case "my":
       return "coupon-codes";
   }
 }

@@ -163,6 +163,7 @@ export const words = {
     ru: "Отказ от ответственности",
     ar: "إخلاء المسؤولية",
     pt: "Aviso Legal",
+    ja: "免責事項",
   },
   AllStores: {
     en: "All Stores",

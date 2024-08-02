@@ -174,8 +174,6 @@ export const contentGenerator = (obj: any) => {
         return `Трендовые предложения и сделки ${name} | ${month} ${year}`;
       case "ar":
         return `أفضل عروض ${name} | ${month} ${year}`;
-      case "es":
-        return `Ofertas y ofertas de tendencia de ${name} | ${month} ${year}`;
       case "pt":
         return `Ofertas e promoções em tendência de ${name} | ${month} ${year}`;
       case "ja":

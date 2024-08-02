@@ -2,10 +2,11 @@ import React from "react";
 import Heading from "../custom/Heading";
 import Link from "next/link";
 import Image from "next/image";
+import { Lang } from "../../types";
 
 const TopStoresWidget = ({ stores }: { stores: any }) => {
   const country = process?.env?.NEXT_PUBLIC_COUNTRYCODE;
-  const lang: any = process?.env?.NEXT_PUBLIC_LG;
+  const lang: Lang = process?.env?.NEXT_PUBLIC_LG as Lang;
   const cdnUrl = process?.env?.NEXT_PUBLIC_CDN_URL;
 
   return (
