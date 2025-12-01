@@ -1,135 +1,173 @@
-# Turborepo starter
+# Couponverse - Multi-Regional Coupon Platform
 
-This Turborepo starter is maintained by the Turborepo core team.
+A modern, multi-regional coupon and deals platform built with Next.js, Prisma, and MongoDB. Supports multiple countries and languages with country-specific analytics tracking.
 
-## Using this example
+## 🌍 Features
 
-Run the following command:
+- **Multi-Country Support**: Stores can operate in multiple countries
+- **Multi-Language**: Full i18n support (Russian, Spanish, English, Hindi)
+- **Country-Specific Analytics**: Track store popularity separately per country
+- **Reddit-Style Ranking**: Hot score algorithm for trending deals
+- **AI-Powered Coupons**: Automated coupon generation (coupon-scraper)
+- **Responsive Design**: Mobile-first UI with dark mode support
+- **Monorepo Architecture**: Turborepo setup with shared UI package
 
-```sh
-npx create-turbo@latest
-```
+## 🏗️ Tech Stack
 
-## What's inside?
+- **Framework**: Next.js 16 with App Router
+- **Database**: MongoDB with Prisma ORM
+- **Monorepo**: Turborepo
+- **Styling**: Tailwind CSS
+- **Language**: TypeScript
+- **AI**: Google Gemini API (for coupon generation)
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## 📁 Project Structure
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+couponverse/
+├── apps/
+│   ├── kuponly.ru/          # Russian coupon site
+│   ├── spanish.es/          # Spanish coupon site
+│   └── coupon-scraper/      # AI coupon generation service
+├── packages/
+│   └── ui/                  # Shared UI components and Prisma schema
+└── docs/                    # Documentation
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## 🚀 Quick Start
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+### Prerequisites
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+- Node.js 18+ 
+- MongoDB database (local or Atlas)
+- pnpm package manager
 
-### Develop
+### Installation
 
-To develop all apps and packages, run the following command:
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/couponverse.git
+cd couponverse
 
-```
-cd my-turborepo
+# Install dependencies
+pnpm install
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+# Set up environment variables
+cp packages/ui/.env.example packages/ui/.env
+# Edit .env with your MongoDB connection string
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+# Push database schema
+cd packages/ui
+npx prisma db push
+npx prisma generate
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+# Seed the database
+npx tsx prisma/seed.ts
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+# Start development servers
+cd ../..
+pnpm dev
 ```
 
-### Remote Caching
+The apps will be available at:
+- Russian site: http://localhost:3000
+- Spanish site: http://localhost:3001
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+## 🗄️ Database Schema
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+Key models:
+- **Store**: Multi-country stores with analytics tracking
+- **StoreAnalytics**: Country-specific view/click tracking
+- **Offer**: Coupons and deals with language/country filtering
+- **Category**: Store categorization
+- **Vote**: User voting for offer ranking
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## 🌐 Multi-Country Architecture
 
-```
-cd my-turborepo
+Stores use a `countries` array to support multiple regions:
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```typescript
+{
+  name: "Amazon",
+  countries: ["ru", "es", "in"],
+  languages: ["ru", "es", "en", "hi"]
+}
 ```
 
-## Useful Links
+Analytics are tracked separately per country to ensure:
+- Amazon popular in Russia ≠ automatically popular in Spain
+- Country-specific trending stores
+- Accurate local market insights
 
-Learn more about the power of Turborepo:
+## 📊 Analytics Strategy
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+Uses a hybrid approach:
+1. **Manual Priority**: `popularIn` field for known global brands
+2. **Auto-Priority**: View-based automatic tier assignment
+3. **Smart Scheduling**: Update frequency based on traffic
+
+## 🤖 AI Coupon Generation
+
+The `coupon-scraper` service uses Google Gemini to generate localized coupons:
+
+```typescript
+// Generates 10-15 offers per store
+// Deduplicates against existing offers
+// Batches multiple stores to reduce API costs
+```
+
+## 🔧 Configuration
+
+Each app has its own config:
+
+```typescript
+// apps/kuponly.ru/config/app.ts
+export const APP_CONFIG = {
+  country: "ru" as const,
+  lang: "ru" as const,
+  domain: "kuponly.ru",
+  name: "Kuponly"
+};
+```
+
+## 📝 Environment Variables
+
+Required in `packages/ui/.env`:
+
+```env
+DATABASE_URL="mongodb+srv://..."
+```
+
+For coupon generation (optional):
+```env
+GEMINI_API_KEY="your-api-key"
+```
+
+## 🎨 UI Components
+
+Shared components in `packages/ui/src/components/`:
+- `SimilarStores`: Display related stores
+- `TrendingCoupons`: Show trending offers
+- `TrendingStoresWidget`: Homepage trending stores
+- `VoteButtons`: Reddit-style voting
+
+## 🚧 Roadmap
+
+- [ ] Implement `trackStoreClick` tracking
+- [ ] Add time-based trending (weekly/monthly)
+- [ ] User authentication and saved offers
+- [ ] Admin dashboard for store management
+- [ ] API rate limiting and caching
+- [ ] SEO optimizations
+
+## 📄 License
+
+MIT
+
+## 🤝 Contributing
+
+Contributions welcome! Please read the contributing guidelines first.
+
+## 📧 Contact
+
+For questions or suggestions, please open an issue.

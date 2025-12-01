@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  slug  String @unique
+  icon  String? // Material Symbol name
+  offers Offer[]
+}
+
+model Store {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  slug        String   @unique
+  logoUrl     String?
+  description String?
+  websiteUrl  String?
+  countries   String[] @default([]) // Country codes: ["us", "in", "ru", "es", etc.]
+  languages   String[] @default([]) // Supported languages: ["en", "es", "ru", etc.]
+  analytics   StoreAnalytics[]
+  offers      Offer[]
+}
+
+model Offer {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  code        String?
+  discount    String?
+  terms       String?
+  imageUrl    String?
+  expiryDate  DateTime?
+  isVerified  Boolean   @default(false)
+  upvotes     Int       @default(0)
+  downvotes   Int       @default(0)
+  language    String    // Offer language: "en", "es", "ru", etc.
+  country     String?   // Optional country code - if null, available globally for this language
+  categoryId  String    @db.ObjectId
+  storeId     String    @db.ObjectId
+  category    Category  @relation(fields: [categoryId], references: [id])
+  store       Store     @relation(fields: [storeId], references: [id])
+  votes       Vote[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Vote {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  offerId   String   @db.ObjectId
+  sessionId String   // Anonymous user identifier (cookie/fingerprint)
+  voteType  String   // "up" or "down"
+  createdAt DateTime @default(now())
+  
+  offer     Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  
+  @@unique([offerId, sessionId])
+  @@index([offerId, createdAt])
+}
+
+model StoreAnalytics {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId     String   @db.ObjectId
+  country     String   // Country code: "us", "in", "ru", "es", etc.
+  
+  // Metrics
+  views       Int      @default(0)
+  clicks      Int      @default(0)
+  
+  // Tracking
+  lastViewed  DateTime @default(now())
+  createdAt   DateTime @default(now())
+  
+  // Relations
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  
+  @@unique([storeId, country])
+  @@index([country, views])
+}
