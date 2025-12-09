@@ -24,6 +24,10 @@ model Store {
   websiteUrl  String?
   countries   String[] @default([]) // Country codes: ["us", "in", "ru", "es", etc.]
   languages   String[] @default([]) // Supported languages: ["en", "es", "ru", etc.]
+  popularIn   String[] @default([]) // Countries where store is popular: ["ru", "es"]
+  isCategoryLeader Boolean @default(false) // Famous in its niche/category
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   analytics   StoreAnalytics[]
   offers      Offer[]
 }
@@ -82,4 +86,15 @@ model StoreAnalytics {
   
   @@unique([storeId, country])
   @@index([country, views])
+}
+
+model GenerationLog {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug          String
+  country       String
+  language      String
+  popularityTag String   // "popular", "views", "mid", "low"
+  generatedAt   DateTime @default(now())
+  
+  @@index([slug, country, language])
 }
